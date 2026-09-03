@@ -1,10 +1,13 @@
 import SlothTypingtext from "./SlothTypingtext";
 import { Settings, Info, Trophy } from "lucide-react";
 
+const IconEffect =
+  "text-[#72584e] text-[#4E3A2B] transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
+
 export default function Navbar() {
   return (
     <>
-      <nav className="h-20 w-full bg-[#d4bfb6] flex items-center px-2">
+      <nav className="h-16 w-full bg-[#d4bfb6] flex items-center px-2 py-2">
         {/* logo image */}
         <div>
           <img
@@ -19,9 +22,9 @@ export default function Navbar() {
           <SlothTypingtext />
         </div>
         <div className="flex items-center gap-18  mr-4 ml-auto ">
-          <Settings size={24} className="text-[#614e40] " />
-          <Info size={24} className="text-[#614e40]" />
-          <Trophy size={24} className="text-[#614e40]" />
+          <Settings size={24} className={IconEffect} />
+          <Info size={24} className={IconEffect} />
+          <Trophy size={24} className={IconEffect} />
           <button className="bg-[#f7e7d6] text-[#49372a] px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_3px_0_#b09f8c] hover:translate-y-0.5 transition-all hover:bg-[#fae2c4] cursor-pointer">
             Sign up
           </button>
