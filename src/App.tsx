@@ -11,8 +11,8 @@ import { useState } from "react";
 import generateText from "./utils/generateText";
 
 function App() {
-  // states for option bar features
   const [words, setWords] = useState<WordsOption | null>(null);
+  // states for option bar features
   const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>("time");
   const [text, setText] = useState(() => generateText(300));
   const [testMode, setTestMode] = useState<TestTypeMode>("normal");
