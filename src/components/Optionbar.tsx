@@ -1,7 +1,12 @@
 import { ClipboardPenLine } from "lucide-react";
 import Timeselector from "./Timeselector";
 import WordSelector from "./WordSelector";
-import type { WordsOption, TestLengthMode, TestTypeMode } from "../types/test";
+import type {
+  WordsOption,
+  TestLengthMode,
+  TestTypeMode,
+  TimeOption,
+} from "../types/test";
 import type { Dispatch, SetStateAction } from "react";
 import TestSelector from "./TestSelector";
 
@@ -13,6 +18,8 @@ interface OptionbarProps {
   generateNewTest: (WordCount: WordsOption) => void;
   testMode: TestTypeMode;
   setTestMode: Dispatch<SetStateAction<TestTypeMode>>;
+  time: number;
+  setTime: Dispatch<SetStateAction<TimeOption>>;
 }
 const ButtonEffects = "flex items-center gap-2 text-sm";
 export default function Optionbar({
@@ -23,6 +30,8 @@ export default function Optionbar({
   generateNewTest,
   testMode,
   setTestMode,
+  time,
+  setTime,
 }: OptionbarProps) {
   return (
     <>
@@ -32,6 +41,8 @@ export default function Optionbar({
           <Timeselector
             testLengthMode={testLengthMode}
             setTestLengthMode={setTestLengthMode}
+            time={time}
+            setTime={setTime}
           />
           {/* Words select */}
           <WordSelector

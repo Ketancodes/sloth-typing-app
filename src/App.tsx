@@ -6,6 +6,7 @@ import {
   type WordsOption,
   type TestLengthMode,
   type TestTypeMode,
+  type TimeOption,
 } from "./types/test";
 import { useState } from "react";
 import generateText from "./utils/generateText";
@@ -14,8 +15,9 @@ function App() {
   const [words, setWords] = useState<WordsOption | null>(null);
   // states for option bar features
   const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>("time");
-  const [text, setText] = useState(() => generateText(300));
-  const [testMode, setTestMode] = useState<TestTypeMode>("normal");
+  const [text, setText] = useState(() => generateText(300)); // state for generating text
+  const [testMode, setTestMode] = useState<TestTypeMode>("normal"); // state for word mode
+  const [time, setTime] = useState<TimeOption>(30); // state for timer
   const generateNewTest = (WordCount: WordsOption) => {
     setWords(WordCount);
     setText(generateText(WordCount));
@@ -32,8 +34,17 @@ function App() {
           generateNewTest={generateNewTest}
           testMode={testMode}
           setTestMode={setTestMode}
+          time={time}
+          setTime={setTime}
         />
-        <TypingTest testLengthMode={testLengthMode} words={words} text={text} />
+
+        <TypingTest
+          testLengthMode={testLengthMode}
+          words={words}
+          text={text}
+          duration={time}
+        />
+
         <Footer />
       </div>
     </>

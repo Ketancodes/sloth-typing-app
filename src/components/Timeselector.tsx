@@ -7,10 +7,15 @@ import type { Dispatch, SetStateAction } from "react";
 interface TimeSelectProp {
   testLengthMode?: TestLengthMode;
   setTestLengthMode: Dispatch<SetStateAction<TestLengthMode>>;
+  time: number;
+  setTime: Dispatch<SetStateAction<TimeOption>>;
 }
-export default function Timeselector({ setTestLengthMode }: TimeSelectProp) {
+export default function Timeselector({
+  setTestLengthMode,
+  time,
+  setTime,
+}: TimeSelectProp) {
   const [isOpen, setIsOpen] = useState(false);
-  const [time, setTime] = useState<TimeOption>(30);
   return (
     <>
       <div className="relative">
