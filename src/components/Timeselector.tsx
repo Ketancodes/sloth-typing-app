@@ -5,15 +5,20 @@ import type { TestLengthMode } from "../types/test";
 import type { Dispatch, SetStateAction } from "react";
 
 interface TimeSelectProp {
-  testLengthMode?: TestLengthMode;
+  testLengthMode: TestLengthMode;
   setTestLengthMode: Dispatch<SetStateAction<TestLengthMode>>;
   time: number;
-  setTime: Dispatch<SetStateAction<TimeOption>>;
+  setTime?: Dispatch<SetStateAction<TimeOption>>;
+  setTestKey: Dispatch<SetStateAction<number>>;
+  generateTimeTest: (time: TimeOption) => void;
 }
 export default function Timeselector({
   setTestLengthMode,
+  testLengthMode,
   time,
-  setTime,
+
+  setTestKey,
+  generateTimeTest,
 }: TimeSelectProp) {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -23,13 +28,14 @@ export default function Timeselector({
           onClick={() => {
             setIsOpen(!isOpen);
             setTestLengthMode("time");
+            setTestKey((prev) => prev + 1);
           }}
-          className="flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
+          className={` ${testLengthMode === "time" ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer" : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"}`}
         >
           <AlarmClock size={16} />
           Time
         </button>
-        {isOpen && (
+        {isOpen && testLengthMode === "time" && (
           <div
             className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
     before:-top-1.5
@@ -44,8 +50,9 @@ export default function Timeselector({
           >
             <button
               onClick={() => {
-                setTime(15);
+                generateTimeTest(15);
                 setIsOpen(false);
+                setTestKey((prev) => prev + 1);
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 15 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >
@@ -53,8 +60,9 @@ export default function Timeselector({
             </button>
             <button
               onClick={() => {
-                setTime(30);
+                generateTimeTest(30);
                 setIsOpen(false);
+                setTestKey((prev) => prev + 1);
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 30 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >
@@ -62,8 +70,9 @@ export default function Timeselector({
             </button>
             <button
               onClick={() => {
-                setTime(60);
+                generateTimeTest(60);
                 setIsOpen(false);
+                setTestKey((prev) => prev + 1);
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 60 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >

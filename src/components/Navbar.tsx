@@ -4,10 +4,11 @@ import { Settings, Info, Trophy } from "lucide-react";
 const IconEffect =
   "text-[#72584e] text-[#4E3A2B] transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
 
+// #d4bfb6
 export default function Navbar() {
   return (
     <>
-      <nav className="h-16 w-full bg-[#d4bfb6] flex items-center px-2 py-2">
+      <nav className="h-16 w-full bg-[#c5afa6] flex items-center px-2 py-2">
         {/* logo image */}
         <div>
           <img
@@ -21,6 +22,7 @@ export default function Navbar() {
         <div>
           <SlothTypingtext />
         </div>
+        {/* Right side elements */}
         <div className="flex items-center gap-18  mr-4 ml-auto ">
           <Settings size={24} className={IconEffect} />
           <Info size={24} className={IconEffect} />

@@ -1,69 +1,102 @@
 import { RotateCcw } from "lucide-react";
-import type { TestLengthMode, WordsOption } from "../types/test";
+import type { TestLengthMode, WordsOption, TestState } from "../types/test";
 import { useState } from "react";
 import TypingText from "./TypingText";
 import Timer from "./Timer";
+import Dashboard from "./Dashboard/Dashboard";
 
 interface TypingTestProp {
   testLengthMode: TestLengthMode;
   words: WordsOption | null;
   text: string;
   duration: number;
+  resetTest: () => void;
 }
+
 export default function TypingTest({
-  //   testLengthMode,
+  testLengthMode,
   //   words,
   text,
   duration,
+  resetTest,
 }: TypingTestProp) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [typedText, setTypedText] = useState("");
-  const [mistake, setMistake] = useState(0);
-  const [isStarted, setIsStarted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
+  const [typedText, setTypedText] = useState(""); //state for tracking types text
+  const [mistake, setMistake] = useState(0); // state for counting mistakes
+  const [testState, setTestState] = useState<TestState>("idle"); //state for 3 state updates
+
   return (
     <>
-      <main className="relative mt-20  w-full font-[Roboto_Mono] flex flex-col gap-8 items-center justify-center ">
-        <Timer duration={duration} isStarted={isStarted} />
-        <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden">
-          <TypingText
-            text={text}
-            currentIndex={currentIndex}
-            typedText={typedText}
-          />
-        </div>
+      <main className="relative mt-20 w-full font-[Roboto_Mono] flex flex-col gap-10 items-center justify-center">
+        {testState === "finished" ? (
+          <Dashboard />
+        ) : (
+          <>
+            {testLengthMode === "time" && (
+              <Timer
+                duration={duration}
+                testState={testState}
+                onTimeUp={() => setTestState("finished")}
+              />
+            )}
 
-        <button>
-          <RotateCcw size={24} className="text-[#6d564d] font-semibold" />
-        </button>
+            <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden">
+              <TypingText
+                text={text}
+                currentIndex={currentIndex}
+                typedText={typedText}
+              />
+            </div>
 
-        {/* invisible input tracking words keys logic */}
-        <input
-          type="text"
-          autoFocus
-          className="absolute opacity-0"
-          onKeyDown={(event) => {
-            const expectedChar = text[currentIndex];
+            <button onClick={resetTest}>
+              <RotateCcw
+                size={24}
+                className="text-[#6d564d] font-semibold hover:cursor-pointer"
+              />
+            </button>
 
-            if (!isStarted) {
-              setIsStarted(true);
-            }
+            {/* invisible input tracking words keys logic */}
+            <input
+              type="text"
+              autoFocus
+              className="absolute opacity-0"
+              onKeyDown={(event) => {
+                const expectedChar = text[currentIndex];
 
-            if (event.key === "Backspace") {
-              setTypedText((prev) => prev.slice(0, -1));
-              setCurrentIndex((prev) => Math.max(0, prev - 1));
-              return;
-            }
+                // when we click the backspace
+                if (event.key === "Backspace") {
+                  setTypedText((prev) => prev.slice(0, -1));
+                  setCurrentIndex((prev) => Math.max(0, prev - 1)); //move the curidx -1back , math.max(0,)coz we dont' want idex to become -ve
+                  return;
+                }
 
-            if (event.key.length === 1) {
-              setTypedText((prev) => prev + event.key);
-              setCurrentIndex((prev) => prev + 1);
-              if (event.key !== expectedChar) {
-                setMistake((prev) => prev + 1);
-              }
-            }
-          }}
-        />
-        {mistake}
+                // when user types the first char
+                if (event.key.length === 1) {
+                  if (testState === "idle") {
+                    setTestState("running");
+                  }
+
+                  setTypedText((prev) => prev + event.key); // means take everything until typed words + add current typed char
+                  setCurrentIndex((prev) => {
+                    const nextIndex = prev + 1;
+
+                    // text finish logic
+                    if (nextIndex >= text.length) {
+                      setTestState("finished");
+                    }
+                    return nextIndex;
+                  });
+
+                  // error counting condition
+                  if (event.key !== expectedChar) {
+                    setMistake((prev) => prev + 1);
+                  }
+                }
+              }}
+            />
+            {mistake >= 0 ? "" : ""}
+          </>
+        )}
       </main>
     </>
   );

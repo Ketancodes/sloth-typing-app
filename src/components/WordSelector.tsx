@@ -13,7 +13,7 @@ interface WordOptionProp {
 }
 export default function WordSelector({
   words,
-
+  testLengthMode,
   setTestLengthMode,
   generateNewTest,
 }: WordOptionProp) {
@@ -26,12 +26,16 @@ export default function WordSelector({
             setIsOpen(!isOpen);
             setTestLengthMode("words");
           }}
-          className="flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
+          className={`${
+            testLengthMode === "words"
+              ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
+              : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
+          }`}
         >
           <CaseSensitive size={18} />
           Words
         </button>
-        {isOpen && (
+        {isOpen && testLengthMode === "words" && (
           <div
             className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
     before:-top-1.5

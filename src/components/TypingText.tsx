@@ -41,6 +41,10 @@ export default function TypingText({
     }
   }, [currentIndex]);
 
+  //   ? "text-[#4E3A2B]"
+  //                       : "text-[#C72121]"
+  //                     : "text-[#856D63]"
+
   return (
     <>
       <p ref={containerRef}>
@@ -61,9 +65,9 @@ export default function TypingText({
                 className={`relative ${
                   isTyped
                     ? isCorrect
-                      ? "text-[#4E3A2B]"
+                      ? "text-[#46362b]"
                       : "text-[#C72121]"
-                    : "text-[#856D63]"
+                    : "text-[#72645d]"
                 }`}
               >
                 {isCurrent && (
