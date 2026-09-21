@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import type { CharStatus } from "../types/test";
 
 interface TypingTextProp {
   text: string;
   currentIndex: number;
-  typedText: string;
+  typedText?: string;
+  charStatus: CharStatus[];
 }
 export default function TypingText({
   text,
   currentIndex,
-  typedText,
+
+  charStatus,
 }: TypingTextProp) {
   // Line changing whole logic
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
@@ -53,8 +56,8 @@ export default function TypingText({
           .split("")
           .map((char, index) => {
             const absoluteIndex = visibleStartIndex + index;
-            const isTyped = absoluteIndex < typedText.length;
-            const isCorrect = isTyped && char === typedText[absoluteIndex];
+
+            const status = charStatus[absoluteIndex];
             const isCurrent = absoluteIndex === currentIndex;
 
             return (
@@ -63,11 +66,13 @@ export default function TypingText({
                 ref={isCurrent ? activeCharRef : null}
                 data-index={absoluteIndex}
                 className={`relative ${
-                  isTyped
-                    ? isCorrect
-                      ? "text-[#46362b]"
-                      : "text-[#C72121]"
-                    : "text-[#72645d]"
+                  status === "correct"
+                    ? "text-[#46362b]"
+                    : status === "incorrect"
+                      ? "text-[#C72121]"
+                      : status === "missed"
+                        ? "text-[#c72121]"
+                        : "text-[#72645d]"
                 }`}
               >
                 {isCurrent && (
