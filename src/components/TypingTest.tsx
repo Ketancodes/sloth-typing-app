@@ -4,8 +4,9 @@ import type {
   WordsOption,
   TestState,
   CharStatus,
+  TestResult,
 } from "../types/test";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TypingText from "./TypingText";
 import Timer from "./Timer";
 import Dashboard from "./Dashboard/Dashboard";
@@ -15,6 +16,7 @@ interface TypingTestProp {
   words: WordsOption | null;
   text: string;
   duration: number;
+
   resetTest: () => void;
 }
 
@@ -29,19 +31,31 @@ export default function TypingTest({
   const [typedText, setTypedText] = useState(""); //state for tracking types text
   const [mistake, setMistake] = useState(0); // state for counting mistakes
   const [incorrect, setInCorrect] = useState(0); // state for acc incorrect counting
-  const [totaltyped, setTotalTyped] = useState(0); // state for calc total typed char
+  const [correct, setCorrect] = useState(0); // state for correct char counting
   const [testState, setTestState] = useState<TestState>("idle"); //state for 3 state updates
-  const [wpm, setWpm] = useState(0); // state for wpm
+
+  const [missed, setMissed] = useState(0); // state for missed char
   const [extra, setExtra] = useState(0); // state for tarcking extra typed chars
   const [charStatus, setCharStatus] = useState<CharStatus[]>(
     Array(text.length).fill("untyped"),
   ); // state for tracking char status
+  const [result, setResult] = useState<TestResult | null>(null); // state for testresult
 
   const startTime = useRef<number | null>(null); // ref for tracking start time
 
-  // calculate the elapsed time for majorly word mode n time mode
-  useEffect(() => {
-    if (testState === "finished" && startTime.current !== null) {
+  // fun for calculating  result of wpm n accuracy
+  const calculateResult = (
+    finalCorrect: number,
+    finalIncorrect: number,
+    finalTypedText: string,
+  ) => {
+    const accuracy =
+      finalCorrect + finalIncorrect > 0
+        ? (finalCorrect / (finalCorrect + finalIncorrect)) * 100
+        : 100;
+
+    let wpm = 0;
+    if (startTime.current !== null) {
       const finishTime = Date.now();
       const elapsedTime = finishTime - startTime.current;
 
@@ -51,32 +65,61 @@ export default function TypingTest({
       } else {
         timeinSeconds = elapsedTime / 1000;
       }
-      const calculateWpm = typedText.length / 5 / (timeinSeconds / 60);
-      setWpm(calculateWpm);
+      wpm = finalTypedText.length / 5 / (timeinSeconds / 60);
     }
-    const accuracy =
-      totaltyped > 0 ? ((totaltyped - incorrect) / totaltyped) * 100 : 100;
+    console.log("INSIDE calculateResult:", {
+      accuracy,
+      wpm,
+      correct: finalCorrect,
+      incorrect: finalIncorrect,
+      missed,
+      extra,
+    });
+    return {
+      accuracy,
+      wpm,
+      correct: finalCorrect,
+      incorrect: finalIncorrect,
+      missed,
+      extra,
+    };
+  };
 
-    console.log("Accuracy:", accuracy);
-    console.log("total typed:", totaltyped);
-    console.log("incorrect:", incorrect);
-    console.log("length:", typedText.length);
-    console.log("mistake:", mistake, "extra:", extra);
-    // for missed char calculation
-  }, [testState, totaltyped, incorrect]);
+  // fun for cal/storing correct/incor/typedtext
+  const finishTest = (
+    finalCorrect: number,
+    finalIncorrect: number,
+    finalTypedText: string,
+  ) => {
+    const result: TestResult = calculateResult(
+      finalCorrect,
+      finalIncorrect,
+      finalTypedText,
+    );
+    console.log("FINAL RESULT:", {
+      wpm: result.wpm,
+      accuracy: result.accuracy,
+      correct: finalCorrect,
+      incorrect: finalIncorrect,
+    });
+    setResult(result);
+    setTestState("finished");
+  };
 
   return (
     <>
       <main className="relative mt-20 w-full font-[Roboto_Mono] flex flex-col gap-10 items-center justify-center">
-        {testState === "finished" ? (
-          <Dashboard wpm={wpm} charStatus={charStatus} />
+        {testState === "finished" && result ? (
+          <Dashboard charStatus={charStatus} result={result} />
         ) : (
           <>
             {testLengthMode === "time" && (
               <Timer
                 duration={duration}
                 testState={testState}
-                onTimeUp={() => setTestState("finished")}
+                onTimeUp={() => {
+                  finishTest(correct, incorrect, typedText);
+                }}
               />
             )}
             <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden">
@@ -114,7 +157,8 @@ export default function TypingTest({
                   text[currentIndex] === " " &&
                   event.key !== " "
                 ) {
-                  setMistake((prev) => prev + 1);
+                  setExtra((prev) => prev + 1);
+                  setInCorrect((prev) => prev + 1);
                   return;
                 }
 
@@ -124,11 +168,19 @@ export default function TypingTest({
                   if (currentIndex === 0 || text[currentIndex - 1] === " ") {
                     return;
                   }
+                  //space is a expected char
+                  if (text[currentIndex] === " ") {
+                    setCorrect((prev) => prev + 1);
+                  } else {
+                    setInCorrect((prev) => prev + 1);
+                  }
 
                   const nextSpaceIndex = text.indexOf(" ", currentIndex);
 
                   if (nextSpaceIndex !== -1) {
                     // mark characters skipped in the current word as missed
+                    const missedCount = nextSpaceIndex - currentIndex;
+                    setMissed((prev) => prev + missedCount);
                     setCharStatus((prev) => {
                       const updated = [...prev];
 
@@ -158,9 +210,11 @@ export default function TypingTest({
                     setExtra((prev) => prev + 1);
                     return;
                   }
-                  setTotalTyped((prev) => prev + 1);
+                  const isCorrect = event.key === expectedChar;
 
-                  // check for missed chars
+                  const finalCorrect = isCorrect ? correct + 1 : correct;
+                  const finalIncorrect = isCorrect ? incorrect : incorrect + 1;
+                  const finalTypedText = typedText + event.key;
 
                   // tracking start time
                   if (testState === "idle") {
@@ -172,10 +226,6 @@ export default function TypingTest({
                   setCurrentIndex((prev) => {
                     const nextIndex = prev + 1;
 
-                    // text finish logic
-                    if (nextIndex >= text.length) {
-                      setTestState("finished");
-                    }
                     return nextIndex;
                   });
 
@@ -183,6 +233,7 @@ export default function TypingTest({
 
                   if (event.key === expectedChar) {
                     // correct
+                    setCorrect((prev) => prev + 1);
                     setCharStatus((prev) => {
                       const updated = [...prev];
                       updated[currentIndex] = "correct";
@@ -197,6 +248,10 @@ export default function TypingTest({
                       updated[currentIndex] = "incorrect";
                       return updated;
                     });
+                  }
+
+                  if (currentIndex + 1 >= text.length) {
+                    finishTest(finalCorrect, finalIncorrect, finalTypedText);
                   }
                 }
               }}
