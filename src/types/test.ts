@@ -12,4 +12,5 @@ export type TestResult = {
   incorrect: number;
   extra: number;
   missed: number;
+  charStatus: CharStatus[];
 };

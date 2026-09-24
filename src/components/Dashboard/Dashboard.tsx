@@ -1,22 +1,23 @@
-import type { CharStatus, TestResult } from "../../types/test";
+import type { TestResult } from "../../types/test";
+import Dashtop from "./Dashtop";
+import Dashgraph from "./Dashgraph";
+import Dashstats from "./Dashstats";
 
 interface DashProps {
-  charStatus: CharStatus[];
   result: TestResult;
 }
 export default function Dashboard({ result }: DashProps) {
   console.log("dashboard props:", result);
   return (
     <>
-      <div>
-        <p>Test is basically finished...!</p>
-
-        <p>wpm:{Math.round(result.wpm)}</p>
-        <p>accuracy:{result.accuracy}</p>
-        <p>correct:{result.correct}</p>
-        <p>incorrect:{result.incorrect}</p>
-        <p>missed:{result.missed}</p>
-        <p>extra:{result.extra}</p>
+      <div className="mt-2 ml-6 font-[Courier_Prime] font-medium">
+        <div className="flex justify-between">
+          <Dashtop result={result} />
+          <div className="w-[70%] h-62.5 bg-[#867467]">
+            <Dashgraph />
+          </div>
+        </div>
+        <Dashstats result={result} />
       </div>
     </>
   );
