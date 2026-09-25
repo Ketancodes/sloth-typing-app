@@ -7,10 +7,17 @@ export type CharStatus = "correct" | "incorrect" | "missed" | "untyped"; // char
 export type TestResult = {
   // type for result data [dashboard]
   wpm: number;
+  rawWpm: number;
   accuracy: number;
   correct: number;
   incorrect: number;
   extra: number;
   missed: number;
   charStatus: CharStatus[];
+  totalKeystrokes: number;
+  chartData: {
+    wpm: number[];
+    raw: number[];
+    err: number[];
+  };
 };

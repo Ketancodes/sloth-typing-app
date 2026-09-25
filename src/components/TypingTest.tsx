@@ -6,7 +6,13 @@ import type {
   CharStatus,
   TestResult,
 } from "../types/test";
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useRef,
+  useEffect,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import TypingText from "./TypingText";
 import Timer from "./Timer";
 
@@ -39,17 +45,60 @@ export default function TypingTest({
 
   const [missed, setMissed] = useState(0); // state for missed char
   const [extra, setExtra] = useState(0); // state for tarcking extra typed chars
+  const [totalKeystrokes, setTotalKeystrokes] = useState(0);
+  const [chartData, setChartData] = useState({
+    wpm: [] as number[],
+    raw: [] as number[],
+    err: [] as number[],
+  });
   const [charStatus, setCharStatus] = useState<CharStatus[]>(
     Array(text.length).fill("untyped"),
   ); // state for tracking char status
 
   const startTime = useRef<number | null>(null); // ref for tracking start time
 
+  // refs for data
+  const correctRef = useRef(0);
+  const totalKeystrokesRef = useRef(0);
+  const incorrectRef = useRef(0);
+
+  // ref for calculating per second data
+  useEffect(() => {
+    if (teststate !== "running" || startTime.current === null) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const elapsedSeconds = (Date.now() - startTime.current!) / 1000;
+
+      if (elapsedSeconds <= 0) return;
+
+      const minutes = elapsedSeconds / 60;
+
+      const currentWpm = correctRef.current / 5 / minutes;
+
+      const currentRawWpm = totalKeystrokesRef.current / 5 / minutes;
+
+      setChartData((prev) => {
+        const updated = {
+          wpm: [...prev.wpm, currentWpm],
+          raw: [...prev.raw, currentRawWpm],
+          err: [...prev.err, incorrectRef.current],
+        };
+
+        return updated;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [teststate]);
+
   // fun for calculating  result of wpm n accuracy
   const calculateResult = (
     finalCorrect: number,
     finalIncorrect: number,
     finalTypedText: string,
+    finaltotalKeystrokes: number,
   ) => {
     const accuracy =
       finalCorrect + finalIncorrect > 0
@@ -57,6 +106,7 @@ export default function TypingTest({
         : 100;
 
     let wpm = 0;
+    let rawWpm = 0;
     if (startTime.current !== null) {
       const finishTime = Date.now();
       const elapsedTime = finishTime - startTime.current;
@@ -67,17 +117,21 @@ export default function TypingTest({
       } else {
         timeinSeconds = elapsedTime / 1000;
       }
-      wpm = finalTypedText.length / 5 / (timeinSeconds / 60);
+      wpm = finalCorrect / 5 / (timeinSeconds / 60);
+      rawWpm = finaltotalKeystrokes / 5 / (timeinSeconds / 60);
     }
 
     return {
       accuracy,
       wpm,
+      rawWpm,
       correct: finalCorrect,
       incorrect: finalIncorrect,
       missed,
       extra,
       charStatus,
+      totalKeystrokes: finaltotalKeystrokes,
+      chartData,
     };
   };
 
@@ -86,11 +140,13 @@ export default function TypingTest({
     finalCorrect: number,
     finalIncorrect: number,
     finalTypedText: string,
+    finaltotalKeystrokes: number,
   ) => {
     const result: TestResult = calculateResult(
       finalCorrect,
       finalIncorrect,
       finalTypedText,
+      finaltotalKeystrokes,
     );
 
     onFinish(result);
@@ -105,7 +161,7 @@ export default function TypingTest({
               duration={duration}
               testState={teststate}
               onTimeUp={() => {
-                finishTest(correct, incorrect, typedText);
+                finishTest(correct, incorrect, typedText, totalKeystrokes);
               }}
             />
           )}
@@ -155,11 +211,14 @@ export default function TypingTest({
                 if (currentIndex === 0 || text[currentIndex - 1] === " ") {
                   return;
                 }
+                setTotalKeystrokes((prev) => prev + 1);
                 //space is a expected char
                 if (text[currentIndex] === " ") {
                   setCorrect((prev) => prev + 1);
+                  correctRef.current += 1;
                 } else {
                   setInCorrect((prev) => prev + 1);
+                  incorrectRef.current += 1;
                 }
 
                 const nextSpaceIndex = text.indexOf(" ", currentIndex);
@@ -195,13 +254,18 @@ export default function TypingTest({
                 // check for extra typed chars
                 if (currentIndex >= text.length) {
                   setExtra((prev) => prev + 1);
+                  setTotalKeystrokes((prev) => prev + 1);
+                  totalKeystrokesRef.current += 1;
                   return;
                 }
+                setTotalKeystrokes((prev) => prev + 1);
+                totalKeystrokesRef.current += 1;
                 const isCorrect = event.key === expectedChar;
 
                 const finalCorrect = isCorrect ? correct + 1 : correct;
                 const finalIncorrect = isCorrect ? incorrect : incorrect + 1;
                 const finalTypedText = typedText + event.key;
+                const finaltotalKeystrokes = totalKeystrokes + 1;
 
                 // tracking start time
                 if (teststate === "idle") {
@@ -221,6 +285,7 @@ export default function TypingTest({
                 if (event.key === expectedChar) {
                   // correct
                   setCorrect((prev) => prev + 1);
+                  correctRef.current += 1;
                   setCharStatus((prev) => {
                     const updated = [...prev];
                     updated[currentIndex] = "correct";
@@ -230,6 +295,7 @@ export default function TypingTest({
                   // incorrect
                   setMistake((prev) => prev + 1);
                   setInCorrect((prev) => prev + 1);
+                  incorrectRef.current += 1;
                   setCharStatus((prev) => {
                     const updated = [...prev];
                     updated[currentIndex] = "incorrect";
@@ -238,7 +304,12 @@ export default function TypingTest({
                 }
 
                 if (currentIndex + 1 >= text.length) {
-                  finishTest(finalCorrect, finalIncorrect, finalTypedText);
+                  finishTest(
+                    finalCorrect,
+                    finalIncorrect,
+                    finalTypedText,
+                    finaltotalKeystrokes,
+                  );
                 }
               }
             }}

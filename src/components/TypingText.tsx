@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import type { CharStatus } from "../types/test";
 
 interface TypingTextProp {
@@ -7,7 +7,7 @@ interface TypingTextProp {
   typedText?: string;
   charStatus: CharStatus[];
 }
-export default function TypingText({
+function TypingText({
   text,
   currentIndex,
 
@@ -43,10 +43,6 @@ export default function TypingText({
       }
     }
   }, [currentIndex]);
-
-  //   ? "text-[#4E3A2B]"
-  //                       : "text-[#C72121]"
-  //                     : "text-[#856D63]"
 
   return (
     <>
@@ -98,3 +94,4 @@ export default function TypingText({
     </>
   );
 }
+export default memo(TypingText);

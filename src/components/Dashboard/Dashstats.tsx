@@ -30,7 +30,7 @@ export default function Dashstats({ result }: DashStasProp) {
         <div>
           <p className="text-xl font-normal text-[#72645d] font-mono">raw</p>
           <h1 className="text-[34px] text-[#46362b] font-semibold leading-tight font-mono">
-            80/99%
+            {result.rawWpm}/{result.accuracy.toFixed(2)}%
           </h1>
         </div>
 
