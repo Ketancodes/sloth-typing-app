@@ -61,12 +61,16 @@ export default function TypingTest({
   const correctRef = useRef(0);
   const totalKeystrokesRef = useRef(0);
   const incorrectRef = useRef(0);
+  const previousKeystrokesRef = useRef(0);
+  const previousSampleTimeRef = useRef<number | null>(null);
 
   // ref for calculating per second data
   useEffect(() => {
     if (teststate !== "running" || startTime.current === null) {
       return;
     }
+    previousKeystrokesRef.current = totalKeystrokesRef.current;
+    previousSampleTimeRef.current = Date.now();
 
     const interval = setInterval(() => {
       const elapsedSeconds = (Date.now() - startTime.current!) / 1000;
@@ -77,7 +81,22 @@ export default function TypingTest({
 
       const currentWpm = correctRef.current / 5 / minutes;
 
-      const currentRawWpm = totalKeystrokesRef.current / 5 / minutes;
+      const now = Date.now();
+
+      const elapsedSinceLastSample =
+        (now - previousSampleTimeRef.current!) / 1000;
+
+      const keystrokesThisSecond =
+        totalKeystrokesRef.current - previousKeystrokesRef.current;
+
+      const currentRawWpm =
+        elapsedSinceLastSample > 0
+          ? keystrokesThisSecond / 5 / (elapsedSinceLastSample / 60)
+          : 0;
+
+      previousKeystrokesRef.current = totalKeystrokesRef.current;
+
+      previousSampleTimeRef.current = now;
 
       setChartData((prev) => {
         const updated = {

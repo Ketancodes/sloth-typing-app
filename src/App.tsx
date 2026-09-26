@@ -46,6 +46,8 @@ function App() {
   const resetTest = () => {
     setText(generateText(300));
     setTestKey((prev) => prev + 1);
+    setTeststate("idle");
+    setResult(null);
   };
 
   // test finish handler
@@ -53,12 +55,23 @@ function App() {
     setResult(result);
     setTeststate("finished");
   };
+
+  // retry test fun
+  const repeatTest = () => {
+    setTestKey((prev) => prev + 1);
+    setTeststate("idle");
+    setResult(null);
+  };
   return (
     <>
       <div className="h-screen w-screen bg-[#c7afa5] flex flex-col">
         <Navbar />
         {teststate === "finished" && result ? (
-          <Dashboard result={result} />
+          <Dashboard
+            result={result}
+            onReset={resetTest}
+            onRepeat={repeatTest}
+          />
         ) : (
           <>
             <Optionbar
@@ -86,10 +99,9 @@ function App() {
               setTeststate={setTeststate}
               onFinish={handleTestFinish}
             />
-
-            <Footer />
           </>
         )}
+        <Footer />
       </div>
     </>
   );

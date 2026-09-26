@@ -1,4 +1,5 @@
 import type { TestResult } from "../../types/test";
+import getConsistency from "../../utils/getConsistency";
 interface DashStasProp {
   result: TestResult;
 }
@@ -22,7 +23,7 @@ export default function Dashstats({ result }: DashStasProp) {
             consistency
           </p>
           <h1 className="text-[34px] text-[#46362b] font-semibold leading-tight font-mono">
-            80%
+            {getConsistency(result.chartData.raw).toFixed(2)}%
           </h1>
         </div>
 
