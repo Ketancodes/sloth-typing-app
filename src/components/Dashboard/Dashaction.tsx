@@ -1,8 +1,13 @@
 import { Recycle, EthernetPort, ScreenShare, RotateCcw } from "lucide-react";
+import Inputhistory from "./Inputhistory";
+import type { TestResult } from "../../types/test";
 
 interface DashactionProp {
   onReset: () => void;
   onRepeat: () => void;
+  result: TestResult;
+  onToggle: boolean;
+  onToggleHistory: () => void;
 }
 
 const hoverClass =
@@ -10,7 +15,13 @@ const hoverClass =
 const groupHoverClass =
   "group relative hover:cursor-pointer hover:text-[#382a21]";
 
-export default function Dashaction({ onReset, onRepeat }: DashactionProp) {
+export default function Dashaction({
+  onReset,
+  onRepeat,
+  result,
+  onToggle,
+  onToggleHistory,
+}: DashactionProp) {
   return (
     <>
       <div className="mt-14 w-full flex items-center justify-center">
@@ -23,7 +34,7 @@ export default function Dashaction({ onReset, onRepeat }: DashactionProp) {
           </div>
 
           {/* Input History */}
-          <div className={groupHoverClass}>
+          <div className={groupHoverClass} onClick={onToggleHistory}>
             <EthernetPort size={24} />
 
             <span className={hoverClass}>Input History</span>
@@ -43,6 +54,13 @@ export default function Dashaction({ onReset, onRepeat }: DashactionProp) {
             <span className={hoverClass}>Reset Test</span>
           </div>
         </div>
+      </div>
+      <div className="mt-2 ">
+        {onToggle && (
+          <div className="animate-[history-in_600ms_ease-out]">
+            <Inputhistory result={result} />
+          </div>
+        )}
       </div>
     </>
   );

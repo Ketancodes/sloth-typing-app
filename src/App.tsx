@@ -9,6 +9,7 @@ import {
   type TimeOption,
   type TestState,
   type TestResult,
+  type TestConfig,
 } from "./types/test";
 import { useState } from "react";
 import generateText from "./utils/generateText";
@@ -62,6 +63,13 @@ function App() {
     setTeststate("idle");
     setResult(null);
   };
+
+  const testConfig: TestConfig = {
+    testLengthMode,
+    testMode,
+    timeOption: time,
+    wordOption: words,
+  };
   return (
     <>
       <div className="h-screen w-screen bg-[#c7afa5] flex flex-col">
@@ -71,6 +79,7 @@ function App() {
             result={result}
             onReset={resetTest}
             onRepeat={repeatTest}
+            testConfig={testConfig}
           />
         ) : (
           <>

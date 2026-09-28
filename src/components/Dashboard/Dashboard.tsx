@@ -1,18 +1,23 @@
-import type { TestResult } from "../../types/test";
+import type { TestResult, TestConfig } from "../../types/test";
 import Dashtop from "./Dashtop";
 import Dashgraph from "./Dashgraph";
 import Dashstats from "./Dashstats";
-import getConsistency from "../../utils/getConsistency";
 import Dashaction from "./Dashaction";
+import { useState } from "react";
 
 interface DashProps {
   result: TestResult;
   onReset: () => void;
   onRepeat: () => void;
+  testConfig: TestConfig;
 }
-export default function Dashboard({ result, onReset, onRepeat }: DashProps) {
-  console.log("get consistency wpm:", getConsistency(result.chartData.wpm));
-  console.log("get consistency raw:", getConsistency(result.chartData.raw));
+export default function Dashboard({
+  result,
+  onReset,
+  onRepeat,
+  testConfig,
+}: DashProps) {
+  const [openHistory, setOpenHistory] = useState(false);
 
   return (
     <>
@@ -23,8 +28,14 @@ export default function Dashboard({ result, onReset, onRepeat }: DashProps) {
             <Dashgraph result={result} />
           </div>
         </div>
-        <Dashstats result={result} />
-        <Dashaction onReset={onReset} onRepeat={onRepeat} />
+        <Dashstats result={result} testConfig={testConfig} />
+        <Dashaction
+          onReset={onReset}
+          onRepeat={onRepeat}
+          onToggle={openHistory}
+          onToggleHistory={() => setOpenHistory((prev) => !prev)}
+          result={result}
+        />
       </div>
     </>
   );

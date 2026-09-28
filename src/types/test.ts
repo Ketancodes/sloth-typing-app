@@ -15,9 +15,18 @@ export type TestResult = {
   missed: number;
   charStatus: CharStatus[];
   totalKeystrokes: number;
+  typedText: string;
+  text: string;
   chartData: {
     wpm: number[];
     raw: number[];
     err: number[];
   };
+};
+
+export type TestConfig = {
+  testLengthMode: TestLengthMode;
+  testMode: TestTypeMode;
+  timeOption: TimeOption;
+  wordOption: WordsOption | null;
 };

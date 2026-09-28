@@ -151,6 +151,8 @@ export default function TypingTest({
       charStatus,
       totalKeystrokes: finaltotalKeystrokes,
       chartData,
+      typedText: finalTypedText,
+      text,
     };
   };
 

@@ -19,3 +19,31 @@
 .animate-blink {
   animation: blink 1s step-start infinite;
 }
+
+/* for wpm pop animation */
+@keyframes result-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* for input history animation */
+@keyframes history-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
