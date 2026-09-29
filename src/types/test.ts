@@ -24,9 +24,15 @@ export type TestResult = {
   };
 };
 
+// type for config data for dashboard test type
 export type TestConfig = {
   testLengthMode: TestLengthMode;
   testMode: TestTypeMode;
   timeOption: TimeOption;
   wordOption: WordsOption | null;
+};
+
+export type ExtraCharacter = {
+  anchorIndex: number;
+  character: string;
 };

@@ -5,6 +5,7 @@ import type {
   TestState,
   CharStatus,
   TestResult,
+  ExtraCharacter,
 } from "../types/test";
 import {
   useRef,
@@ -39,12 +40,14 @@ export default function TypingTest({
 }: TypingTestProp) {
   const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
   const [typedText, setTypedText] = useState(""); //state for tracking types text
-  const [mistake, setMistake] = useState(0); // state for counting mistakes
   const [incorrect, setInCorrect] = useState(0); // state for acc incorrect counting
   const [correct, setCorrect] = useState(0); // state for correct char counting
 
   const [missed, setMissed] = useState(0); // state for missed char
   const [extra, setExtra] = useState(0); // state for tarcking extra typed chars
+
+  const [lockedWordStart, setLockedWordStart] = useState<number | null>(null);
+  const [extraChars, setExtraChars] = useState<ExtraCharacter[]>([]); // state for extra char behaviour
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
   const [chartData, setChartData] = useState({
     wpm: [] as number[],
@@ -192,6 +195,7 @@ export default function TypingTest({
               currentIndex={currentIndex}
               typedText={typedText}
               charStatus={charStatus}
+              extraChars={extraChars}
             />
           </div>
           <button onClick={resetTest}>
@@ -208,10 +212,86 @@ export default function TypingTest({
             onKeyDown={(event) => {
               const expectedChar = text[currentIndex];
 
-              // when we click the backspace
               if (event.key === "Backspace") {
+                const hasExtraAtCurrentSpace = extraChars.some(
+                  (extraChars) => extraChars.anchorIndex === currentIndex,
+                );
+
+                if (text[currentIndex] === " " && hasExtraAtCurrentSpace) {
+                  setExtraChars((prev) => prev.slice(0, -1));
+                  setTypedText((prev) => prev.slice(0, -1));
+                  setExtra((prev) => Math.max(0, prev - 1));
+                  setInCorrect((prev) => Math.max(0, prev - 1));
+                  setTotalKeystrokes((prev) => Math.max(0, prev - 1));
+
+                  totalKeystrokesRef.current = Math.max(
+                    0,
+                    totalKeystrokesRef.current - 1,
+                  );
+                  incorrectRef.current = Math.max(0, incorrectRef.current - 1);
+
+                  return;
+                }
+
+                // After typing in the next word, do not enter the completed word.
+                if (
+                  lockedWordStart !== null &&
+                  currentIndex === lockedWordStart
+                ) {
+                  return;
+                }
+
+                const currentWordStart =
+                  text.lastIndexOf(" ", currentIndex - 1) + 1;
+
+                const hasExtrasBeforeCurrentWord = extraChars.some(
+                  (extraCharacter) =>
+                    extraCharacter.anchorIndex === currentWordStart - 1,
+                );
+
+                // logic for backspace to go to last missed char in prev word
+                const previousSpaceIndex = currentWordStart - 1;
+
+                const previousWordStart =
+                  text.lastIndexOf(" ", previousSpaceIndex - 1) + 1;
+
+                let firstMissedIndex = -1;
+
+                for (
+                  let index = previousWordStart;
+                  index < previousSpaceIndex;
+                  index++
+                ) {
+                  if (charStatus[index] === "missed") {
+                    firstMissedIndex = index;
+                    break;
+                  }
+                }
+
+                if (
+                  currentIndex === currentWordStart &&
+                  firstMissedIndex !== -1 &&
+                  !hasExtrasBeforeCurrentWord
+                ) {
+                  setTypedText((prev) =>
+                    prev.endsWith(" ") ? prev.slice(0, -1) : prev,
+                  );
+                  setCurrentIndex(firstMissedIndex);
+                  return;
+                }
+
+                // making backspace making char untyped color
+                if (currentIndex > 0) {
+                  setCharStatus((prev) => {
+                    const updated = [...prev];
+                    updated[currentIndex - 1] = "untyped";
+                    return updated;
+                  });
+                }
+
+                // Your original normal Backspace behavior
                 setTypedText((prev) => prev.slice(0, -1));
-                setCurrentIndex((prev) => Math.max(0, prev - 1)); //move the curidx -1back , math.max(0,)coz we dont' want idex to become -ve
+                setCurrentIndex((prev) => Math.max(0, prev - 1));
                 return;
               }
 
@@ -223,6 +303,21 @@ export default function TypingTest({
               ) {
                 setExtra((prev) => prev + 1);
                 setInCorrect((prev) => prev + 1);
+                setTotalKeystrokes((prev) => prev + 1);
+
+                totalKeystrokesRef.current += 1;
+                incorrectRef.current += 1;
+
+                setTypedText((prev) => prev + event.key);
+
+                setExtraChars((prev) => [
+                  ...prev,
+                  {
+                    anchorIndex: currentIndex,
+                    character: event.key,
+                  },
+                ]);
+
                 return;
               }
 
@@ -242,6 +337,25 @@ export default function TypingTest({
                   incorrectRef.current += 1;
                 }
 
+                const currentWordStart =
+                  text.lastIndexOf(" ", currentIndex - 1) + 1;
+
+                const wordWasFullyCorrect = charStatus
+                  .slice(currentWordStart, currentIndex)
+                  .every((status) => status === "correct");
+
+                const hasExtrasAtThisSpace = extraChars.some(
+                  (extraCharacter) =>
+                    extraCharacter.anchorIndex === currentIndex,
+                );
+
+                if (
+                  text[currentIndex] === " " &&
+                  wordWasFullyCorrect &&
+                  !hasExtrasAtThisSpace
+                ) {
+                  setLockedWordStart(currentIndex + 1);
+                }
                 const nextSpaceIndex = text.indexOf(" ", currentIndex);
 
                 if (nextSpaceIndex !== -1) {
@@ -273,6 +387,7 @@ export default function TypingTest({
               // when user types the first char
               if (event.key.length === 1) {
                 // check for extra typed chars
+
                 if (currentIndex >= text.length) {
                   setExtra((prev) => prev + 1);
                   setTotalKeystrokes((prev) => prev + 1);
@@ -314,12 +429,12 @@ export default function TypingTest({
                   });
                 } else {
                   // incorrect
-                  setMistake((prev) => prev + 1);
                   setInCorrect((prev) => prev + 1);
                   incorrectRef.current += 1;
                   setCharStatus((prev) => {
                     const updated = [...prev];
                     updated[currentIndex] = "incorrect";
+
                     return updated;
                   });
                 }
@@ -335,7 +450,6 @@ export default function TypingTest({
               }
             }}
           />
-          {mistake >= 0 ? "" : ""}
         </>
       </main>
     </>
