@@ -19,9 +19,9 @@ interface OptionbarProps {
   generateNewTest: (WordCount: WordsOption) => void;
   generateTimeTest: (time: TimeOption) => void;
   testMode: TestTypeMode;
-  setTestMode: Dispatch<SetStateAction<TestTypeMode>>;
-  time: number;
-  setTime: Dispatch<SetStateAction<TimeOption>>;
+  setTestMode: (testMode: TestTypeMode) => void;
+  time: TimeOption;
+  // setTime: Dispatch<SetStateAction<TimeOption>>;
   setTestKey: Dispatch<SetStateAction<number>>;
 }
 const ButtonEffects = "flex items-center gap-2 text-sm";
@@ -35,7 +35,7 @@ export default function Optionbar({
   testMode,
   setTestMode,
   time,
-  setTime,
+  // setTime,
   setTestKey,
   generateTimeTest,
 }: OptionbarProps) {
@@ -43,15 +43,16 @@ export default function Optionbar({
   return (
     <>
       <section className="flex items-center justify-between  mt-4 ">
-        <div className="h-10 w-[40%] mt-2 text-[#72584e] font-[Roboto_Mono]] font-medium bg-[#bda298] flex items-center justify-around mx-auto rounded-xl">
+        <div className="h-8 w-[34%] mt-2 text-[#72584e] font-[Roboto_Mono]] font-medium bg-[#bda298] flex items-center justify-center gap-5 mx-auto rounded-2xl">
           {/* Time selector */}
           <Timeselector
             testLengthMode={testLengthMode}
             setTestLengthMode={setTestLengthMode}
             time={time}
-            setTime={setTime}
+            // setTime={setTime}
             setTestKey={setTestKey}
             generateTimeTest={generateTimeTest}
+            isActive={testLengthMode === "time"}
           />
 
           {/* Words select */}
@@ -61,13 +62,16 @@ export default function Optionbar({
             testLengthMode={testLengthMode}
             setTestLengthMode={setTestLengthMode}
             generateNewTest={generateNewTest}
+            isActive={testLengthMode === "words"}
           />
 
           {/* Test type select */}
           <TestSelector testMode={testMode} setTestMode={setTestMode} />
 
           {/* Custom test */}
-          <button className={`${ButtonEffects}`}>
+          <button
+            className={`${ButtonEffects} relative z-10 rounded-xl px-4 py-1.5 hover:scale-95 hover:cursor-pointer`}
+          >
             <ClipboardPenLine size={16} />
             Custom
           </button>

@@ -25,7 +25,7 @@ export default function Dashboard({
         <div className="flex justify-between">
           <Dashtop result={result} />
           <div className="w-[70%] h-62.5 ">
-            <Dashgraph result={result} />
+            <Dashgraph result={result} testConfig={testConfig} />
           </div>
         </div>
         <Dashstats result={result} testConfig={testConfig} />

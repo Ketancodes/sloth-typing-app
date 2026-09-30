@@ -53,7 +53,7 @@ export default function SlothTypingtext() {
   return (
     <>
       <div className="text-cente mt-6">
-        <h2 className="text-2xl font-semibold font-[Courier_Prime] tracking-tight  text-[#705b4d] inline-block">
+        <h2 className="text-2xl font-semibold font-[Courier_Prime] tracking-tight  text-[#79665a] inline-block">
           {staticText}
           <span className="text-[#49372a]">{displayText}</span>
           {/* ✅ blinking cursor stays same */}

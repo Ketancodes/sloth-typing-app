@@ -1,10 +1,10 @@
 import { ClipboardType } from "lucide-react";
 import type { TestTypeMode } from "../types/test";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 
 interface TestModeProp {
   testMode: TestTypeMode;
-  setTestMode: Dispatch<SetStateAction<TestTypeMode>>;
+  setTestMode: (testMode: TestTypeMode) => void;
 }
 export default function TestSelector({ testMode, setTestMode }: TestModeProp) {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,14 +13,14 @@ export default function TestSelector({ testMode, setTestMode }: TestModeProp) {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
+          className="relative z-10 flex items-center gap-1.5 rounded-xl px-3 py-1.5 hover:scale-95 hover:cursor-pointer"
         >
           <ClipboardType size={16} />
           Test
         </button>
         {isOpen && (
           <div
-            className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-col text-sm items-center gap-2 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
+            className="absolute top-9.5 left-1/2 -translate-x-1/2 flex  text-sm items-center gap-1 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
     before:-top-1.5
     before:left-1/2
     before:-translate-x-1/2

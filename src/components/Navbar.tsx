@@ -14,7 +14,7 @@ export default function Navbar() {
           <img
             src="public\Your_paragraph_text__1_-removebg-preview.png"
             alt="logo"
-            className="h-24 w-auto object-contain brightness-125 cursor-pointer max-sm:-ml-4"
+            className="h-20 my-auto w-auto object-contain brightness-125 cursor-pointer max-sm:-ml-4"
           />
         </div>
 
@@ -27,7 +27,7 @@ export default function Navbar() {
           <Settings size={24} className={IconEffect} />
           <Info size={24} className={IconEffect} />
           <Trophy size={24} className={IconEffect} />
-          <button className="bg-[#f7e7d6] text-[#49372a] px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_3px_0_#b09f8c] hover:translate-y-0.5 transition-all hover:bg-[#fae2c4] cursor-pointer">
+          <button className="bg-[#f7e7d6] text-[#49372a] px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_#b09f8c] hover:translate-y-0.5 transition-all hover:bg-[#f0e0cd] cursor-pointer">
             Sign up
           </button>
         </div>

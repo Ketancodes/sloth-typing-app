@@ -19,33 +19,70 @@ function App() {
   const [words, setWords] = useState<WordsOption | null>(null); // words option state
   // states for option bar features
   const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>("time");
-  const [text, setText] = useState(() => generateText(300)); // state for generating text
+  const [text, setText] = useState(() => generateText(300, "normal")); // state for generating text
+
   const [testMode, setTestMode] = useState<TestTypeMode>("normal"); // state for word mode
-  const [time, setTime] = useState<TimeOption>(30); // state for timer
+
   const [testKey, setTestKey] = useState(0);
   const [teststate, setTeststate] = useState<TestState>("idle"); // state for 3 state updates
   const [result, setResult] = useState<TestResult | null>(null);
+  const [time, setTime] = useState<TimeOption>(() => {
+    // state for time option n sustaining the time on refesh
+    const savedTime = localStorage.getItem("typing-time");
+
+    if (savedTime === "15" || savedTime === "30" || savedTime === "60") {
+      return Number(savedTime) as TimeOption;
+    }
+
+    return 30;
+  });
+
+  // for saving selected time option
+  const updateTime = (newTime: TimeOption) => {
+    setTime(newTime);
+    localStorage.setItem("typing-time", String(newTime));
+  };
+
+  // fun for updating test mode in option bar
+  const updateTestMode = (newTestMode: TestTypeMode) => {
+    setTestMode(newTestMode);
+
+    if (testLengthMode === "words" && words) {
+      setText(generateText(words, newTestMode));
+    } else {
+      setText(generateText(300, newTestMode));
+    }
+
+    setTestKey((prev) => prev + 1);
+    setTeststate("idle");
+    setResult(null);
+  };
 
   // fun for genarating new test
   const generateNewTest = (WordCount: WordsOption) => {
     setWords(WordCount);
     setTestLengthMode("words");
-    setText(generateText(WordCount));
+    setText(generateText(WordCount, testMode));
     setTestKey((prev) => prev + 1);
   };
   //d4bfb6
 
   // fun for generating time test
   const generateTimeTest = (time: TimeOption) => {
-    setTime(time);
+    updateTime(time);
     setTestLengthMode("time");
-    setText(generateText(300));
+    setText(generateText(300, testMode));
     setTestKey((prev) => prev + 1);
   };
 
   // fun for reset
   const resetTest = () => {
-    setText(generateText(300));
+    if (testLengthMode === "words" && words) {
+      setText(generateText(words, testMode));
+    } else {
+      setText(generateText(300, testMode));
+    }
+
     setTestKey((prev) => prev + 1);
     setTeststate("idle");
     setResult(null);
@@ -91,9 +128,9 @@ function App() {
               generateNewTest={generateNewTest}
               generateTimeTest={generateTimeTest}
               testMode={testMode}
-              setTestMode={setTestMode}
+              setTestMode={updateTestMode}
               time={time}
-              setTime={setTime}
+              // setTime={setTime}
               setTestKey={setTestKey}
             />
 

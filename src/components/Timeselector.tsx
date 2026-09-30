@@ -3,14 +3,17 @@ import { useState } from "react";
 import type { TimeOption } from "../types/test";
 import type { TestLengthMode } from "../types/test";
 import type { Dispatch, SetStateAction } from "react";
+import { motion } from "framer-motion";
+import useClickOutside from "../hooks/useClickOutside";
 
 interface TimeSelectProp {
   testLengthMode: TestLengthMode;
   setTestLengthMode: Dispatch<SetStateAction<TestLengthMode>>;
-  time: number;
+  time: TimeOption;
   setTime?: Dispatch<SetStateAction<TimeOption>>;
   setTestKey: Dispatch<SetStateAction<number>>;
   generateTimeTest: (time: TimeOption) => void;
+  isActive: boolean;
 }
 export default function Timeselector({
   setTestLengthMode,
@@ -19,25 +22,48 @@ export default function Timeselector({
 
   setTestKey,
   generateTimeTest,
+  isActive,
 }: TimeSelectProp) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // logic for closing the dropdown on any area click
+  const dropdownRef = useClickOutside<HTMLDivElement>(() => {
+    setIsOpen(false);
+  });
+
   return (
     <>
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
+        {isActive && (
+          <motion.div
+            layoutId="active-option"
+            className="absolute inset-0 rounded-xl bg-[#a98b80]"
+            transition={{
+              type: "spring",
+              stiffness: 350,
+              damping: 35,
+            }}
+          />
+        )}
         <button
           onClick={() => {
             setIsOpen(!isOpen);
             setTestLengthMode("time");
             setTestKey((prev) => prev + 1);
           }}
-          className={` ${testLengthMode === "time" ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer" : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"}`}
+          // className={` ${testLengthMode === "time" ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer" : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"}`}
+          className={`relative z-10 flex items-center gap-1.5  rounded-2xl px-6 py-1 transition-colors ${
+            testLengthMode === "time"
+              ? "text-[#33241e] bg-[#a98b80] hover:cursor-pointer "
+              : "hover:scale-95 hover:cursor-pointer"
+          }`}
         >
           <AlarmClock size={16} />
           Time
         </button>
         {isOpen && testLengthMode === "time" && (
           <div
-            className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
+            className="absolute top-9.5 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
     before:-top-1.5
     before:left-1/2
     before:-translate-x-1/2

@@ -8,10 +8,11 @@ import {
   Tooltip,
 } from "recharts";
 
-import type { TestResult } from "../../types/test";
+import type { TestResult, TestConfig } from "../../types/test";
 
 interface DashGraphProps {
   result: TestResult;
+  testConfig: TestConfig;
 }
 
 interface ErrorMarkerProps {
@@ -41,7 +42,9 @@ function ErrorMarker({ cx, cy, payload }: ErrorMarkerProps) {
   );
 }
 
-export default function DashGraph({ result }: DashGraphProps) {
+export default function DashGraph({ result, testConfig }: DashGraphProps) {
+  const tickInterval = testConfig.timeOption === 60 ? 2 : 1;
+
   const graphData = result.chartData.wpm.map((wpm, index) => {
     const currentErrors = result.chartData.err[index];
     const previousErrors = index > 0 ? result.chartData.err[index - 1] : 0;
@@ -54,6 +57,10 @@ export default function DashGraph({ result }: DashGraphProps) {
       errorsAtSecond: currentErrors - previousErrors,
     };
   });
+
+  const xAxisTicks = graphData
+    .filter((_, index) => index % tickInterval === 0)
+    .map((data) => data.second);
 
   return (
     <div className="w-full h-64">
@@ -76,6 +83,7 @@ export default function DashGraph({ result }: DashGraphProps) {
           />
           <XAxis
             dataKey="second"
+            ticks={xAxisTicks}
             tick={{ fill: "#6f5548", fontSize: 14 }}
             axisLine={{
               stroke: "#6f5548",
