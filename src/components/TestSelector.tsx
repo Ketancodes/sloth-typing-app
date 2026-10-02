@@ -1,19 +1,50 @@
 import { ClipboardType } from "lucide-react";
-import type { TestTypeMode } from "../types/test";
+import type { Dispatch, SetStateAction } from "react";
+
+import type { TestTypeMode, ActiveOption } from "../types/test";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import useClickOutside from "../hooks/useClickOutside";
 
 interface TestModeProp {
   testMode: TestTypeMode;
   setTestMode: (testMode: TestTypeMode) => void;
+  isActive: boolean;
+  activeOption: ActiveOption;
+  setActiveOption: Dispatch<SetStateAction<ActiveOption>>;
 }
-export default function TestSelector({ testMode, setTestMode }: TestModeProp) {
+export default function TestSelector({
+  testMode,
+  setTestMode,
+  isActive,
+  setActiveOption,
+}: TestModeProp) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const dropdownRef = useClickOutside<HTMLDivElement>(() => {
+    setIsOpen(false);
+  });
   return (
     <>
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
+        {isActive && (
+          <motion.div
+            layoutId="active-option"
+            className="absolute inset-0 rounded-xl bg-[#a98b80]"
+            transition={{
+              type: "spring",
+              stiffness: 350,
+              damping: 35,
+            }}
+          />
+        )}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="relative z-10 flex items-center gap-1.5 rounded-xl px-3 py-1.5 hover:scale-95 hover:cursor-pointer"
+          className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 ${
+            isActive
+              ? "text-[#33241e] hover:cursor-pointer"
+              : "hover:scale-95 hover:cursor-pointer"
+          }`}
         >
           <ClipboardType size={16} />
           Test
@@ -34,6 +65,7 @@ export default function TestSelector({ testMode, setTestMode }: TestModeProp) {
             <button
               onClick={() => {
                 setTestMode("normal");
+                setActiveOption("length");
                 setIsOpen(false);
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${testMode === "normal" ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
@@ -43,6 +75,7 @@ export default function TestSelector({ testMode, setTestMode }: TestModeProp) {
             <button
               onClick={() => {
                 setTestMode("punctuation");
+                setActiveOption("test");
                 setIsOpen(false);
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${testMode === "punctuation" ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
@@ -52,6 +85,7 @@ export default function TestSelector({ testMode, setTestMode }: TestModeProp) {
             <button
               onClick={() => {
                 setTestMode("numbers");
+                setActiveOption("test");
                 setIsOpen(false);
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${testMode === "numbers" ? "text-[#473329] font-bold" : "text-[#81675a] "}`}

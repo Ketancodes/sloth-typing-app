@@ -26,6 +26,9 @@ interface TypingTestProp {
   setTeststate: Dispatch<SetStateAction<TestState>>;
   onFinish: (result: TestResult) => void;
   resetTest: () => void;
+  isCustomTest: boolean;
+  onExtendCustomTest: () => void;
+  customTextLength: number;
 }
 
 export default function TypingTest({
@@ -37,6 +40,9 @@ export default function TypingTest({
   setTeststate,
   onFinish,
   resetTest,
+  isCustomTest,
+  onExtendCustomTest,
+  customTextLength,
 }: TypingTestProp) {
   const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
   const [typedText, setTypedText] = useState(""); //state for tracking types text
@@ -439,7 +445,17 @@ export default function TypingTest({
                   });
                 }
 
-                if (currentIndex + 1 >= text.length) {
+                if (isCustomTest) {
+                  const nextIndex = currentIndex + 1;
+                  const remainingText = text.length - nextIndex;
+
+                  if (
+                    customTextLength > 0 &&
+                    remainingText < customTextLength * 2
+                  ) {
+                    onExtendCustomTest();
+                  }
+                } else if (currentIndex + 1 >= text.length) {
                   finishTest(
                     finalCorrect,
                     finalIncorrect,

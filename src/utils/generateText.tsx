@@ -1,6 +1,7 @@
 import { words } from "../data/words";
 import type { TestTypeMode } from "../types/test";
 import generatePunctuationText from "./generatePunctuationText";
+import generateNumberText from "./generateNumberText";
 
 export default function generateText(
   textnum: number,
@@ -9,12 +10,14 @@ export default function generateText(
   if (testMode === "punctuation") {
     return generatePunctuationText(textnum);
   }
+  if (testMode === "numbers") {
+    return generateNumberText(textnum);
+  }
   const generateWords: string[] = [];
   for (let i = 0; i < textnum; i++) {
     const randomWords = Math.floor(Math.random() * words.length);
     generateWords.push(words[randomWords]);
   }
-  console.log(generateText(30, "punctuation"));
 
   return generateWords.join(" ");
 }

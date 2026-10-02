@@ -6,9 +6,11 @@ import type {
   TestLengthMode,
   TestTypeMode,
   TimeOption,
+  ActiveOption,
 } from "../types/test";
 import type { Dispatch, SetStateAction } from "react";
 import TestSelector from "./TestSelector";
+import { motion } from "framer-motion";
 
 // All props received from app
 interface OptionbarProps {
@@ -23,8 +25,12 @@ interface OptionbarProps {
   time: TimeOption;
   // setTime: Dispatch<SetStateAction<TimeOption>>;
   setTestKey: Dispatch<SetStateAction<number>>;
+  activeOption: ActiveOption;
+  setActiveOption: Dispatch<SetStateAction<ActiveOption>>;
+  isCustomOpen: boolean;
+  setIsCustomOpen: Dispatch<SetStateAction<boolean>>;
 }
-const ButtonEffects = "flex items-center gap-2 text-sm";
+// const ButtonEffects = "flex items-center gap-2 text-sm";
 
 export default function Optionbar({
   words,
@@ -38,12 +44,16 @@ export default function Optionbar({
   // setTime,
   setTestKey,
   generateTimeTest,
+  activeOption,
+  setActiveOption,
+  // isCustomOpen,
+  setIsCustomOpen,
 }: OptionbarProps) {
   //#c9b0a6
   return (
     <>
       <section className="flex items-center justify-between  mt-4 ">
-        <div className="h-8 w-[34%] mt-2 text-[#72584e] font-[Roboto_Mono]] font-medium bg-[#bda298] flex items-center justify-center gap-5 mx-auto rounded-2xl">
+        <div className="h-8 w-[36%] mt-2 px-2 text-[#72584e] font-[Roboto_Mono]] font-medium bg-[#bda298] flex items-center justify-center gap-5 mx-auto rounded-2xl">
           {/* Time selector */}
           <Timeselector
             testLengthMode={testLengthMode}
@@ -52,7 +62,11 @@ export default function Optionbar({
             // setTime={setTime}
             setTestKey={setTestKey}
             generateTimeTest={generateTimeTest}
-            isActive={testLengthMode === "time"}
+            isActive={activeOption === "length" && testLengthMode === "time"}
+            testMode={testMode}
+            setTestMode={setTestMode}
+            activeOption={activeOption}
+            setActiveOption={setActiveOption}
           />
 
           {/* Words select */}
@@ -62,18 +76,48 @@ export default function Optionbar({
             testLengthMode={testLengthMode}
             setTestLengthMode={setTestLengthMode}
             generateNewTest={generateNewTest}
-            isActive={testLengthMode === "words"}
+            isActive={activeOption === "length" && testLengthMode === "words"}
+            testMode={testMode}
+            activeOption={activeOption}
+            setActiveOption={setActiveOption}
           />
 
           {/* Test type select */}
-          <TestSelector testMode={testMode} setTestMode={setTestMode} />
+          <TestSelector
+            testMode={testMode}
+            setTestMode={setTestMode}
+            isActive={activeOption === "test" && testMode !== "normal"}
+            activeOption={activeOption}
+            setActiveOption={setActiveOption}
+          />
 
           {/* Custom test */}
           <button
-            className={`${ButtonEffects} relative z-10 rounded-xl px-4 py-1.5 hover:scale-95 hover:cursor-pointer`}
+            onClick={() => {
+              setActiveOption("custom");
+              setIsCustomOpen(true);
+            }}
+            className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 transition-colors ${
+              activeOption === "custom"
+                ? "text-[#33241e] hover:cursor-pointer"
+                : "hover:scale-95 hover:cursor-pointer"
+            }`}
           >
-            <ClipboardPenLine size={16} />
-            Custom
+            {activeOption === "custom" && (
+              <motion.div
+                layoutId="active-option"
+                className="absolute inset-0 rounded-xl bg-[#a98b80]"
+                transition={{
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 35,
+                }}
+              />
+            )}
+            <span className="relative z-10 flex items-center gap-2">
+              <ClipboardPenLine size={16} />
+              Custom
+            </span>
           </button>
         </div>
       </section>

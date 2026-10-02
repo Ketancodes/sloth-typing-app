@@ -36,3 +36,10 @@ export type ExtraCharacter = {
   anchorIndex: number;
   character: string;
 };
+
+export type ActiveOption = "length" | "test" | "custom";
+
+export type CustomTestConfig = {
+  text: string;
+  time: TimeOption;
+};

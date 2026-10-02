@@ -44,7 +44,7 @@ function TypingText({
         setVisibleStartIndex(Number(startIndex));
       }
     }
-  }, [currentIndex]);
+  }, [currentIndex, text.length]);
 
   return (
     <>

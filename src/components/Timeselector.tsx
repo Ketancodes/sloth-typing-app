@@ -1,10 +1,12 @@
 import { AlarmClock } from "lucide-react";
 import { useState } from "react";
 import type { TimeOption } from "../types/test";
-import type { TestLengthMode } from "../types/test";
+import type { TestLengthMode, ActiveOption, TestTypeMode } from "../types/test";
 import type { Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import useClickOutside from "../hooks/useClickOutside";
+
+// bg-[#a98b80]
 
 interface TimeSelectProp {
   testLengthMode: TestLengthMode;
@@ -13,16 +15,21 @@ interface TimeSelectProp {
   setTime?: Dispatch<SetStateAction<TimeOption>>;
   setTestKey: Dispatch<SetStateAction<number>>;
   generateTimeTest: (time: TimeOption) => void;
+  testMode: TestTypeMode;
+  setTestMode: (testMode: TestTypeMode) => void;
   isActive: boolean;
+  activeOption: ActiveOption;
+  setActiveOption: Dispatch<SetStateAction<ActiveOption>>;
 }
 export default function Timeselector({
   setTestLengthMode,
   testLengthMode,
   time,
-
+  testMode,
   setTestKey,
   generateTimeTest,
   isActive,
+  setActiveOption,
 }: TimeSelectProp) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,12 +56,14 @@ export default function Timeselector({
           onClick={() => {
             setIsOpen(!isOpen);
             setTestLengthMode("time");
+            generateTimeTest(30);
+            setActiveOption("length");
             setTestKey((prev) => prev + 1);
           }}
           // className={` ${testLengthMode === "time" ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer" : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"}`}
           className={`relative z-10 flex items-center gap-1.5  rounded-2xl px-6 py-1 transition-colors ${
             testLengthMode === "time"
-              ? "text-[#33241e] bg-[#a98b80] hover:cursor-pointer "
+              ? "text-[#33241e] hover:cursor-pointer "
               : "hover:scale-95 hover:cursor-pointer"
           }`}
         >
@@ -79,6 +88,7 @@ export default function Timeselector({
                 generateTimeTest(15);
                 setIsOpen(false);
                 setTestKey((prev) => prev + 1);
+                setActiveOption(testMode === "normal" ? "length" : "test");
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 15 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >
@@ -89,6 +99,7 @@ export default function Timeselector({
                 generateTimeTest(30);
                 setIsOpen(false);
                 setTestKey((prev) => prev + 1);
+                setActiveOption(testMode === "normal" ? "length" : "test");
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 30 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >
@@ -99,6 +110,7 @@ export default function Timeselector({
                 generateTimeTest(60);
                 setIsOpen(false);
                 setTestKey((prev) => prev + 1);
+                setActiveOption(testMode === "normal" ? "length" : "test");
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 60 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >

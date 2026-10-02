@@ -1,7 +1,7 @@
 import { CaseSensitive } from "lucide-react";
 import type { WordsOption } from "../types/test";
 import React, { useState, type SetStateAction } from "react";
-import type { TestLengthMode } from "../types/test";
+import type { TestLengthMode, ActiveOption, TestTypeMode } from "../types/test";
 import type { Dispatch } from "react";
 import { motion } from "framer-motion";
 import useClickOutside from "../hooks/useClickOutside";
@@ -12,7 +12,10 @@ interface WordOptionProp {
   testLengthMode: TestLengthMode;
   setTestLengthMode: Dispatch<SetStateAction<TestLengthMode>>;
   generateNewTest: (WordCount: WordsOption) => void;
+  testMode: TestTypeMode;
   isActive: boolean;
+  activeOption: ActiveOption;
+  setActiveOption: Dispatch<SetStateAction<ActiveOption>>;
 }
 export default function WordSelector({
   words,
@@ -20,8 +23,12 @@ export default function WordSelector({
   setTestLengthMode,
   generateNewTest,
   isActive,
+  activeOption,
+  setActiveOption,
+  testMode,
 }: WordOptionProp) {
   const [isOpen, setIsOpen] = useState(false);
+
   const dropdownRef = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false);
   });
@@ -43,16 +50,12 @@ export default function WordSelector({
           onClick={() => {
             setIsOpen(!isOpen);
             setTestLengthMode("words");
+            generateNewTest(15);
+            setActiveOption("length");
           }}
-          // className={`${
-          //   testLengthMode === "words"
-          //     ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
-          //     : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"
-          // }`}
-
           className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 transition-colors ${
-            testLengthMode === "words"
-              ? "text-[#33241e] bg-[#a98b80]"
+            activeOption === "length" && testLengthMode === "words"
+              ? "text-[#33241e] bg-[#a98b80] hover:cursor-pointer"
               : "hover:scale-95 hover:cursor-pointer"
           }`}
         >
@@ -76,6 +79,7 @@ export default function WordSelector({
               onClick={() => {
                 generateNewTest(15);
                 setIsOpen(false);
+                setActiveOption(testMode === "normal" ? "length" : "test");
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${words === 15 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >
@@ -86,6 +90,7 @@ export default function WordSelector({
               onClick={() => {
                 generateNewTest(30);
                 setIsOpen(false);
+                setActiveOption(testMode === "normal" ? "length" : "test");
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${words === 30 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >
@@ -96,6 +101,7 @@ export default function WordSelector({
               onClick={() => {
                 generateNewTest(50);
                 setIsOpen(false);
+                setActiveOption(testMode === "normal" ? "length" : "test");
               }}
               className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${words === 50 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
             >

@@ -10,18 +10,62 @@ import {
   type TestState,
   type TestResult,
   type TestConfig,
+  type ActiveOption,
+  type CustomTestConfig,
 } from "./types/test";
 import { useState } from "react";
 import generateText from "./utils/generateText";
 import Dashboard from "./components/Dashboard/Dashboard";
+import CustomModal from "./components/CustomModal";
 
 function App() {
-  const [words, setWords] = useState<WordsOption | null>(null); // words option state
-  // states for option bar features
-  const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>("time");
-  const [text, setText] = useState(() => generateText(300, "normal")); // state for generating text
+  // const [words, setWords] = useState<WordsOption | null>(null); // words option state
+  const [words, setWords] = useState<WordsOption | null>(() => {
+    const savedWords = localStorage.getItem("typing-words");
 
-  const [testMode, setTestMode] = useState<TestTypeMode>("normal"); // state for word mode
+    if (savedWords === "15" || savedWords === "30" || savedWords === "50") {
+      return Number(savedWords) as WordsOption;
+    }
+
+    return null;
+  });
+  // states for option bar features
+  const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>(() => {
+    const savedMode = localStorage.getItem("typing-length-mode");
+    console.log("saved length mode:", savedMode);
+
+    if (savedMode === "time" || savedMode === "words") {
+      return savedMode;
+    }
+
+    return "time";
+  });
+  const [text, setText] = useState(() => {
+    const savedTestMode = localStorage.getItem("typing-test-mode");
+
+    const initialTestMode: TestTypeMode =
+      savedTestMode === "normal" ||
+      savedTestMode === "punctuation" ||
+      savedTestMode === "numbers"
+        ? savedTestMode
+        : "normal";
+
+    return generateText(300, initialTestMode);
+  }); // state for generating text
+
+  const [testMode, setTestMode] = useState<TestTypeMode>(() => {
+    const savedTestMode = localStorage.getItem("typing-test-mode");
+
+    if (
+      savedTestMode === "normal" ||
+      savedTestMode === "punctuation" ||
+      savedTestMode === "numbers"
+    ) {
+      return savedTestMode;
+    }
+
+    return "normal";
+  }); // state for word mode
 
   const [testKey, setTestKey] = useState(0);
   const [teststate, setTeststate] = useState<TestState>("idle"); // state for 3 state updates
@@ -36,6 +80,25 @@ function App() {
 
     return 30;
   });
+  const [activeOption, setActiveOption] = useState<ActiveOption>(() => {
+    const savedTestMode = localStorage.getItem("typing-test-mode");
+
+    if (savedTestMode === "punctuation" || savedTestMode === "numbers") {
+      return "test";
+    }
+
+    return "length";
+  });
+  const [isCustomOpen, setIsCustomOpen] = useState(false);
+  const [customTest, setCustomTest] = useState<CustomTestConfig | null>(() => {
+    const saved = localStorage.getItem("custom-test");
+
+    if (!saved) return null;
+
+    return JSON.parse(saved);
+  });
+  const [activeCustomTest, setActiveCustomTest] =
+    useState<CustomTestConfig | null>(null);
 
   // for saving selected time option
   const updateTime = (newTime: TimeOption) => {
@@ -46,6 +109,7 @@ function App() {
   // fun for updating test mode in option bar
   const updateTestMode = (newTestMode: TestTypeMode) => {
     setTestMode(newTestMode);
+    localStorage.setItem("typing-test-mode", newTestMode);
 
     if (testLengthMode === "words" && words) {
       setText(generateText(words, newTestMode));
@@ -61,16 +125,27 @@ function App() {
   // fun for genarating new test
   const generateNewTest = (WordCount: WordsOption) => {
     setWords(WordCount);
+    localStorage.setItem("typing-words", String(WordCount));
     setTestLengthMode("words");
+    localStorage.setItem("typing-length-mode", "words");
     setText(generateText(WordCount, testMode));
     setTestKey((prev) => prev + 1);
   };
   //d4bfb6
 
   // fun for generating time test
+  // const generateTimeTest = (time: TimeOption) => {
+  //   updateTime(time);
+  //   setTestLengthMode("time");
+  //   localStorage.setItem("typing-length-mode", "time");
+  //   setText(generateText(300, testMode));
+  //   setTestKey((prev) => prev + 1);
+  // };
+
   const generateTimeTest = (time: TimeOption) => {
     updateTime(time);
     setTestLengthMode("time");
+    localStorage.setItem("typing-length-mode", "time");
     setText(generateText(300, testMode));
     setTestKey((prev) => prev + 1);
   };
@@ -107,6 +182,30 @@ function App() {
     timeOption: time,
     wordOption: words,
   };
+
+  const saveCustomTest = (config: CustomTestConfig) => {
+    localStorage.setItem("custom-test", JSON.stringify(config));
+    setCustomTest(config);
+  };
+
+  const practiceCustomTest = (config: CustomTestConfig) => {
+    setActiveCustomTest(config);
+    const repeatedText = Array(5).fill(config.text).join(" ");
+
+    setText(repeatedText);
+    setTime(config.time);
+    setTestKey((prev) => prev + 1);
+    setTeststate("idle");
+    setResult(null);
+  };
+
+  const extendCustomText = () => {
+    if (!activeCustomTest) return;
+
+    const repeatedText = Array(3).fill(activeCustomTest.text).join(" ");
+
+    setText((prev) => `${prev.trimEnd()} ${repeatedText}`);
+  };
   return (
     <>
       <div className="h-screen w-screen bg-[#c7afa5] flex flex-col">
@@ -132,7 +231,19 @@ function App() {
               time={time}
               // setTime={setTime}
               setTestKey={setTestKey}
+              activeOption={activeOption}
+              setActiveOption={setActiveOption}
+              isCustomOpen={isCustomOpen}
+              setIsCustomOpen={setIsCustomOpen}
             />
+            {isCustomOpen && (
+              <CustomModal
+                setIsCustomOpen={setIsCustomOpen}
+                onSave={saveCustomTest}
+                onPractice={practiceCustomTest}
+                customTest={customTest}
+              />
+            )}
 
             <TypingTest
               key={testKey}
@@ -144,6 +255,9 @@ function App() {
               teststate={teststate}
               setTeststate={setTeststate}
               onFinish={handleTestFinish}
+              isCustomTest={activeCustomTest !== null}
+              onExtendCustomTest={extendCustomText}
+              customTextLength={activeCustomTest?.text.length ?? 0}
             />
           </>
         )}
