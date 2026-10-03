@@ -32,7 +32,6 @@ function App() {
   // states for option bar features
   const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>(() => {
     const savedMode = localStorage.getItem("typing-length-mode");
-    console.log("saved length mode:", savedMode);
 
     if (savedMode === "time" || savedMode === "words") {
       return savedMode;
@@ -194,6 +193,7 @@ function App() {
 
     setText(repeatedText);
     setTime(config.time);
+    setTestLengthMode("time");
     setTestKey((prev) => prev + 1);
     setTeststate("idle");
     setResult(null);

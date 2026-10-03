@@ -2,9 +2,9 @@ import { CircleDollarSign, GitFork, UserPen, AtSign } from "lucide-react";
 export default function Footer() {
   return (
     <>
-      <footer className="w-full px-6 py-4 mt-auto flex items-center justify-between text-[#72584e]">
+      <footer className="w-full px-6 py-4 mt-auto flex items-center justify-between text-[#644c42] font-[Courier_Prime]">
         {" "}
-        <div className="flex items-center text-md gap-12 ">
+        <div className="flex items-center text-[15px] gap-12 ">
           <p className="flex items-center gap-1.5">
             <GitFork size={16} /> github
           </p>

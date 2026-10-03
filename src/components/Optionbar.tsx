@@ -53,7 +53,7 @@ export default function Optionbar({
   return (
     <>
       <section className="flex items-center justify-between  mt-4 ">
-        <div className="h-8 w-[36%] mt-2 px-2 text-[#72584e] font-[Roboto_Mono]] font-medium bg-[#bda298] flex items-center justify-center gap-5 mx-auto rounded-2xl">
+        <div className="h-8 w-[36%] mt-2 px-2 text-[#634e46] text-[14px] font-[Roboto_Mono] font-medium bg-[#bda298] flex items-center justify-center gap-5 mx-auto rounded-2xl">
           {/* Time selector */}
           <Timeselector
             testLengthMode={testLengthMode}

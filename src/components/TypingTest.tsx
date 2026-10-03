@@ -206,7 +206,7 @@ export default function TypingTest({
           </div>
           <button onClick={resetTest}>
             <RotateCcw
-              size={24}
+              size={26}
               className="text-[#6d564d] font-semibold hover:cursor-pointer"
             />
           </button>

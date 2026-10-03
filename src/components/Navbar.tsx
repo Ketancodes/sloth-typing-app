@@ -1,8 +1,9 @@
 import SlothTypingtext from "./SlothTypingtext";
-import { Settings, Info, Trophy } from "lucide-react";
+import { IoMdSettings } from "react-icons/io";
+import { FaInfo, FaTrophy } from "react-icons/fa";
 
 const IconEffect =
-  "text-[#72584e] text-[#4E3A2B] transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
+  "text-[#968077] text-[#4E3A2B] transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
 
 // #d4bfb6
 export default function Navbar() {
@@ -24,9 +25,9 @@ export default function Navbar() {
         </div>
         {/* Right side elements */}
         <div className="flex items-center gap-18  mr-4 ml-auto ">
-          <Settings size={24} className={IconEffect} />
-          <Info size={24} className={IconEffect} />
-          <Trophy size={24} className={IconEffect} />
+          <IoMdSettings size={22} className={IconEffect} />
+          <FaInfo size={20} className={IconEffect} />
+          <FaTrophy size={20} className={IconEffect} />
           <button className="bg-[#f7e7d6] text-[#49372a] px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_#b09f8c] hover:translate-y-0.5 transition-all hover:bg-[#f0e0cd] cursor-pointer">
             Sign up
           </button>
