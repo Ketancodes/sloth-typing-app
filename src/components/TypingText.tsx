@@ -15,10 +15,13 @@ function TypingText({
   charStatus,
   extraChars,
 }: TypingTextProp) {
+  const RENDER_WINDOW_SIZE = 300;
   // Line changing whole logic
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
   const containerRef = useRef<HTMLParagraphElement>(null);
   const activeCharRef = useRef<HTMLSpanElement>(null);
+  const caretRef = useRef<HTMLSpanElement>(null); // added for caret
+  const blinkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null); // ref for caret blinking
   useEffect(() => {
     const container = containerRef.current;
     const activeChar = activeCharRef.current;
@@ -46,11 +49,47 @@ function TypingText({
     }
   }, [currentIndex, text.length]);
 
+  // new ref for caret
+  useEffect(() => {
+    const caret = caretRef.current;
+    const activeChar = activeCharRef.current;
+
+    if (!caret || !activeChar) return;
+
+    caret.style.left = `${activeChar.offsetLeft}px`;
+    caret.style.top = `${activeChar.offsetTop + 6}px`;
+  }, [currentIndex, visibleStartIndex]);
+
+  // effect for caret blinking
+  useEffect(() => {
+    const caret = caretRef.current;
+
+    if (!caret) return;
+
+    // User started typing again → immediately stop blinking
+    caret.classList.remove("animate-blink");
+
+    // Cancel the previous pause timer
+    if (blinkTimeoutRef.current) {
+      clearTimeout(blinkTimeoutRef.current);
+    }
+
+    // Start blinking only after 1 second of inactivity
+    blinkTimeoutRef.current = setTimeout(() => {
+      caret.classList.add("animate-blink");
+    }, 1000);
+
+    return () => {
+      if (blinkTimeoutRef.current) {
+        clearTimeout(blinkTimeoutRef.current);
+      }
+    };
+  }, [currentIndex]);
   return (
     <>
-      <p ref={containerRef}>
+      <p ref={containerRef} className="relative">
         {text
-          .slice(visibleStartIndex)
+          .slice(visibleStartIndex, visibleStartIndex + RENDER_WINDOW_SIZE)
           .split("")
           .map((char, index) => {
             // var for extra char behavior
@@ -109,7 +148,7 @@ function TypingText({
                   <span className="text-[#C72121]">...</span>
                 )}
 
-                {isCurrent && (
+                {/* {isCurrent && (
                   <span
                     style={{
                       left: `${Math.min(extrasAtIndex.length, 3)}ch`,
@@ -120,17 +159,36 @@ function TypingText({
                        w-0.75
                        h-[2.2rem]
                        bg-[#8A5A3B]
-                       transition-all
-                       duration-75
+                       transition-[left]
+                       duration-150
+                       ease-out
                        animate-blink
                      "
                   />
-                )}
+                )} */}
 
                 {char}
               </span>
             );
           })}
+        <span
+          ref={caretRef}
+          aria-hidden="true"
+          className="
+                    pointer-events-none
+                    absolute
+                    top-0
+                    left-0
+                    w-0.75
+                    h-[2.2rem]
+                    bg-[#6d4931]
+                    transition-[left,top]
+                    duration-100
+                    ease-out
+                    animate-blink
+      
+                  "
+        />
       </p>
     </>
   );

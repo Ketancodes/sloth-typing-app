@@ -6,6 +6,35 @@ const IconEffect =
   "text-[#968077] text-[#4E3A2B] transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
 
 // #d4bfb6
+const ComingSoonIcon = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="relative group">
+      {children}
+
+      <span
+        className="
+          pointer-events-none
+          absolute
+          top-full
+          left-1/2
+          -translate-x-1/2
+          mt-2
+          whitespace-nowrap
+          text-[12px]
+          font-[Roboto_Mono]
+          font-medium
+          text-[#72584e]
+          opacity-0
+          group-hover:opacity-100
+          transition-opacity
+          duration-200
+        "
+      >
+        Coming soon
+      </span>
+    </div>
+  );
+};
 export default function Navbar() {
   return (
     <>
@@ -25,9 +54,17 @@ export default function Navbar() {
         </div>
         {/* Right side elements */}
         <div className="flex items-center gap-18  mr-4 ml-auto ">
-          <IoMdSettings size={22} className={IconEffect} />
-          <FaInfo size={20} className={IconEffect} />
-          <FaTrophy size={20} className={IconEffect} />
+          <ComingSoonIcon>
+            <IoMdSettings size={22} className={IconEffect} />
+          </ComingSoonIcon>
+
+          <ComingSoonIcon>
+            <FaInfo size={20} className={IconEffect} />
+          </ComingSoonIcon>
+
+          <ComingSoonIcon>
+            <FaTrophy size={20} className={IconEffect} />
+          </ComingSoonIcon>
           <button className="bg-[#f7e7d6] text-[#49372a] px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_#b09f8c] hover:translate-y-0.5 transition-all hover:bg-[#f0e0cd] cursor-pointer">
             Sign up
           </button>
