@@ -62,7 +62,6 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
           p-5
           shadow-[0_12px_40px_rgba(73,55,42,0.18)]
 
-          animate-contact-in
         "
       >
         {/* Heading */}
@@ -72,12 +71,12 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
 
         {/* Description */}
         <p className="text-sm font-[Roboto_Mono] font-medium leading-relaxed text-[#72584e] mb-5">
-          Have something to say? Feel free to reach out with feedback,
-          suggestions, or anything that can make Sloth Typing better.
+          Have something to say? or ask? or report? Feel free to reach out with
+          feedback, suggestions, or anything that can make Sloth Typing better.
         </p>
 
         <p className="text-sm font-[Roboto_Mono] font-medium text-[#72584e]">
-          Choose an option below to reach out.
+          Choose an option below to reach out.(default mail will open)
         </p>
 
         {/* Contact options */}

@@ -63,7 +63,7 @@ export default function DashGraph({ result, testConfig }: DashGraphProps) {
     .map((data) => data.second);
 
   return (
-    <div className="w-full h-64">
+    <div className="max-w-[98%] h-64">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={graphData}

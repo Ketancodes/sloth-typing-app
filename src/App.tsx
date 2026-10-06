@@ -12,11 +12,13 @@ import {
   type TestConfig,
   type ActiveOption,
   type CustomTestConfig,
+  type AppPage,
 } from "./types/test";
 import { useState } from "react";
 import generateText from "./utils/generateText";
 import Dashboard from "./components/Dashboard/Dashboard";
 import CustomModal from "./components/CustomModal";
+import Settings from "./components/settings/Settings";
 
 function App() {
   // const [words, setWords] = useState<WordsOption | null>(null); // words option state
@@ -99,6 +101,8 @@ function App() {
   const [activeCustomTest, setActiveCustomTest] =
     useState<CustomTestConfig | null>(null);
 
+  const [currentPage, setCurrentPage] = useState<AppPage>("typing");
+
   // for saving selected time option
   const updateTime = (newTime: TimeOption) => {
     setTime(newTime);
@@ -131,15 +135,6 @@ function App() {
     setTestKey((prev) => prev + 1);
   };
   //d4bfb6
-
-  // fun for generating time test
-  // const generateTimeTest = (time: TimeOption) => {
-  //   updateTime(time);
-  //   setTestLengthMode("time");
-  //   localStorage.setItem("typing-length-mode", "time");
-  //   setText(generateText(300, testMode));
-  //   setTestKey((prev) => prev + 1);
-  // };
 
   const generateTimeTest = (time: TimeOption) => {
     updateTime(time);
@@ -206,10 +201,18 @@ function App() {
 
     setText((prev) => `${prev.trimEnd()} ${repeatedText}`);
   };
+  if (currentPage === "settings") {
+    return (
+      <>
+        <Navbar onSettings={() => setCurrentPage("typing")} />
+        <Settings />
+      </>
+    );
+  }
   return (
     <>
-      <div className="h-screen w-screen bg-[#c7afa5] flex flex-col">
-        <Navbar />
+      <div className="min-h-screen w-screen bg-[#c7afa5] flex flex-col">
+        <Navbar onSettings={() => setCurrentPage("settings")} />
         {teststate === "finished" && result ? (
           <Dashboard
             result={result}

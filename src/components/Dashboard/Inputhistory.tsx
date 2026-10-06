@@ -12,34 +12,8 @@ export default function Inputhistory({ result }: InputhistoryProps) {
     : 0;
 
   return (
-    //     <div>
-    //       {result.text
-    //         .slice(0, result.typedText.length)
-    //         .split("")
-    //         .map((char, index) => {
-    //           const status = result.charStatus[index];
-
-    //           return (
-    //             <span
-    //               key={index}
-    //               className={
-    //                 status === "correct"
-    //                   ? "text-[#352820] font-medium font-[Roboto_Mono]"
-    //                   : status === "incorrect"
-    //                     ? "text-[#d81e1e] font-[Roboto_Mono] underline "
-    //                     : status === "missed"
-    //                       ? "text-[#6e5447]"
-    //                       : "text-[#6b5247]"
-    //               }
-    //             >
-    //               {char}
-    //             </span>
-    //           );
-    //         })}
-    //     </div>
-    //   );
     <>
-      <div className="flex flex-wrap gap-x-0.5  font-[Roboto_Mono]">
+      <div className="flex flex-wrap gap-x-0.5  font-[Roboto_Mono] max-w-[96%]">
         {wordMap
           .slice(0, typedWordCount)
           .map(({ expectedWord, typedWord }, wordIndex) => {
@@ -73,7 +47,7 @@ export default function Inputhistory({ result }: InputhistoryProps) {
                   );
                 })}
 
-                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-[#46362b] px-2 py-1 text-sm text-[#d4c4bd] opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap  rounded-sm bg-[#46362b] px-2 py-1 text-sm text-[#d4c4bd] opacity-0 transition-opacity group-hover:opacity-100">
                   {typedWord || "(skipped)"}
                 </span>
               </span>

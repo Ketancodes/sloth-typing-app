@@ -35,7 +35,11 @@ const ComingSoonIcon = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
-export default function Navbar() {
+
+interface NavbarProp {
+  onSettings: () => void;
+}
+export default function Navbar({ onSettings }: NavbarProp) {
   return (
     <>
       <nav className="h-16 w-full bg-[#c5afa6] flex items-center px-2 py-2">
@@ -54,9 +58,7 @@ export default function Navbar() {
         </div>
         {/* Right side elements */}
         <div className="flex items-center gap-18  mr-4 ml-auto ">
-          <ComingSoonIcon>
-            <IoMdSettings size={22} className={IconEffect} />
-          </ComingSoonIcon>
+          <IoMdSettings size={22} className={IconEffect} onClick={onSettings} />
 
           <ComingSoonIcon>
             <FaInfo size={20} className={IconEffect} />
