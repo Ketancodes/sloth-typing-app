@@ -4,12 +4,14 @@ interface SettingCapsuleProps {
   options: string[];
   value: string;
   onChange?: (value: string) => void;
+  layoutId?: string;
 }
 
 export default function SettingCapsule({
   options,
   value,
   onChange,
+  layoutId,
 }: SettingCapsuleProps) {
   return (
     <div className="relative flex items-center gap-1 rounded-full bg-[#b8a097] p-1 shadow-[inset_0_1px_2px_rgba(73,55,42,0.12)]">
@@ -39,7 +41,7 @@ export default function SettingCapsule({
           >
             {isActive && (
               <motion.div
-                layoutId="settings-active-capsule"
+                layoutId={layoutId}
                 className="
                   absolute
                   inset-0

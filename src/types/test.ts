@@ -4,6 +4,7 @@ export type TestLengthMode = "time" | "words"; // testlenght mode option
 export type TestTypeMode = "normal" | "punctuation" | "numbers"; // testype mode option
 export type TestState = "idle" | "running" | "finished"; // test state tradking
 export type CharStatus = "correct" | "incorrect" | "missed" | "untyped"; // char status
+export type TestDifficulty = "normal" | "intermediate" | "advanced"; // test difficulty
 export type TestResult = {
   // type for result data [dashboard]
   wpm: number;
@@ -30,6 +31,7 @@ export type TestConfig = {
   testMode: TestTypeMode;
   timeOption: TimeOption;
   wordOption: WordsOption | null;
+  difficulty: TestDifficulty;
 };
 
 export type ExtraCharacter = {

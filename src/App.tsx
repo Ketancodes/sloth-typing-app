@@ -13,78 +13,113 @@ import {
   type ActiveOption,
   type CustomTestConfig,
   type AppPage,
+  type TestDifficulty,
 } from "./types/test";
 import { useState } from "react";
 import generateText from "./utils/generateText";
 import Dashboard from "./components/Dashboard/Dashboard";
 import CustomModal from "./components/CustomModal";
 import Settings from "./components/settings/Settings";
+import { useSettings } from "./hooks/useSettings";
 
 function App() {
+  const {
+    defaultMode,
+    defaultTime,
+    defaultWords,
+    defaultTestType,
+    defaultDifficulty,
+  } = useSettings();
+
+  const getInitialTestConfig = (): TestConfig => {
+    const saved = sessionStorage.getItem("sloth-session-config");
+
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+
+        const validMode =
+          parsed.testLengthMode === "time" || parsed.testLengthMode === "words";
+
+        const validTime =
+          parsed.timeOption === 15 ||
+          parsed.timeOption === 30 ||
+          parsed.timeOption === 60;
+
+        const validWords =
+          parsed.wordOption === null ||
+          parsed.wordOption === 15 ||
+          parsed.wordOption === 30 ||
+          parsed.wordOption === 50;
+
+        const validTestMode =
+          parsed.testMode === "normal" ||
+          parsed.testMode === "punctuation" ||
+          parsed.testMode === "numbers";
+
+        const validDifficulty =
+          parsed.difficulty === "normal" ||
+          parsed.difficulty === "intermediate" ||
+          parsed.difficulty === "advanced";
+
+        if (
+          validMode &&
+          validTime &&
+          validWords &&
+          validTestMode &&
+          validDifficulty
+        ) {
+          return parsed;
+        }
+      } catch {
+        // Invalid session data → use Settings defaults
+      }
+    }
+
+    return {
+      testLengthMode: defaultMode,
+      testMode: defaultTestType,
+      timeOption: defaultTime,
+      wordOption: defaultWords,
+      difficulty: defaultDifficulty,
+    };
+  };
+
+  const initialConfig = getInitialTestConfig();
   // const [words, setWords] = useState<WordsOption | null>(null); // words option state
-  const [words, setWords] = useState<WordsOption | null>(() => {
-    const savedWords = localStorage.getItem("typing-words");
+  const [words, setWords] = useState<WordsOption | null>(
+    initialConfig.wordOption,
+  ); // state for words
 
-    if (savedWords === "15" || savedWords === "30" || savedWords === "50") {
-      return Number(savedWords) as WordsOption;
-    }
-
-    return null;
-  });
   // states for option bar features
-  const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>(() => {
-    const savedMode = localStorage.getItem("typing-length-mode");
-
-    if (savedMode === "time" || savedMode === "words") {
-      return savedMode;
+  const [testLengthMode, setTestLengthMode] = useState<TestLengthMode>(
+    initialConfig.testLengthMode,
+  ); // state for test length mode
+  const [text, setText] = useState(() => {
+    if (initialConfig.testLengthMode === "words") {
+      return generateText(
+        initialConfig.wordOption ?? defaultWords,
+        initialConfig.testMode,
+      );
     }
 
-    return "time";
-  });
-  const [text, setText] = useState(() => {
-    const savedTestMode = localStorage.getItem("typing-test-mode");
-
-    const initialTestMode: TestTypeMode =
-      savedTestMode === "normal" ||
-      savedTestMode === "punctuation" ||
-      savedTestMode === "numbers"
-        ? savedTestMode
-        : "normal";
-
-    return generateText(300, initialTestMode);
+    return generateText(300, initialConfig.testMode);
   }); // state for generating text
 
-  const [testMode, setTestMode] = useState<TestTypeMode>(() => {
-    const savedTestMode = localStorage.getItem("typing-test-mode");
-
-    if (
-      savedTestMode === "normal" ||
-      savedTestMode === "punctuation" ||
-      savedTestMode === "numbers"
-    ) {
-      return savedTestMode;
-    }
-
-    return "normal";
-  }); // state for word mode
+  const [testMode, setTestMode] = useState<TestTypeMode>(
+    initialConfig.testMode,
+  ); // state for word mode
 
   const [testKey, setTestKey] = useState(0);
   const [teststate, setTeststate] = useState<TestState>("idle"); // state for 3 state updates
   const [result, setResult] = useState<TestResult | null>(null);
-  const [time, setTime] = useState<TimeOption>(() => {
-    // state for time option n sustaining the time on refesh
-    const savedTime = localStorage.getItem("typing-time");
-
-    if (savedTime === "15" || savedTime === "30" || savedTime === "60") {
-      return Number(savedTime) as TimeOption;
-    }
-
-    return 30;
-  });
+  const [time, setTime] = useState<TimeOption>(initialConfig.timeOption); // state for time mode
+  const [difficulty] = useState<TestDifficulty>(initialConfig.difficulty); // state for difficlty test mode
   const [activeOption, setActiveOption] = useState<ActiveOption>(() => {
-    const savedTestMode = localStorage.getItem("typing-test-mode");
-
-    if (savedTestMode === "punctuation" || savedTestMode === "numbers") {
+    if (
+      initialConfig.testMode === "punctuation" ||
+      initialConfig.testMode === "numbers"
+    ) {
       return "test";
     }
 
@@ -103,22 +138,40 @@ function App() {
 
   const [currentPage, setCurrentPage] = useState<AppPage>("typing");
 
+  const saveSessionConfig = (config: TestConfig) => {
+    sessionStorage.setItem("sloth-session-config", JSON.stringify(config));
+  }; // saving the session config fun
+
   // for saving selected time option
-  const updateTime = (newTime: TimeOption) => {
-    setTime(newTime);
-    localStorage.setItem("typing-time", String(newTime));
-  };
+  // const updateTime = (newTime: TimeOption) => {
+  //   setTime(newTime);
+
+  //   saveSessionConfig({
+  //     testLengthMode,
+  //     testMode,
+  //     timeOption: newTime,
+  //     wordOption: words,
+  //     difficulty,
+  //   });
+  // };
 
   // fun for updating test mode in option bar
   const updateTestMode = (newTestMode: TestTypeMode) => {
     setTestMode(newTestMode);
-    localStorage.setItem("typing-test-mode", newTestMode);
 
     if (testLengthMode === "words" && words) {
       setText(generateText(words, newTestMode));
     } else {
       setText(generateText(300, newTestMode));
     }
+
+    saveSessionConfig({
+      testLengthMode,
+      testMode: newTestMode,
+      timeOption: time,
+      wordOption: words,
+      difficulty,
+    });
 
     setTestKey((prev) => prev + 1);
     setTeststate("idle");
@@ -128,19 +181,34 @@ function App() {
   // fun for genarating new test
   const generateNewTest = (WordCount: WordsOption) => {
     setWords(WordCount);
-    localStorage.setItem("typing-words", String(WordCount));
     setTestLengthMode("words");
-    localStorage.setItem("typing-length-mode", "words");
     setText(generateText(WordCount, testMode));
+
+    saveSessionConfig({
+      testLengthMode: "words",
+      testMode,
+      timeOption: time,
+      wordOption: WordCount,
+      difficulty,
+    });
+
     setTestKey((prev) => prev + 1);
   };
-  //d4bfb6
 
-  const generateTimeTest = (time: TimeOption) => {
-    updateTime(time);
+  // fun for genrating time test
+  const generateTimeTest = (newTime: TimeOption) => {
+    setTime(newTime);
     setTestLengthMode("time");
-    localStorage.setItem("typing-length-mode", "time");
     setText(generateText(300, testMode));
+
+    saveSessionConfig({
+      testLengthMode: "time",
+      testMode,
+      timeOption: newTime,
+      wordOption: words,
+      difficulty,
+    });
+
     setTestKey((prev) => prev + 1);
   };
 
@@ -175,6 +243,7 @@ function App() {
     testMode,
     timeOption: time,
     wordOption: words,
+    difficulty,
   };
 
   const saveCustomTest = (config: CustomTestConfig) => {
