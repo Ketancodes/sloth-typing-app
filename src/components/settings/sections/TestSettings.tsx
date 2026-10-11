@@ -26,7 +26,7 @@ export default function TestSettings() {
   return (
     <section>
       <div className="mb-5">
-        <h2 className="font-[Courier_Prime] text-3xl font-semibold text-[#49372a]">
+        <h2 className="font-[Courier_Prime] text-3xl font-semibold text-[#917c6f]">
           Test
         </h2>
       </div>

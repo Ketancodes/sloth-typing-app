@@ -16,6 +16,7 @@ import {
 } from "react";
 import TypingText from "./TypingText";
 import Timer from "./Timer";
+import { useSettings } from "../hooks/useSettings";
 
 interface TypingTestProp {
   testLengthMode: TestLengthMode;
@@ -44,6 +45,8 @@ export default function TypingTest({
   onExtendCustomTest,
   customTextLength,
 }: TypingTestProp) {
+  const { stopOnError } = useSettings();
+
   const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
   const [typedText, setTypedText] = useState(""); //state for tracking types text
   const [incorrect, setInCorrect] = useState(0); // state for acc incorrect counting
@@ -346,14 +349,31 @@ export default function TypingTest({
                 const currentWordStart =
                   text.lastIndexOf(" ", currentIndex - 1) + 1;
 
+                // const wordWasFullyCorrect = charStatus
+                //   .slice(currentWordStart, currentIndex)
+                //   .every((status) => status === "correct");
+
                 const wordWasFullyCorrect = charStatus
-                  .slice(currentWordStart, currentIndex)
+                  .slice(
+                    currentWordStart,
+                    text.indexOf(" ", currentWordStart) === -1
+                      ? text.length
+                      : text.indexOf(" ", currentWordStart),
+                  )
                   .every((status) => status === "correct");
 
                 const hasExtrasAtThisSpace = extraChars.some(
                   (extraCharacter) =>
                     extraCharacter.anchorIndex === currentIndex,
                 );
+
+                // stop on error logic for space
+                if (
+                  stopOnError &&
+                  (!wordWasFullyCorrect || hasExtrasAtThisSpace)
+                ) {
+                  return;
+                }
 
                 if (
                   text[currentIndex] === " " &&
@@ -403,6 +423,27 @@ export default function TypingTest({
                 setTotalKeystrokes((prev) => prev + 1);
                 totalKeystrokesRef.current += 1;
                 const isCorrect = event.key === expectedChar;
+
+                // block for stop on error settings
+
+                if (stopOnError && !isCorrect) {
+                  // Start the test even if the first key is incorrect
+                  if (teststate === "idle") {
+                    setTeststate("running");
+                    startTime.current = Date.now();
+                  }
+
+                  setInCorrect((prev) => prev + 1);
+                  incorrectRef.current += 1;
+
+                  setCharStatus((prev) => {
+                    const updated = [...prev];
+                    updated[currentIndex] = "incorrect";
+                    return updated;
+                  });
+
+                  return;
+                }
 
                 const finalCorrect = isCorrect ? correct + 1 : correct;
                 const finalIncorrect = isCorrect ? incorrect : incorrect + 1;

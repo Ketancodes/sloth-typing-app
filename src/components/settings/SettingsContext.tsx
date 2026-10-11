@@ -1,5 +1,8 @@
 import { useState, type ReactNode } from "react";
-
+import type {
+  QuickRestartOption,
+  LiveStatsOption,
+} from "./types/Settingstypes";
 import type {
   TestDifficulty,
   TestLengthMode,
@@ -8,6 +11,7 @@ import type {
   WordsOption,
 } from "../../types/test";
 import { SettingsContext } from "./context/settingsContext";
+import type { SettingsContextType } from "./context/settingsContext";
 
 const DEFAULT_SETTINGS = {
   defaultMode: "time" as TestLengthMode,
@@ -15,16 +19,30 @@ const DEFAULT_SETTINGS = {
   defaultWords: 30 as WordsOption,
   defaultTestType: "normal" as TestTypeMode,
   defaultDifficulty: "normal" as TestDifficulty,
+
+  //behaviour related
+  stopOnError: false,
+  quickRestart: "off" as QuickRestartOption,
+  blindMode: false,
+  liveStats: "off" as LiveStatsOption,
 };
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const saveSettings = (settings: {
-    defaultMode: TestLengthMode;
-    defaultTime: TimeOption;
-    defaultWords: WordsOption;
-    defaultTestType: TestTypeMode;
-    defaultDifficulty: TestDifficulty;
-  }) => {
+  type SavedSettings = Omit<
+    SettingsContextType,
+    | "setDefaultMode"
+    | "setDefaultTime"
+    | "setDefaultWords"
+    | "setDefaultTestType"
+    | "setDefaultDifficulty"
+    | "setStopOnError"
+    | "setQuickRestart"
+    | "setBlindMode"
+    | "setLiveStats"
+    | "resetToDefaults"
+  >;
+
+  const saveSettings = (settings: SavedSettings) => {
     localStorage.setItem("sloth-settings-defaults", JSON.stringify(settings));
   };
 
@@ -65,15 +83,41 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [defaultDifficulty, setDefaultDifficultyState] =
     useState<TestDifficulty>(savedSettings.defaultDifficulty);
 
+  // states for behaviour related settings
+  const [stopOnError, setStopOnErrorState] = useState<boolean>(
+    savedSettings.stopOnError,
+  );
+
+  const [quickRestart, setQuickRestartState] = useState<QuickRestartOption>(
+    savedSettings.quickRestart,
+  );
+
+  const [blindMode, setBlindModeState] = useState<boolean>(
+    savedSettings.blindMode,
+  );
+
+  const [liveStats, setLiveStatsState] = useState<LiveStatsOption>(
+    savedSettings.liveStats,
+  );
+
+  const getCurrentSettings = (): SavedSettings => ({
+    defaultMode,
+    defaultTime,
+    defaultWords,
+    defaultTestType,
+    defaultDifficulty,
+    stopOnError,
+    quickRestart,
+    blindMode,
+    liveStats,
+  });
+
   const setDefaultMode = (mode: TestLengthMode) => {
     setDefaultModeState(mode);
 
     saveSettings({
+      ...getCurrentSettings(),
       defaultMode: mode,
-      defaultTime,
-      defaultWords,
-      defaultTestType,
-      defaultDifficulty,
     });
   };
 
@@ -81,11 +125,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setDefaultTimeState(time);
 
     saveSettings({
-      defaultMode,
+      ...getCurrentSettings(),
       defaultTime: time,
-      defaultWords,
-      defaultTestType,
-      defaultDifficulty,
     });
   };
 
@@ -93,11 +134,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setDefaultWordsState(words);
 
     saveSettings({
-      defaultMode,
-      defaultTime,
+      ...getCurrentSettings(),
       defaultWords: words,
-      defaultTestType,
-      defaultDifficulty,
     });
   };
 
@@ -105,11 +143,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setDefaultTestTypeState(testType);
 
     saveSettings({
-      defaultMode,
-      defaultTime,
-      defaultWords,
+      ...getCurrentSettings(),
       defaultTestType: testType,
-      defaultDifficulty,
     });
   };
 
@@ -117,19 +152,60 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setDefaultDifficultyState(difficulty);
 
     saveSettings({
-      defaultMode,
-      defaultTime,
-      defaultWords,
-      defaultTestType,
+      ...getCurrentSettings(),
       defaultDifficulty: difficulty,
     });
   };
+
+  // behaviour related setters
+  const setStopOnError = (enabled: boolean) => {
+    setStopOnErrorState(enabled);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      stopOnError: enabled,
+    });
+  };
+
+  const setQuickRestart = (option: QuickRestartOption) => {
+    setQuickRestartState(option);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      quickRestart: option,
+    });
+  };
+
+  const setBlindMode = (enabled: boolean) => {
+    setBlindModeState(enabled);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      blindMode: enabled,
+    });
+  };
+
+  const setLiveStats = (option: LiveStatsOption) => {
+    setLiveStatsState(option);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      liveStats: option,
+    });
+  };
+
   const resetToDefaults = () => {
     setDefaultModeState(DEFAULT_SETTINGS.defaultMode);
     setDefaultTimeState(DEFAULT_SETTINGS.defaultTime);
     setDefaultWordsState(DEFAULT_SETTINGS.defaultWords);
     setDefaultTestTypeState(DEFAULT_SETTINGS.defaultTestType);
     setDefaultDifficultyState(DEFAULT_SETTINGS.defaultDifficulty);
+
+    setStopOnErrorState(DEFAULT_SETTINGS.stopOnError);
+    setQuickRestartState(DEFAULT_SETTINGS.quickRestart);
+    setBlindModeState(DEFAULT_SETTINGS.blindMode);
+    setLiveStatsState(DEFAULT_SETTINGS.liveStats);
+
     saveSettings(DEFAULT_SETTINGS);
   };
 
@@ -147,6 +223,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         setDefaultTestType,
         setDefaultDifficulty,
         resetToDefaults,
+
+        // behaviour related
+        stopOnError,
+        quickRestart,
+        blindMode,
+        liveStats,
+
+        setStopOnError,
+        setQuickRestart,
+        setBlindMode,
+        setLiveStats,
       }}
     >
       {children}

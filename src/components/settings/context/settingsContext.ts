@@ -6,8 +6,13 @@ import type {
   TimeOption,
   WordsOption,
 } from "../../../types/test";
+import type {
+  QuickRestartOption,
+  LiveStatsOption,
+} from "../types/Settingstypes";
 
 export type SettingsContextType = {
+  // test type related
   defaultMode: TestLengthMode;
   defaultTime: TimeOption;
   defaultWords: WordsOption;
@@ -21,6 +26,17 @@ export type SettingsContextType = {
   setDefaultDifficulty: (difficulty: TestDifficulty) => void;
 
   resetToDefaults: () => void;
+
+  // behaviour realted
+  stopOnError: boolean;
+  quickRestart: QuickRestartOption;
+  blindMode: boolean;
+  liveStats: LiveStatsOption;
+
+  setStopOnError: (enabled: boolean) => void;
+  setQuickRestart: (enabled: QuickRestartOption) => void;
+  setBlindMode: (enabled: boolean) => void;
+  setLiveStats: (enabled: LiveStatsOption) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | null>(null);

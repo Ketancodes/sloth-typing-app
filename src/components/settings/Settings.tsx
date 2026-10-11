@@ -1,4 +1,5 @@
 import TestSettings from "./sections/TestSettings";
+import BehaviorSettings from "./sections/BehaviourSettings";
 
 export default function Settings() {
   return (
@@ -16,6 +17,7 @@ export default function Settings() {
         </div>
       </div>
       <TestSettings />
+      <BehaviorSettings />
     </main>
   );
 }
