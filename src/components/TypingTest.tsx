@@ -45,7 +45,7 @@ export default function TypingTest({
   onExtendCustomTest,
   customTextLength,
 }: TypingTestProp) {
-  const { stopOnError } = useSettings();
+  const { stopOnError, quickRestart } = useSettings();
 
   const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
   const [typedText, setTypedText] = useState(""); //state for tracking types text
@@ -219,6 +219,16 @@ export default function TypingTest({
             autoFocus
             className="absolute opacity-0"
             onKeyDown={(event) => {
+              // quick restart logic
+              if (
+                (quickRestart === "tab" && event.key === "Tab") ||
+                (quickRestart === "esc" && event.key === "Escape")
+              ) {
+                event.preventDefault();
+                resetTest();
+                return;
+              }
+
               const expectedChar = text[currentIndex];
 
               if (event.key === "Backspace") {
