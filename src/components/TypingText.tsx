@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 import type { CharStatus, ExtraCharacter } from "../types/test";
+import { useSettings } from "../hooks/useSettings";
 
 interface TypingTextProp {
   text: string;
@@ -15,6 +16,8 @@ function TypingText({
   charStatus,
   extraChars,
 }: TypingTextProp) {
+  const { blindMode } = useSettings();
+
   const RENDER_WINDOW_SIZE = 300;
   // Line changing whole logic
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
@@ -125,47 +128,55 @@ function TypingText({
                 key={index}
                 ref={isCurrent ? activeCharRef : null}
                 data-index={absoluteIndex}
-                className={`relative ${shouldUnderline ? "underline decoration-[#cf2323] decoration-2 underline-offset-4" : ""} ${
-                  status === "correct"
-                    ? "text-[#46362b]"
-                    : status === "incorrect"
-                      ? "text-[#C72121]"
-                      : status === "missed"
-                        ? "text-[#72645d]"
+                // className={`relative ${shouldUnderline ? "underline decoration-[#cf2323] decoration-2 underline-offset-4" : ""} ${
+                //   status === "correct"
+                //     ? "text-[#46362b]"
+                //     : status === "incorrect"
+                //       ? "text-[#C72121]"
+                //       : status === "missed"
+                //         ? "text-[#72645d]"
+                //         : "text-[#72645d]"
+                // }`}
+
+                className={`relative ${
+                  !blindMode && shouldUnderline
+                    ? "underline decoration-[#cf2323] decoration-2 underline-offset-4"
+                    : ""
+                } ${
+                  blindMode
+                    ? status === "untyped"
+                      ? "text-[#72645d]"
+                      : "text-[#46362b]"
+                    : status === "correct"
+                      ? "text-[#46362b]"
+                      : status === "incorrect"
+                        ? "text-[#C72121]"
                         : "text-[#72645d]"
                 }`}
               >
-                {extrasAtIndex.slice(0, 3).map((extraCharacter, extraIndex) => (
+                {/* {extrasAtIndex.slice(0, 3).map((extraCharacter, extraIndex) => (
                   <span
                     key={`${absoluteIndex}-${extraIndex}`}
-                    className="text-[#C72121]"
+                    className={blindMode ? "text-[#46362b]" : "text-[#C72121]"}
                   >
                     {extraCharacter.character}
                   </span>
-                ))}
+                ))} */}
+                {!blindMode &&
+                  extrasAtIndex
+                    .slice(0, 3)
+                    .map((extraCharacter, extraIndex) => (
+                      <span
+                        key={`${absoluteIndex}-${extraIndex}`}
+                        className="text-[#C72121]"
+                      >
+                        {extraCharacter.character}
+                      </span>
+                    ))}
 
-                {extrasAtIndex.length > 3 && (
+                {!blindMode && extrasAtIndex.length > 3 && (
                   <span className="text-[#C72121]">...</span>
                 )}
-
-                {/* {isCurrent && (
-                  <span
-                    style={{
-                      left: `${Math.min(extrasAtIndex.length, 3)}ch`,
-                    }}
-                    className="
-                       absolute
-                       top-1.5
-                       w-0.75
-                       h-[2.2rem]
-                       bg-[#8A5A3B]
-                       transition-[left]
-                       duration-150
-                       ease-out
-                       animate-blink
-                     "
-                  />
-                )} */}
 
                 {char}
               </span>

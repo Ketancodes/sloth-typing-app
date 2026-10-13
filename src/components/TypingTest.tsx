@@ -45,7 +45,7 @@ export default function TypingTest({
   onExtendCustomTest,
   customTextLength,
 }: TypingTestProp) {
-  const { stopOnError, quickRestart } = useSettings();
+  const { stopOnError, quickRestart, liveStats } = useSettings();
 
   const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
   const [typedText, setTypedText] = useState(""); //state for tracking types text
@@ -66,6 +66,7 @@ export default function TypingTest({
   const [charStatus, setCharStatus] = useState<CharStatus[]>(
     Array(text.length).fill("untyped"),
   ); // state for tracking char status
+  const [liveElapsedSeconds, setLiveElapsedSeconds] = useState(0); // state for showing live stats
 
   const startTime = useRef<number | null>(null); // ref for tracking start time
 
@@ -75,6 +76,15 @@ export default function TypingTest({
   const incorrectRef = useRef(0);
   const previousKeystrokesRef = useRef(0);
   const previousSampleTimeRef = useRef<number | null>(null);
+
+  // this whole part is for live showing live stats
+
+  const elapsedMinutes = liveElapsedSeconds / 60;
+
+  const liveWpm = elapsedMinutes > 0 ? correct / 5 / elapsedMinutes : 0;
+
+  const liveAccuracy =
+    correct + incorrect > 0 ? (correct / (correct + incorrect)) * 100 : 100;
 
   // ref for calculating per second data
   useEffect(() => {
@@ -88,6 +98,7 @@ export default function TypingTest({
       const elapsedSeconds = (Date.now() - startTime.current!) / 1000;
 
       if (elapsedSeconds <= 0) return;
+      setLiveElapsedSeconds(elapsedSeconds);
 
       const minutes = elapsedSeconds / 60;
 
@@ -198,6 +209,29 @@ export default function TypingTest({
               }}
             />
           )}
+
+          {/* section for showing live stats */}
+          {liveStats !== "off" && (
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center justify-center gap-12 font-[Courier_Prime] text-[#6b544b]">
+              {" "}
+              {(liveStats === "wpm" || liveStats === "both") && (
+                <div className="flex items-center gap-2">
+                  <span className="text-3xl font-semibold tabular-nums">
+                    {Math.round(liveWpm)}
+                  </span>
+                </div>
+              )}
+              {(liveStats === "accuracy" || liveStats === "both") && (
+                <div className="flex items-center gap-2">
+                  <span className="text-3xl font-semibold tabular-nums tracking-tighter">
+                    {liveAccuracy.toFixed(1)}%
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+          {/* live stats section ends here */}
+
           <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden">
             <TypingText
               text={text}
