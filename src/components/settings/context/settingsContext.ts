@@ -9,6 +9,7 @@ import type {
 import type {
   QuickRestartOption,
   LiveStatsOption,
+  ThemeOption,
 } from "../types/Settingstypes";
 
 export type SettingsContextType = {
@@ -37,6 +38,10 @@ export type SettingsContextType = {
   setQuickRestart: (enabled: QuickRestartOption) => void;
   setBlindMode: (enabled: boolean) => void;
   setLiveStats: (enabled: LiveStatsOption) => void;
+
+  // for theme
+  theme: ThemeOption;
+  setTheme: (theme: ThemeOption) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | null>(null);

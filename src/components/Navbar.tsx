@@ -3,7 +3,7 @@ import { IoMdSettings } from "react-icons/io";
 import { FaInfo, FaTrophy } from "react-icons/fa";
 
 const IconEffect =
-  "text-[#968077] text-[#4E3A2B] transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
+  "text-(--muted-text) hover:text-(--text) transition-transform duration-200 ease-in-out hover:scale-95 cursor-pointer";
 
 // #d4bfb6
 const ComingSoonIcon = ({ children }: { children: React.ReactNode }) => {
@@ -23,7 +23,7 @@ const ComingSoonIcon = ({ children }: { children: React.ReactNode }) => {
           text-[12px]
           font-[Roboto_Mono]
           font-medium
-          text-[#72584e]
+          text-(--muted-text)
           opacity-0
           group-hover:opacity-100
           transition-opacity
@@ -42,7 +42,7 @@ interface NavbarProp {
 export default function Navbar({ onSettings }: NavbarProp) {
   return (
     <>
-      <nav className="h-16 w-full bg-[#c5afa6] flex items-center px-2 py-2">
+      <nav className="h-16 w-full bg-(--background) flex items-center px-2 py-2">
         {/* logo image */}
         <div>
           <img
@@ -67,7 +67,7 @@ export default function Navbar({ onSettings }: NavbarProp) {
           <ComingSoonIcon>
             <FaTrophy size={20} className={IconEffect} />
           </ComingSoonIcon>
-          <button className="bg-[#f7e7d6] text-[#49372a] px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_#b09f8c] hover:translate-y-0.5 transition-all hover:bg-[#f0e0cd] cursor-pointer">
+          <button className="bg-(--button-background) text-(--text) px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_var(--button-shadow)] hover:translate-y-0.5 transition-all hover:bg-[#f0e0cd] cursor-pointer">
             Sign up
           </button>
         </div>

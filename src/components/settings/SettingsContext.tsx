@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import type {
   QuickRestartOption,
   LiveStatsOption,
+  ThemeOption,
 } from "./types/Settingstypes";
 import type {
   TestDifficulty,
@@ -19,6 +20,8 @@ const DEFAULT_SETTINGS = {
   defaultWords: 30 as WordsOption,
   defaultTestType: "normal" as TestTypeMode,
   defaultDifficulty: "normal" as TestDifficulty,
+  // for theme
+  theme: "coffee" as ThemeOption,
 
   //behaviour related
   stopOnError: false,
@@ -40,6 +43,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     | "setBlindMode"
     | "setLiveStats"
     | "resetToDefaults"
+    | "setTheme"
   >;
 
   const saveSettings = (settings: SavedSettings) => {
@@ -100,6 +104,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     savedSettings.liveStats,
   );
 
+  const [theme, setThemeState] = useState<ThemeOption>(savedSettings.theme); // state for theme
+
   const getCurrentSettings = (): SavedSettings => ({
     defaultMode,
     defaultTime,
@@ -110,6 +116,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     quickRestart,
     blindMode,
     liveStats,
+    theme,
   });
 
   const setDefaultMode = (mode: TestLengthMode) => {
@@ -194,6 +201,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // setter for theme
+
+  const setTheme = (theme: ThemeOption) => {
+    setThemeState(theme);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      theme,
+    });
+  };
+
   const resetToDefaults = () => {
     setDefaultModeState(DEFAULT_SETTINGS.defaultMode);
     setDefaultTimeState(DEFAULT_SETTINGS.defaultTime);
@@ -207,6 +225,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setLiveStatsState(DEFAULT_SETTINGS.liveStats);
 
     saveSettings(DEFAULT_SETTINGS);
+    setTheme(DEFAULT_SETTINGS.theme);
   };
 
   return (
@@ -234,6 +253,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         setQuickRestart,
         setBlindMode,
         setLiveStats,
+
+        // theme related
+        theme,
+        setTheme,
       }}
     >
       {children}

@@ -15,12 +15,13 @@ import {
   type AppPage,
   type TestDifficulty,
 } from "./types/test";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import generateText from "./utils/generateText";
 import Dashboard from "./components/Dashboard/Dashboard";
 import CustomModal from "./components/CustomModal";
 import Settings from "./components/settings/Settings";
 import { useSettings } from "./hooks/useSettings";
+import { themes } from "./components/settings/themes/themeConfig";
 
 function App() {
   const {
@@ -29,6 +30,7 @@ function App() {
     defaultWords,
     defaultTestType,
     defaultDifficulty,
+    theme,
   } = useSettings();
 
   const getInitialTestConfig = (): TestConfig => {
@@ -270,6 +272,30 @@ function App() {
 
     setText((prev) => `${prev.trimEnd()} ${repeatedText}`);
   };
+
+  // effect for theme swithing
+  useEffect(() => {
+    const selectedTheme = themes[theme];
+    const root = document.documentElement;
+
+    root.style.setProperty("--background", selectedTheme.background);
+    root.style.setProperty("--surface", selectedTheme.surface);
+    root.style.setProperty("--text", selectedTheme.text);
+    root.style.setProperty("--muted-text", selectedTheme.mutedText);
+    root.style.setProperty("--typed-text", selectedTheme.typedText);
+    root.style.setProperty("--correct", selectedTheme.correct);
+    root.style.setProperty("--incorrect", selectedTheme.incorrect);
+    root.style.setProperty("--caret", selectedTheme.caret);
+    root.style.setProperty("--border", selectedTheme.border);
+    root.style.setProperty(
+      "--button-background",
+      selectedTheme.buttonBackground,
+    );
+
+    root.style.setProperty("--button-shadow", selectedTheme.buttonShadow);
+  }, [theme]);
+
+  // opening setting page with navbar
   if (currentPage === "settings") {
     return (
       <>
@@ -278,9 +304,10 @@ function App() {
       </>
     );
   }
+
   return (
     <>
-      <div className="min-h-screen w-screen bg-[#c7afa5] flex flex-col">
+      <div className="min-h-screen w-screen bg-(--background) flex flex-col">
         <Navbar onSettings={() => setCurrentPage("settings")} />
         {teststate === "finished" && result ? (
           <Dashboard

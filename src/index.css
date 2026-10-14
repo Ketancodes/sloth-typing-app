@@ -47,3 +47,17 @@
     transform: translateY(0);
   }
 }
+
+/* for global theme changing */
+
+:root {
+  --background: #c7afa5;
+  --surface: #d8c5bb;
+  --text: #46362b;
+  --muted-text: #72645d;
+  --typed-text: #46362b;
+  --correct: #46362b;
+  --incorrect: #c72121;
+  --caret: #6d564d;
+  --border: #bda69a;
+}

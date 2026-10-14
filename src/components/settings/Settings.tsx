@@ -1,5 +1,6 @@
 import TestSettings from "./sections/TestSettings";
 import BehaviorSettings from "./sections/BehaviourSettings";
+import AppearanceSettings from "./sections/AppearanceSettings";
 
 export default function Settings() {
   return (
@@ -18,6 +19,7 @@ export default function Settings() {
       </div>
       <TestSettings />
       <BehaviorSettings />
+      <AppearanceSettings />
     </main>
   );
 }
