@@ -44,7 +44,7 @@ export default function Timeselector({
         {isActive && (
           <motion.div
             layoutId="active-option"
-            className="absolute inset-0 rounded-xl bg-[#a98b80]"
+            className="absolute inset-0 rounded-xl bg-(--option-active-background)"
             transition={{
               type: "spring",
               stiffness: 350,
@@ -63,7 +63,7 @@ export default function Timeselector({
           // className={` ${testLengthMode === "time" ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer" : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"}`}
           className={`relative z-10 flex items-center gap-1.5  rounded-2xl px-6 py-1 transition-colors ${
             testLengthMode === "time"
-              ? "text-[#33241e] hover:cursor-pointer "
+              ? "text-(--option-active-text) hover:cursor-pointer "
               : "hover:scale-95 hover:cursor-pointer"
           }`}
         >
@@ -72,7 +72,7 @@ export default function Timeselector({
         </button>
         {isOpen && testLengthMode === "time" && (
           <div
-            className="absolute top-9.5 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
+            className="absolute top-9.5 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-(--dropdown-background) px-2.5 py-1.5 shadow-md   before:absolute
     before:-top-1.5
     before:left-1/2
     before:-translate-x-1/2
@@ -81,7 +81,7 @@ export default function Timeselector({
     before:border-b-8
     before:border-l-transparent
     before:border-r-transparent
-    before:border-b-[#b89c91] "
+    before:border-b-(--dropdown-background) "
           >
             <button
               onClick={() => {
@@ -90,7 +90,7 @@ export default function Timeselector({
                 setTestKey((prev) => prev + 1);
                 setActiveOption(testMode === "normal" ? "length" : "test");
               }}
-              className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 15 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
+              className={`px-2 py-1 text-sm hover:text-(--dropdown-hover-text) hover:cursor-pointer ${time === 15 ? "text-(--dropdown-active-text) font-bold" : "text-(--dropdown-text) "}`}
             >
               15
             </button>
@@ -101,7 +101,7 @@ export default function Timeselector({
                 setTestKey((prev) => prev + 1);
                 setActiveOption(testMode === "normal" ? "length" : "test");
               }}
-              className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 30 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
+              className={`px-2 py-1 text-sm hover:text-(--dropdown-hover-text) hover:cursor-pointer ${time === 30 ? "text-(--dropdown-active-text) font-bold" : "text-(--dropdown-text)"}`}
             >
               30
             </button>
@@ -112,7 +112,7 @@ export default function Timeselector({
                 setTestKey((prev) => prev + 1);
                 setActiveOption(testMode === "normal" ? "length" : "test");
               }}
-              className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${time === 60 ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
+              className={`px-2 py-1 text-sm hover:text-(--dropdown-hover-text) hover:cursor-pointer ${time === 60 ? "text-(--dropdown-active-text) font-bold" : "text-(--dropdown-text)"}`}
             >
               60
             </button>

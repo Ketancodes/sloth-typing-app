@@ -30,7 +30,7 @@ export default function TestSelector({
         {isActive && (
           <motion.div
             layoutId="active-option"
-            className="absolute inset-0 rounded-xl bg-[#a98b80]"
+            className="absolute inset-0 rounded-xl bg-(--option-active-background)"
             transition={{
               type: "spring",
               stiffness: 350,
@@ -42,7 +42,7 @@ export default function TestSelector({
           onClick={() => setIsOpen(!isOpen)}
           className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 ${
             isActive
-              ? "text-[#33241e] hover:cursor-pointer"
+              ? "text-(--option-active-text) hover:cursor-pointer"
               : "hover:scale-95 hover:cursor-pointer"
           }`}
         >
@@ -51,7 +51,7 @@ export default function TestSelector({
         </button>
         {isOpen && (
           <div
-            className="absolute top-9.5 left-1/2 -translate-x-1/2 flex  text-sm items-center gap-1 rounded-xl bg-[#b89c91] px-2.5 py-1.5 shadow-md   before:absolute
+            className="absolute top-9.5 left-1/2 -translate-x-1/2 flex  text-sm items-center gap-1 rounded-xl bg-(--dropdown-background) px-2.5 py-1.5 shadow-md   before:absolute
     before:-top-1.5
     before:left-1/2
     before:-translate-x-1/2
@@ -60,7 +60,7 @@ export default function TestSelector({
     before:border-b-8
     before:border-l-transparent
     before:border-r-transparent
-    before:border-b-[#b89c91] "
+    before:border-b-(--dropdown-background) "
           >
             <button
               onClick={() => {
@@ -68,7 +68,7 @@ export default function TestSelector({
                 setActiveOption("length");
                 setIsOpen(false);
               }}
-              className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${testMode === "normal" ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
+              className={`px-2 py-1 text-sm hover:text-(--dropdown-hover-text) hover:cursor-pointer ${testMode === "normal" ? "text-(--dropdown-active-text) font-bold" : "text-(--dropdown-text) "}`}
             >
               Normal
             </button>
@@ -78,7 +78,7 @@ export default function TestSelector({
                 setActiveOption("test");
                 setIsOpen(false);
               }}
-              className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${testMode === "punctuation" ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
+              className={`px-2 py-1 text-sm hover:text-(--dropdown-hover-text) hover:cursor-pointer ${testMode === "punctuation" ? "text-(--dropdown-active-text) font-bold" : "text-(--dropdown-text)"}`}
             >
               Punctuation
             </button>
@@ -88,7 +88,7 @@ export default function TestSelector({
                 setActiveOption("test");
                 setIsOpen(false);
               }}
-              className={`px-2 py-1 text-sm hover:text-white hover:cursor-pointer ${testMode === "numbers" ? "text-[#473329] font-bold" : "text-[#81675a] "}`}
+              className={`px-2 py-1 text-sm hover:text-(--dropdown-hover-text) hover:cursor-pointer ${testMode === "numbers" ? "text-(--dropdown-active-text) font-bold" : "text-(--dropdown-text) "}`}
             >
               Numbers
             </button>

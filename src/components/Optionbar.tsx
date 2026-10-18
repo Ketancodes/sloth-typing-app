@@ -53,7 +53,7 @@ export default function Optionbar({
   return (
     <>
       <section className="flex items-center justify-between  mt-4 ">
-        <div className="h-8 w-[36%] mt-2 px-2 text-[#634e46] text-[14px] font-[Roboto_Mono] font-medium bg-[#bda298] flex items-center justify-center gap-5 mx-auto rounded-2xl">
+        <div className="h-8 w-[36%] mt-2 px-2 text-(--option-bar-text) text-[14px] font-[Roboto_Mono] font-medium bg-(--option-bar-background) flex items-center justify-center gap-5 mx-auto rounded-2xl">
           {/* Time selector */}
           <Timeselector
             testLengthMode={testLengthMode}
@@ -99,14 +99,14 @@ export default function Optionbar({
             }}
             className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 transition-colors ${
               activeOption === "custom"
-                ? "text-[#33241e] hover:cursor-pointer"
+                ? "text-(--option-active-text) hover:cursor-pointer"
                 : "hover:scale-95 hover:cursor-pointer"
             }`}
           >
             {activeOption === "custom" && (
               <motion.div
                 layoutId="active-option"
-                className="absolute inset-0 rounded-xl bg-[#a98b80]"
+                className="absolute inset-0 rounded-xl bg-(--option-active-background)"
                 transition={{
                   type: "spring",
                   stiffness: 350,

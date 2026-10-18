@@ -291,8 +291,39 @@ function App() {
       "--button-background",
       selectedTheme.buttonBackground,
     );
+    root.style.setProperty("--button-hover", selectedTheme.buttonHover);
 
     root.style.setProperty("--button-shadow", selectedTheme.buttonShadow);
+
+    // for optionbar vars
+    root.style.setProperty(
+      "--option-bar-background",
+      selectedTheme.optionBarBackground,
+    );
+    root.style.setProperty("--option-bar-text", selectedTheme.optionBarText);
+    root.style.setProperty(
+      "--option-active-background",
+      selectedTheme.optionActiveBackground,
+    );
+    root.style.setProperty(
+      "--option-active-text",
+      selectedTheme.optionActiveText,
+    );
+
+    // optionbar dropdowns
+    root.style.setProperty(
+      "--dropdown-background",
+      selectedTheme.dropdownBackground,
+    );
+    root.style.setProperty(
+      "--dropdown-active-text",
+      selectedTheme.dropdownActiveText,
+    );
+    root.style.setProperty("--dropdown-text", selectedTheme.dropdownText);
+    root.style.setProperty(
+      "--dropdown-hover-text",
+      selectedTheme.dropdownHoverText,
+    );
   }, [theme]);
 
   // opening setting page with navbar

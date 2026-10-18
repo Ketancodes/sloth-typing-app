@@ -70,7 +70,7 @@ export default function CustomModal({
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-190 rounded-2xl border border-[#a98b80]/40 bg-[#d4bdb3] p-6 shadow-lg">
+      <div className="relative z-10 w-190 rounded-2xl border border-[#a98b80]/40 bg-(--surface) p-6 shadow-lg">
         {/* Header */}
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -191,37 +191,6 @@ export default function CustomModal({
             </button>
           </div>
         </div>
-
-        {/* Bottom actions */}
-        {/* <div className="mt-6 flex items-center justify-end gap-3">
-          <button
-            onClick={handleSave}
-            disabled={!isValidText}
-            className="rounded-xl border border-[#a98b80]/50 px-5 py-2 font-[Roboto_Mono] text-sm text-[#72584e] transition-all hover:cursor-pointer hover:bg-[#c7afa5] disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {isSaved ? "Saved" : "Save"}
-          </button>
-
-          <button
-            onClick={handlePractice}
-            disabled={!isValidText || !isSaved}
-            className="rounded-xl bg-[#a98b80] px-5 py-2 font-[Roboto_Mono] text-sm text-[#33241e] transition-all hover:scale-[0.98] hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Practice
-          </button>
-          {customTest && !customText && (
-            <button
-              onClick={() => {
-                setCustomText(customTest.text);
-                setTime(customTest.time);
-                setIsSaved(true);
-              }}
-              className="rounded-xl bg-[#a98b80] px-5 py-2 font-[Roboto_Mono] text-sm text-[#33241e] transition-all hover:scale-[0.98] hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Saved Text
-            </button>
-          )}
-        </div> */}
 
         <div className="mt-6 flex items-center justify-between">
           <div>

@@ -67,7 +67,7 @@ export default function Navbar({ onSettings }: NavbarProp) {
           <ComingSoonIcon>
             <FaTrophy size={20} className={IconEffect} />
           </ComingSoonIcon>
-          <button className="bg-(--button-background) text-(--text) px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_var(--button-shadow)] hover:translate-y-0.5 transition-all hover:bg-[#f0e0cd] cursor-pointer">
+          <button className="bg-(--button-background) text-(--text) px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_var(--button-shadow)] hover:translate-y-0.5 transition-all hover:bg-(--button-hover) cursor-pointer">
             Sign up
           </button>
         </div>

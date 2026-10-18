@@ -128,16 +128,6 @@ function TypingText({
                 key={index}
                 ref={isCurrent ? activeCharRef : null}
                 data-index={absoluteIndex}
-                // className={`relative ${shouldUnderline ? "underline decoration-[#cf2323] decoration-2 underline-offset-4" : ""} ${
-                //   status === "correct"
-                //     ? "text-[#46362b]"
-                //     : status === "incorrect"
-                //       ? "text-[#C72121]"
-                //       : status === "missed"
-                //         ? "text-[#72645d]"
-                //         : "text-[#72645d]"
-                // }`}
-
                 className={`relative ${
                   !blindMode && shouldUnderline
                     ? "underline decoration-[#cf2323] decoration-2 underline-offset-4"
@@ -145,37 +135,29 @@ function TypingText({
                 } ${
                   blindMode
                     ? status === "untyped"
-                      ? "text-[#72645d]"
-                      : "text-[#46362b]"
+                      ? "text-(--muted-text)"
+                      : "text-(--typed-text)"
                     : status === "correct"
-                      ? "text-[#46362b]"
+                      ? "text-(--typed-text)"
                       : status === "incorrect"
-                        ? "text-[#C72121]"
-                        : "text-[#72645d]"
+                        ? "text-(--incorrect)"
+                        : "text-(--muted-text)"
                 }`}
               >
-                {/* {extrasAtIndex.slice(0, 3).map((extraCharacter, extraIndex) => (
-                  <span
-                    key={`${absoluteIndex}-${extraIndex}`}
-                    className={blindMode ? "text-[#46362b]" : "text-[#C72121]"}
-                  >
-                    {extraCharacter.character}
-                  </span>
-                ))} */}
                 {!blindMode &&
                   extrasAtIndex
                     .slice(0, 3)
                     .map((extraCharacter, extraIndex) => (
                       <span
                         key={`${absoluteIndex}-${extraIndex}`}
-                        className="text-[#C72121]"
+                        className="text-(--incorrect)"
                       >
                         {extraCharacter.character}
                       </span>
                     ))}
 
                 {!blindMode && extrasAtIndex.length > 3 && (
-                  <span className="text-[#C72121]">...</span>
+                  <span className="text-(--incorrect)">...</span>
                 )}
 
                 {char}
@@ -192,7 +174,7 @@ function TypingText({
                     left-0
                     w-0.75
                     h-[2.2rem]
-                    bg-[#6d4931]
+                    bg-(--caret)
                     transition-[left,top]
                     duration-100
                     ease-out
