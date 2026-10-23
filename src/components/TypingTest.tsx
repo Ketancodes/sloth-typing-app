@@ -244,7 +244,7 @@ export default function TypingTest({
           <button onClick={resetTest}>
             <RotateCcw
               size={26}
-              className="text-[#6d564d] font-semibold hover:cursor-pointer"
+              className="text-(--muted-text) font-semibold hover:cursor-pointer"
             />
           </button>
           {/* invisible input tracking words keys logic */}

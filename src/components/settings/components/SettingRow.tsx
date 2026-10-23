@@ -14,14 +14,16 @@ export default function SettingRow({
   return (
     <div className="flex items-start justify-between py-5">
       <div className="flex items-start gap-3">
-        {icon && <div className="mt-1 shrink-0 text-[#7a6a5f]">{icon}</div>}
+        {icon && (
+          <div className="mt-1 shrink-0 text-(--muted-text)">{icon}</div>
+        )}
 
         <div>
-          <h3 className="font-[Roboto_Mono] text-[20px] font-semibold text-[#49372a]">
+          <h3 className="font-[Roboto_Mono] text-[20px] font-semibold text-(--settings-row-title)">
             {title}
           </h3>
 
-          <p className="mt-1 max-w-xl font-[Roboto_Mono] text-[15px] text-[#664f45]">
+          <p className="mt-1 max-w-xl font-[Roboto_Mono] text-[15px] text-(--settings-row-description)">
             {description}
           </p>
         </div>

@@ -6,23 +6,23 @@ export default function Footer() {
   const [isContModalOpen, setIsContModalOpen] = useState(false);
   return (
     <>
-      <footer className="max-w-[98%] px-6 py-4 mt-auto flex items-center justify-between text-[#644c42] font-[Courier_Prime]">
+      <footer className="max-w-[98%] px-6 py-4 mt-auto flex items-center justify-between text-(--footer-text) font-[Courier_Prime]">
         {" "}
         <div className="flex items-center text-[15px] gap-12 ">
           <a
             href="https://github.com/Ketancodes"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 cursor-pointer"
+            className="flex items-center gap-1.5  hover:cursor-pointer hover:text-(--text)"
           >
             <FaGithub size={16} />
             github
           </a>
-          <p className="flex items-center gap-1.5">
+          <p className="flex items-center gap-1.5 hover:cursor-pointer hover:text-(--text)">
             <CircleDollarSign size={16} /> support
           </p>
           <p
-            className="flex items-center gap-1.5 hover:cursor-pointer hover:text-[#49342b]"
+            className="flex items-center gap-1.5 hover:cursor-pointer hover:text-(--text)"
             onClick={() => setIsContModalOpen(true)}
           >
             <UserPen size={16} /> contact
@@ -49,3 +49,5 @@ export default function Footer() {
     </>
   );
 }
+
+//644c42

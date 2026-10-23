@@ -49,20 +49,20 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
               <span>{result.extra}</span>
             </div>
           </div>
-          <p className="text-xl font-normal text-[#72645d] font-mono">
+          <p className="text-xl font-normal text-(--dashboard-label) font-mono">
             typed words
           </p>
-          <h1 className="text-[34px] text-[#46362b] font-semibold leading-tight font-mono">
+          <h1 className="text-[34px] text-(--dashboard-stat) font-semibold leading-tight font-mono">
             {result.correct}/{result.incorrect}/{result.missed}/{result.extra}
           </h1>
         </div>
 
         {/* consistency data */}
         <div className="flex flex-col">
-          <p className="text-xl font-normal text-[#72645d] font-mono">
+          <p className="text-xl font-normal text-(--dashboard-label) font-mono">
             consistency
           </p>
-          <h1 className="text-[34px] text-[#46362b] font-semibold leading-tight font-mono">
+          <h1 className="text-[34px] text-(--dashboard-stat) font-semibold leading-tight font-mono">
             {getConsistency(result.chartData.raw).toFixed(2)}%
           </h1>
         </div>
@@ -83,19 +83,21 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
             wpm / accuracy
           </div>
 
-          <p className="text-xl font-normal text-[#72645d] font-mono">raw</p>
+          <p className="text-xl font-normal text-(--dashboard-label) font-mono">
+            raw
+          </p>
 
-          <h1 className="text-[34px] text-[#46362b] font-semibold leading-tight font-mono">
+          <h1 className="text-[34px] text-(--dashboard-stat) font-semibold leading-tight font-mono">
             {result.rawWpm.toFixed(2)}/{result.accuracy.toFixed(2)}%
           </h1>
         </div>
 
         {/* test type  */}
         <div>
-          <p className="text-xl font-normal text-[#72645d] font-mono">
+          <p className="text-xl font-normal text-(--dashboard-label) font-mono">
             test type
           </p>
-          <h1 className="text-[34px] text-[#46362b] font-semibold leading-tight font-mono">
+          <h1 className="text-[34px] text-(--dashboard-stat) font-semibold leading-tight font-mono">
             {testTypeText}
           </h1>
         </div>

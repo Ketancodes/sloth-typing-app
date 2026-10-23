@@ -130,7 +130,7 @@ function TypingText({
                 data-index={absoluteIndex}
                 className={`relative ${
                   !blindMode && shouldUnderline
-                    ? "underline decoration-[#cf2323] decoration-2 underline-offset-4"
+                    ? "underline decoration-(--incorrect) decoration-2 underline-offset-4"
                     : ""
                 } ${
                   blindMode
@@ -187,3 +187,5 @@ function TypingText({
   );
 }
 export default memo(TypingText);
+
+/// cf2323

@@ -13,6 +13,11 @@ const themeOptions: { value: ThemeOption; label: string; colors: string[] }[] =
       label: "Coffee Night",
       colors: ["#211a17", "#302520", "#ead8c5"],
     },
+    {
+      value: "theme-three",
+      label: "Serika",
+      colors: ["#323437", "#e2b714", "#d1d0c5"],
+    },
   ];
 
 export default function AppearanceSettings() {

@@ -24,9 +24,10 @@ export default function Timer({ duration, testState, onTimeUp }: TimeProps) {
   }, [timeLeft, testState, onTimeUp]);
   return (
     <>
-      <div className="absolute right-[7%] -top-9 text-[28px] font-normal text-[#4E3A2B]">
+      <div className="absolute right-[7%] -top-9 text-[28px] font-normal text-(--caret)">
         <p>{timeLeft}</p>
       </div>
     </>
   );
 }
+//4E3A2B

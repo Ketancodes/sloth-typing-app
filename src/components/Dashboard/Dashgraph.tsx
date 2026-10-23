@@ -33,7 +33,7 @@ function ErrorMarker({ cx, cy, payload }: ErrorMarkerProps) {
       x={cx}
       y={cy - 12}
       textAnchor="middle"
-      fill="#d11c1c" // a33a32
+      fill="var(--graph-error)" // a33a32
       fontSize={14}
       fontWeight="bold"
     >
@@ -77,46 +77,45 @@ export default function DashGraph({ result, testConfig }: DashGraphProps) {
           <CartesianGrid
             horizontal={true}
             vertical={true}
-            stroke="#6f5548"
+            stroke="var(--graph-grid)"
             strokeDasharray="3 3"
             opacity={0.4}
           />
           <XAxis
             dataKey="second"
             ticks={xAxisTicks}
-            tick={{ fill: "#6f5548", fontSize: 14 }}
+            tick={{ fill: "var(--graph-axis)", fontSize: 14 }}
             axisLine={{
-              stroke: "#6f5548",
-
+              stroke: "var(--graph-axis)",
               strokeWidth: 1,
             }}
             tickLine={{
-              stroke: "#6f5548",
+              stroke: "var(--graph-axis)",
               strokeWidth: 1,
             }}
           />
 
           <YAxis
-            tick={{ fill: "#6f5548", fontSize: 14 }}
+            tick={{ fill: "var(--graph-axis)", fontSize: 14 }}
             axisLine={{
-              stroke: "#6f5548",
+              stroke: "var(--graph-axis)",
               strokeWidth: 1,
             }}
             tickLine={{
-              stroke: "#6f5548",
+              stroke: "var(--graph-axis)",
               strokeWidth: 1,
             }}
             label={{
               value: "wpm",
               angle: -90,
               position: "insideLeft",
-              fill: "#6f5548",
+              fill: "var(--graph-axis)",
               fontSize: 14,
             }}
           />
           <Tooltip
             cursor={{
-              stroke: "#6f5548",
+              stroke: "var(--graph-grid)",
               strokeDasharray: "3 3",
               opacity: 0.5,
             }}
@@ -128,19 +127,17 @@ export default function DashGraph({ result, testConfig }: DashGraphProps) {
               const data = payload[0].payload;
 
               return (
-                <div className="rounded-sm border border-[#6f5548]/40 bg-[#c7afa5] px-4 py-3 font-mono text-[#4b3025]">
+                <div className="rounded-sm border border-(--graph-grid)/40 bg-(--graph-tooltip-background) px-4 py-3 font-mono text-(--graph-tooltip-text)">
+                  {" "}
                   <div className="mb-2 text-sm opacity-70">{label}s</div>
-
                   <div className="flex justify-between gap-6 text-sm">
                     <span>wpm</span>
                     <span>{data.wpm.toFixed(1)}</span>
                   </div>
-
                   <div className="flex justify-between gap-6 text-sm">
                     <span>raw</span>
                     <span>{data.raw.toFixed(1)}</span>
                   </div>
-
                   <div className="flex justify-between gap-6 text-sm">
                     <span>errors</span>
                     <span>{data.err}</span>
@@ -152,17 +149,17 @@ export default function DashGraph({ result, testConfig }: DashGraphProps) {
           <Line
             type="monotone"
             dataKey="wpm"
-            stroke="#4b3025"
+            stroke="var(--graph-line)"
             strokeWidth={2}
             dot={{
               r: 2.5,
-              fill: "#c7afa5",
-              stroke: "#4b3025",
+              fill: "var(--graph-dot)",
+              stroke: "var(--graph-line)",
               strokeWidth: 1.5,
             }}
             activeDot={{
               r: 5,
-              fill: "#4b3025",
+              fill: "var(--graph-line)",
             }}
           />
 

@@ -287,6 +287,9 @@ function App() {
     root.style.setProperty("--incorrect", selectedTheme.incorrect);
     root.style.setProperty("--caret", selectedTheme.caret);
     root.style.setProperty("--border", selectedTheme.border);
+
+    // buttons
+    root.style.setProperty("--signup-text", selectedTheme.signupText);
     root.style.setProperty(
       "--button-background",
       selectedTheme.buttonBackground,
@@ -323,6 +326,39 @@ function App() {
     root.style.setProperty(
       "--dropdown-hover-text",
       selectedTheme.dropdownHoverText,
+    );
+
+    //footer
+    root.style.setProperty("--footer-text", selectedTheme.footerText);
+
+    //dashboard label +stat
+    root.style.setProperty("--dashboard-label", selectedTheme.dashboardLabel);
+    root.style.setProperty("--dashboard-stat", selectedTheme.dashboardStat);
+
+    // graph
+    root.style.setProperty("--graph-grid", selectedTheme.graphGrid);
+    root.style.setProperty("--graph-axis", selectedTheme.graphAxis);
+    root.style.setProperty("--graph-line", selectedTheme.graphLine);
+    root.style.setProperty("--graph-dot", selectedTheme.graphDot);
+    root.style.setProperty("--graph-error", selectedTheme.graphError);
+    root.style.setProperty(
+      "--graph-tooltip-background",
+      selectedTheme.graphTooltipBackground,
+    );
+    root.style.setProperty(
+      "--graph-tooltip-text",
+      selectedTheme.graphTooltipText,
+    );
+
+    // settings title + description
+    root.style.setProperty(
+      "--settings-row-title",
+      selectedTheme.settingsRowTitle,
+    );
+
+    root.style.setProperty(
+      "--settings-row-description",
+      selectedTheme.settingsRowDescription,
     );
   }, [theme]);
 

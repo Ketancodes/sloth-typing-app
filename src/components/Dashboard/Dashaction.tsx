@@ -13,7 +13,7 @@ interface DashactionProp {
 const hoverClass =
   "pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-[#46362b] px-2 py-1 text-md text-[#d4c4bd] opacity-0 transition-opacity duration-150 group-hover:opacity-100 ";
 const groupHoverClass =
-  "group relative hover:cursor-pointer hover:text-[#382a21]";
+  "group relative hover:cursor-pointer hover:text-(--text)";
 
 export default function Dashaction({
   onReset,
@@ -25,7 +25,7 @@ export default function Dashaction({
   return (
     <>
       <div className="mt-14 w-full flex items-center justify-center">
-        <div className="flex w-[25%] items-center justify-between text-[#614f43]">
+        <div className="flex w-[25%] items-center justify-between text-(--muted-text) ">
           {/* Retry */}
           <div className={groupHoverClass} onClick={onRepeat}>
             <Recycle size={24} />

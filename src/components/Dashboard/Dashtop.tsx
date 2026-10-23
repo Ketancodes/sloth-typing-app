@@ -43,11 +43,11 @@ export default function Dashtop({ result }: ResultProp) {
     <>
       <div className="grid grid-cols-2 gap-8">
         <div className="flex flex-col items-start">
-          <p className="text-3xl font-normal text-[#72645d] tracking-normal font-mono">
+          <p className="text-3xl font-normal text-(--dashboard-label) tracking-normal font-mono">
             wpm
           </p>
           <h1
-            className={`text-7xl font-semibold text-[#46362b] leading-tight font-mono ${
+            className={`text-7xl font-semibold text-(--dashboard-stat) leading-tight font-mono ${
               wpmFinished ? "animate-[result-pop_600ms_ease-out]" : ""
             }`}
           >
@@ -55,10 +55,10 @@ export default function Dashtop({ result }: ResultProp) {
           </h1>
         </div>
         <div>
-          <p className="text-3xl font-normal text-[#72645d] tracking-normal font-mono">
+          <p className="text-3xl font-normal text-(--dashboard-label) tracking-normal font-mono">
             accuracy
           </p>
-          <h1 className="text-7xl font-semibold text-[#46362b] leading-tight font-mono">
+          <h1 className="text-7xl font-semibold text-(--dashboard-stat) leading-tight font-mono">
             {displayAccuracy}%
           </h1>
         </div>

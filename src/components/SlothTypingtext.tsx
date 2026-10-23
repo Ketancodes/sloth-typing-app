@@ -55,7 +55,7 @@ export default function SlothTypingtext() {
       <div className="text-cente mt-6">
         <h2 className="text-2xl font-semibold font-[Courier_Prime] tracking-tight  text-(--muted-text) inline-block">
           {staticText}
-          <span className="text-(--text)">{displayText}</span>
+          <span className="text-(--caret)">{displayText}</span>
           {/* ✅ blinking cursor stays same */}
           <span className="animate-pulse">|</span>
         </h2>
