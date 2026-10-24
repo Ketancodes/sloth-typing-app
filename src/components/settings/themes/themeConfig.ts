@@ -112,10 +112,14 @@ export const themes: Record<ThemeOption, ThemeColors> = {
     caret: "#d2ad87",
     border: "#514037",
     // buttons
+    // signupText: "#46362b",
+    // buttonBackground: "#5c4a43",
+    // buttonHover: "#6b574f",
+    // buttonShadow: "#40312c",
     signupText: "#46362b",
-    buttonBackground: "#5c4a43",
-    buttonHover: "#6b574f",
-    buttonShadow: "#40312c",
+    buttonBackground: "#f7e7d6",
+    buttonHover: "#f0e0cd",
+    buttonShadow: "#b09f8c",
 
     // for optionbar
     optionBarBackground: "#3a2b25",
@@ -198,41 +202,53 @@ export const themes: Record<ThemeOption, ThemeColors> = {
   },
 
   "theme-four": {
-    background: "#c7afa5",
-    surface: "#d8c5bb",
-    text: "#46362b",
-    mutedText: "#72645d",
-    typedText: "#46362b",
-    correct: "#46362b",
-    incorrect: "#C72121",
-    caret: "#6d564d",
+    // Core
+    background: "#171D2B",
+    surface: "#222B3D",
+    text: "#E2E8F0",
+    mutedText: "#6D7890",
+    typedText: "#E2E8F0",
+    correct: "#E2E8F0",
+    incorrect: "#F07178",
+    caret: "#A5C9FF",
+    border: "#30394B",
 
-    border: "#bda69a",
+    // Main buttons
     signupText: "#46362b",
-    buttonBackground: "#3a2b25",
-    buttonHover: "#6b574f",
-    buttonShadow: "#17110f",
-    optionBarBackground: "#3a2b25",
-    optionBarText: "#b49a8c",
-    optionActiveBackground: "#5c4439",
-    optionActiveText: "#f0dfd0",
-    dropdownBackground: "#b89c91",
-    dropdownActiveText: "#473329",
-    dropdownText: "#81675a",
-    dropdownHoverText: "#ffffff",
-    //footer text
-    footerText: "#644c42",
-    dashboardLabel: "#a99585",
-    dashboardStat: "#d2bba7",
-    graphGrid: "#594339",
-    graphAxis: "#897064",
-    graphLine: "#a99585",
-    graphDot: "#bda393",
-    graphError: "#c04d45",
-    graphTooltipBackground: "#38271f",
-    graphTooltipText: "#d2bba7",
-    // Coffee Night
-    settingsRowTitle: "#c2aa96",
-    settingsRowDescription: "#948174",
+    buttonBackground: "#A5C9FF",
+    buttonHover: "#BBD6FF",
+    buttonShadow: "#6F94CA",
+
+    // Option bar
+    optionBarBackground: "#222B3D",
+    optionBarText: "#8290A8",
+    optionActiveBackground: "#A5C9FF",
+    optionActiveText: "#171D2B",
+
+    // Dropdowns
+    dropdownBackground: "#222B3D",
+    dropdownActiveText: "#A5C9FF",
+    dropdownText: "#8290A8",
+    dropdownHoverText: "#E2E8F0",
+
+    // Footer
+    footerText: "#8290A8",
+
+    // Dashboard
+    dashboardLabel: "#8290A8",
+    dashboardStat: "#A5C9FF",
+
+    // Graph
+    graphGrid: "#30394B",
+    graphAxis: "#8290A8",
+    graphLine: "#A5C9FF",
+    graphDot: "#E2E8F0",
+    graphError: "#F07178",
+    graphTooltipBackground: "#222B3D",
+    graphTooltipText: "#E2E8F0",
+
+    // Settings rows
+    settingsRowTitle: "#E2E8F0",
+    settingsRowDescription: "#9BAAC0",
   },
 };

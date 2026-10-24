@@ -18,6 +18,11 @@ const themeOptions: { value: ThemeOption; label: string; colors: string[] }[] =
       label: "Serika",
       colors: ["#323437", "#e2b714", "#d1d0c5"],
     },
+    {
+      value: "theme-four",
+      label: "Midnight",
+      colors: ["#171D2B", "#A5C9FF", "#E2E8F0"],
+    },
   ];
 
 export default function AppearanceSettings() {

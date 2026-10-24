@@ -55,7 +55,7 @@ export default function WordSelector({
           }}
           className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 transition-colors ${
             activeOption === "length" && testLengthMode === "words"
-              ? "text-(--option-active-text) bg-[#a98b80] hover:cursor-pointer"
+              ? "text-(--option-active-text)  hover:cursor-pointer"
               : "hover:scale-95 hover:cursor-pointer"
           }`}
         >
