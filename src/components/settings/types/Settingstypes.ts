@@ -5,3 +5,4 @@ export type ThemeOption =
   | "coffee-night"
   | "theme-three"
   | "theme-four";
+export type CaretStyleOption = "line" | "block" | "underline" | "off";

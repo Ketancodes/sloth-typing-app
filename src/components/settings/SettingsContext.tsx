@@ -3,6 +3,7 @@ import type {
   QuickRestartOption,
   LiveStatsOption,
   ThemeOption,
+  CaretStyleOption,
 } from "./types/Settingstypes";
 import type {
   TestDifficulty,
@@ -28,6 +29,9 @@ const DEFAULT_SETTINGS = {
   quickRestart: "off" as QuickRestartOption,
   blindMode: false,
   liveStats: "off" as LiveStatsOption,
+
+  // caret related
+  caretStyle: "line" as CaretStyleOption,
 };
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -44,6 +48,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     | "setLiveStats"
     | "resetToDefaults"
     | "setTheme"
+    | "setCaretStyle"
   >;
 
   const saveSettings = (settings: SavedSettings) => {
@@ -106,6 +111,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const [theme, setThemeState] = useState<ThemeOption>(savedSettings.theme); // state for theme
 
+  const [caretStyle, setCaretStyleState] = useState<CaretStyleOption>(
+    savedSettings.caretStyle,
+  ); // state for caret
+
   const getCurrentSettings = (): SavedSettings => ({
     defaultMode,
     defaultTime,
@@ -117,6 +126,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     blindMode,
     liveStats,
     theme,
+    caretStyle,
   });
 
   const setDefaultMode = (mode: TestLengthMode) => {
@@ -212,6 +222,16 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // setter for caret
+  const setCaretStyle = (style: CaretStyleOption) => {
+    setCaretStyleState(style);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      caretStyle: style,
+    });
+  };
+
   const resetToDefaults = () => {
     setDefaultModeState(DEFAULT_SETTINGS.defaultMode);
     setDefaultTimeState(DEFAULT_SETTINGS.defaultTime);
@@ -226,6 +246,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
     saveSettings(DEFAULT_SETTINGS);
     setTheme(DEFAULT_SETTINGS.theme);
+    setCaretStyleState(DEFAULT_SETTINGS.caretStyle);
   };
 
   return (
@@ -257,6 +278,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         // theme related
         theme,
         setTheme,
+
+        // caret
+        caretStyle,
+        setCaretStyle,
       }}
     >
       {children}

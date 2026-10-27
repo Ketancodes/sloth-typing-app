@@ -10,6 +10,7 @@ import type {
   QuickRestartOption,
   LiveStatsOption,
   ThemeOption,
+  CaretStyleOption,
 } from "../types/Settingstypes";
 
 export type SettingsContextType = {
@@ -42,6 +43,10 @@ export type SettingsContextType = {
   // for theme
   theme: ThemeOption;
   setTheme: (theme: ThemeOption) => void;
+
+  // caret related
+  caretStyle: CaretStyleOption;
+  setCaretStyle: (style: CaretStyleOption) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | null>(null);

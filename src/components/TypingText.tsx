@@ -16,7 +16,7 @@ function TypingText({
   charStatus,
   extraChars,
 }: TypingTextProp) {
-  const { blindMode } = useSettings();
+  const { blindMode, caretStyle } = useSettings();
 
   const RENDER_WINDOW_SIZE = 300;
   // Line changing whole logic
@@ -60,8 +60,14 @@ function TypingText({
     if (!caret || !activeChar) return;
 
     caret.style.left = `${activeChar.offsetLeft}px`;
-    caret.style.top = `${activeChar.offsetTop + 6}px`;
-  }, [currentIndex, visibleStartIndex]);
+    // caret.style.top = `${activeChar.offsetTop + 6}px`;
+    const caretTop =
+      caretStyle === "underline"
+        ? activeChar.offsetTop + activeChar.offsetHeight - 2
+        : activeChar.offsetTop + 6;
+
+    caret.style.top = `${caretTop}px`;
+  }, [currentIndex, visibleStartIndex, caretStyle]);
 
   // effect for caret blinking
   useEffect(() => {
@@ -164,7 +170,7 @@ function TypingText({
               </span>
             );
           })}
-        <span
+        {/* <span
           ref={caretRef}
           aria-hidden="true"
           className="
@@ -181,7 +187,30 @@ function TypingText({
                     animate-blink
       
                   "
-        />
+        /> */}
+
+        {caretStyle !== "off" && (
+          <span
+            ref={caretRef}
+            aria-hidden="true"
+            className={`
+  pointer-events-none
+  absolute
+  left-0
+  transition-[left,top,width,height]
+  duration-100
+  ease-out
+  animate-blink
+  ${
+    caretStyle === "line"
+      ? "top-0 w-0.75 h-[2.2rem] bg-(--caret)"
+      : caretStyle === "block"
+        ? "top-0 w-[1ch] h-[2.2rem] bg-(--caret)/50"
+        : "top-8 w-[1ch] h-1 bg-(--caret)"
+  }
+`}
+          />
+        )}
       </p>
     </>
   );

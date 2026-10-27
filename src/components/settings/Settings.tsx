@@ -1,6 +1,7 @@
 import TestSettings from "./sections/TestSettings";
 import BehaviorSettings from "./sections/BehaviourSettings";
 import AppearanceSettings from "./sections/AppearanceSettings";
+import TypingExperienceSettings from "./sections/TypingExperienceSettings";
 
 export default function Settings() {
   return (
@@ -20,6 +21,7 @@ export default function Settings() {
       <TestSettings />
       <BehaviorSettings />
       <AppearanceSettings />
+      <TypingExperienceSettings />
     </main>
   );
 }
