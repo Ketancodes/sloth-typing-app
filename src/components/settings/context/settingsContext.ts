@@ -11,6 +11,7 @@ import type {
   LiveStatsOption,
   ThemeOption,
   CaretStyleOption,
+  TypingSoundOption,
 } from "../types/Settingstypes";
 
 export type SettingsContextType = {
@@ -47,6 +48,10 @@ export type SettingsContextType = {
   // caret related
   caretStyle: CaretStyleOption;
   setCaretStyle: (style: CaretStyleOption) => void;
+
+  // sound related
+  typingSound: TypingSoundOption;
+  setTypingSound: (value: TypingSoundOption) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | null>(null);

@@ -4,6 +4,7 @@ import type {
   LiveStatsOption,
   ThemeOption,
   CaretStyleOption,
+  TypingSoundOption,
 } from "./types/Settingstypes";
 import type {
   TestDifficulty,
@@ -32,6 +33,9 @@ const DEFAULT_SETTINGS = {
 
   // caret related
   caretStyle: "line" as CaretStyleOption,
+
+  // sound
+  typingSound: "off" as TypingSoundOption,
 };
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -49,6 +53,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     | "resetToDefaults"
     | "setTheme"
     | "setCaretStyle"
+    | "setTypingSound"
   >;
 
   const saveSettings = (settings: SavedSettings) => {
@@ -115,6 +120,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     savedSettings.caretStyle,
   ); // state for caret
 
+  const [typingSound, setTypingSoundState] = useState<TypingSoundOption>(
+    savedSettings.typingSound,
+  ); // sound
+
   const getCurrentSettings = (): SavedSettings => ({
     defaultMode,
     defaultTime,
@@ -127,6 +136,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     liveStats,
     theme,
     caretStyle,
+    typingSound,
   });
 
   const setDefaultMode = (mode: TestLengthMode) => {
@@ -232,6 +242,15 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // for sound
+  const setTypingSound = (value: TypingSoundOption) => {
+    setTypingSoundState(value);
+    saveSettings({
+      ...getCurrentSettings(),
+      typingSound: value,
+    });
+  };
+
   const resetToDefaults = () => {
     setDefaultModeState(DEFAULT_SETTINGS.defaultMode);
     setDefaultTimeState(DEFAULT_SETTINGS.defaultTime);
@@ -243,6 +262,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setQuickRestartState(DEFAULT_SETTINGS.quickRestart);
     setBlindModeState(DEFAULT_SETTINGS.blindMode);
     setLiveStatsState(DEFAULT_SETTINGS.liveStats);
+    setTypingSoundState(DEFAULT_SETTINGS.typingSound);
 
     saveSettings(DEFAULT_SETTINGS);
     setTheme(DEFAULT_SETTINGS.theme);
@@ -282,6 +302,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         // caret
         caretStyle,
         setCaretStyle,
+
+        // sound
+        typingSound,
+        setTypingSound,
       }}
     >
       {children}

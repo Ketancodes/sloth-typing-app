@@ -1,10 +1,12 @@
-import { TextCursor } from "lucide-react";
+import { TextCursor, Volume2 } from "lucide-react";
 import { useSettings } from "../../../hooks/useSettings";
 import SettingRow from "../components/SettingRow";
 import SettingOptions from "../components/SettingsOptions";
+import type { TypingSoundOption } from "../types/Settingstypes";
 
 export default function TypingExperienceSettings() {
-  const { caretStyle, setCaretStyle } = useSettings();
+  const { caretStyle, setCaretStyle, typingSound, setTypingSound } =
+    useSettings();
 
   return (
     <section className="mt-20">
@@ -44,6 +46,19 @@ export default function TypingExperienceSettings() {
           />
         </SettingRow>
       </div>
+
+      <SettingRow
+        title="Typing Sound"
+        description="Choose the sound played with each keystroke."
+        icon={<Volume2 size={22} />}
+      >
+        <SettingOptions
+          options={["off", "soft", "mechanical", "typewriter", "pop"]}
+          value={typingSound}
+          onChange={(value) => setTypingSound(value as TypingSoundOption)}
+          layoutId="typing-sound"
+        />
+      </SettingRow>
     </section>
   );
 }

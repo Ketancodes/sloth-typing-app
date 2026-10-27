@@ -17,6 +17,7 @@ import {
 import TypingText from "./TypingText";
 import Timer from "./Timer";
 import { useSettings } from "../hooks/useSettings";
+import { playTypingSound } from "../utils/typingSounds";
 
 interface TypingTestProp {
   testLengthMode: TestLengthMode;
@@ -45,7 +46,7 @@ export default function TypingTest({
   onExtendCustomTest,
   customTextLength,
 }: TypingTestProp) {
-  const { stopOnError, quickRestart, liveStats } = useSettings();
+  const { stopOnError, quickRestart, liveStats, typingSound } = useSettings();
 
   const [currentIndex, setCurrentIndex] = useState(0); // state for tracking the index
   const [typedText, setTypedText] = useState(""); //state for tracking types text
@@ -457,6 +458,7 @@ export default function TypingTest({
               // when user types the first char
               if (event.key.length === 1) {
                 // check for extra typed chars
+                playTypingSound(typingSound);
 
                 if (currentIndex >= text.length) {
                   setExtra((prev) => prev + 1);

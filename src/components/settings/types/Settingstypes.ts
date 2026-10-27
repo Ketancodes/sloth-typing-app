@@ -6,3 +6,9 @@ export type ThemeOption =
   | "theme-three"
   | "theme-four";
 export type CaretStyleOption = "line" | "block" | "underline" | "off";
+export type TypingSoundOption =
+  | "off"
+  | "soft"
+  | "mechanical"
+  | "typewriter"
+  | "pop";
