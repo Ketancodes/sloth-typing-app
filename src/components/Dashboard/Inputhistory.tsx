@@ -24,7 +24,7 @@ export default function Inputhistory({ result }: InputhistoryProps) {
             return (
               <span
                 key={wordIndex}
-                className="group relative inline-flex rounded-sm border border-transparent px-1 py-0.5 hover:border-[#6d564d] hover:bg-[#d4c4bd]"
+                className="group relative inline-flex rounded-sm border border-transparent px-1 py-0.5 hover:border-(--history-hover-border) hover:bg-(--history-hover-bg)"
               >
                 {expectedWord.split("").map((char, charIndex) => {
                   const status = result.charStatus[wordStartIndex + charIndex];
@@ -32,14 +32,23 @@ export default function Inputhistory({ result }: InputhistoryProps) {
                   return (
                     <span
                       key={charIndex}
+                      // className={
+                      //   status === "correct"
+                      //     ? "text-[#352820]"
+                      //     : status === "incorrect"
+                      //       ? "text-[#d81e1e] underline"
+                      //       : status === "missed"
+                      //         ? "text-[#6e5447]"
+                      //         : "text-[#6b5247]"
+                      // }
                       className={
                         status === "correct"
-                          ? "text-[#352820]"
+                          ? "text-(--typed-text)"
                           : status === "incorrect"
-                            ? "text-[#d81e1e] underline"
+                            ? "text-(--incorrect) underline"
                             : status === "missed"
-                              ? "text-[#6e5447]"
-                              : "text-[#6b5247]"
+                              ? "text-(--history-missed)"
+                              : "text-(--muted-text)"
                       }
                     >
                       {char}

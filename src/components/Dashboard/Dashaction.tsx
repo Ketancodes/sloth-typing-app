@@ -11,7 +11,7 @@ interface DashactionProp {
 }
 
 const hoverClass =
-  "pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-[#46362b] px-2 py-1 text-md text-[#d4c4bd] opacity-0 transition-opacity duration-150 group-hover:opacity-100 ";
+  "pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-(--tooltip-bg) px-2 py-1 text-md text-(--tooltip-text) opacity-0 transition-opacity duration-150 group-hover:opacity-100 ";
 const groupHoverClass =
   "group relative hover:cursor-pointer hover:text-(--text)";
 

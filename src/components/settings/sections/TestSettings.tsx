@@ -25,8 +25,8 @@ export default function TestSettings() {
   } = useSettings();
   return (
     <section>
-      <div className="mb-5">
-        <h2 className="font-[Courier_Prime] text-3xl font-semibold text-[#917c6f]">
+      <div className="mb-5 mt-20">
+        <h2 className="font-[Courier_Prime] text-3xl font-semibold text-(--settings-heading)">
           Test
         </h2>
       </div>

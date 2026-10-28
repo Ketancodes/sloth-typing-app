@@ -4,6 +4,7 @@ const soundPaths: Partial<Record<TypingSoundOption, string>> = {
   mechanical: "/sounds/mechanical.mp3",
   typewriter: "/sounds/typewriter.ogg",
   soft: "sounds/cherrymax.m4a",
+  pop: "sounds/key5.wav",
 };
 
 const audioPool: HTMLAudioElement[] = [];

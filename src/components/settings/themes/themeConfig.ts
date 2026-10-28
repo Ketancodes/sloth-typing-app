@@ -47,6 +47,16 @@ type ThemeColors = {
   // settings title + description
   settingsRowTitle: string;
   settingsRowDescription: string;
+  settingHeading: string;
+
+  // tooltip
+  tooltipBg: string;
+  tooltipText: string;
+
+  //input history
+  historyHoverBg: string;
+  historyHoverBorder: string;
+  historyMissed: string;
 };
 
 export const themes: Record<ThemeOption, ThemeColors> = {
@@ -99,6 +109,16 @@ export const themes: Record<ThemeOption, ThemeColors> = {
 
     settingsRowTitle: "#49372a",
     settingsRowDescription: "#664f45",
+    settingHeading: "#806c5f",
+
+    // tooltip
+    tooltipBg: "#46362b",
+    tooltipText: "#d4c4bd",
+
+    // input history
+    historyHoverBg: "#d4c4bd",
+    historyHoverBorder: "#6d564d",
+    historyMissed: "#6e5447",
   },
 
   "coffee-night": {
@@ -153,6 +173,16 @@ export const themes: Record<ThemeOption, ThemeColors> = {
     // Coffee Night
     settingsRowTitle: "#c2aa96",
     settingsRowDescription: "#948174",
+    settingHeading: "#ead8c5",
+
+    // tooltip
+    tooltipBg: "#3a2d26",
+    tooltipText: "#ead8c5",
+
+    // input history
+    historyHoverBg: "#302520",
+    historyHoverBorder: "#6b5548",
+    historyMissed: "#a99684",
   },
 
   // theme-three and theme-four are placeholders for now
@@ -199,6 +229,16 @@ export const themes: Record<ThemeOption, ThemeColors> = {
 
     settingsRowTitle: "#d1d0c5",
     settingsRowDescription: "#9b9c98",
+    settingHeading: "#e2b714",
+
+    // tooltip
+    tooltipBg: "#202225",
+    tooltipText: "#f5f5f5",
+
+    // input history
+    historyHoverBg: "#3e4144",
+    historyHoverBorder: "#e2b714",
+    historyMissed: "#85878a",
   },
 
   "theme-four": {
@@ -250,5 +290,15 @@ export const themes: Record<ThemeOption, ThemeColors> = {
     // Settings rows
     settingsRowTitle: "#E2E8F0",
     settingsRowDescription: "#9BAAC0",
+    settingHeading: "#A5C9FF",
+
+    // tooltip
+    tooltipBg: "#252d3d",
+    tooltipText: "#E2E8F0",
+
+    // input history
+    historyHoverBg: "#252D3D",
+    historyHoverBorder: "#A5C9FF",
+    historyMissed: "#8492A6",
   },
 };

@@ -30,7 +30,7 @@ export default function AppearanceSettings() {
 
   return (
     <section className="mt-14">
-      <h2 className="mb-4 font-[Courier_Prime] text-2xl font-semibold text-[#806c5f]">
+      <h2 className="mb-4 font-[Courier_Prime] text-2xl font-semibold text-(--settings-heading)">
         Appearance
       </h2>
 
@@ -67,7 +67,7 @@ export default function AppearanceSettings() {
                 </div>
               </div>
 
-              <div className="mt-2 flex justify-end">
+              <div className="mt-2 flex h-6 justify-end">
                 {isSelected && (
                   <span className="text-md" aria-label="Selected">
                     ✓

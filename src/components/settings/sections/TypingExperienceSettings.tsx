@@ -9,8 +9,8 @@ export default function TypingExperienceSettings() {
     useSettings();
 
   return (
-    <section className="mt-20">
-      <h2 className="font-[Courier_Prime] text-2xl font-semibold text-[#806c5f]">
+    <section className="mt-24">
+      <h2 className="font-[Courier_Prime] text-2xl font-semibold text-(--settings-heading)">
         Typing Experience
       </h2>
 

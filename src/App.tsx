@@ -360,6 +360,22 @@ function App() {
       "--settings-row-description",
       selectedTheme.settingsRowDescription,
     );
+
+    root.style.setProperty("--settings-heading", selectedTheme.settingHeading);
+
+    // tooltip
+    root.style.setProperty("--tooltip-bg", selectedTheme.tooltipBg);
+    root.style.setProperty("--tooltip-text", selectedTheme.tooltipText);
+
+    // input history
+    root.style.setProperty("--history-hover-bg", selectedTheme.historyHoverBg);
+
+    root.style.setProperty(
+      "--history-hover-border",
+      selectedTheme.historyHoverBorder,
+    );
+
+    root.style.setProperty("--history-missed", selectedTheme.historyMissed);
   }, [theme]);
 
   // opening setting page with navbar

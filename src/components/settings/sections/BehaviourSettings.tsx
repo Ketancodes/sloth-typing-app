@@ -21,8 +21,8 @@ export default function BehaviorSettings() {
   } = useSettings();
 
   return (
-    <section className="mt-15">
-      <h2 className="font-[Courier_Prime] text-2xl font-semibold text-[#806c5f]">
+    <section className="mt-20">
+      <h2 className="font-[Courier_Prime] text-2xl font-semibold text-(--settings-heading)">
         Behavior
       </h2>
 

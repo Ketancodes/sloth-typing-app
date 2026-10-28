@@ -22,8 +22,8 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
           <div
             className="
                     pointer-events-none absolute bottom-full left-0 mb-1
-                    w-32 rounded-md bg-[#46362b] px-3 py-2
-                    text-sm font-mono text-[#d4c4bd]
+                    w-32 rounded-md bg-(--tooltip-bg) px-3 py-2
+                    text-sm font-mono text-(--tooltip-text)
                     opacity-0 translate-y-1
                     transition-all duration-200 ease-out
                     group-hover:opacity-100 group-hover:translate-y-0
@@ -73,8 +73,8 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
           <div
             className="
       pointer-events-none absolute bottom-full left-0 -mb-1
-      whitespace-nowrap rounded-md bg-[#46362b] px-3 py-2
-      text-sm font-mono text-[#d4c4bd]
+      whitespace-nowrap rounded-md bg-(--tooltip-bg) px-3 py-2
+      text-sm font-mono text-(--tooltip-text)
       opacity-0 translate-y-1
       transition-all duration-200 ease-out
       group-hover:opacity-100 group-hover:translate-y-0
