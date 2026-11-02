@@ -56,7 +56,7 @@ export default function Inputhistory({ result }: InputhistoryProps) {
                   );
                 })}
 
-                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap  rounded-sm bg-[#46362b] px-2 py-1 text-sm text-[#d4c4bd] opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap  rounded-sm bg-(--tooltip-bg) px-2 py-1 text-sm text-(--tooltip-text) opacity-0 transition-opacity group-hover:opacity-100">
                   {typedWord || "(skipped)"}
                 </span>
               </span>

@@ -52,12 +52,12 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
           w-[calc(100%-2rem)]
           max-w-150
 
-          bg-[#dfc9bd]
-          text-[#49372a]
+          bg-(--surface)
+          text-(--text)
 
           rounded-xl
           border
-          border-[#b89e91]
+          border-(--border)
 
           p-5
           shadow-[0_12px_40px_rgba(73,55,42,0.18)]
@@ -65,17 +65,17 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
         "
       >
         {/* Heading */}
-        <h2 className="text-2xl font-[Courier_Prime] font-semibold text-[#49372a] mb-2">
+        <h2 className="text-2xl font-[Courier_Prime] font-semibold text-(--setting-heading) mb-2">
           Contact
         </h2>
 
         {/* Description */}
-        <p className="text-sm font-[Roboto_Mono] font-medium leading-relaxed text-[#72584e] mb-5">
+        <p className="text-sm font-[Roboto_Mono] font-medium leading-relaxed text-(--setting-row-description) mb-5">
           Have something to say? or ask? or report? Feel free to reach out with
           feedback, suggestions, or anything that can make Sloth Typing better.
         </p>
 
-        <p className="text-sm font-[Roboto_Mono] font-medium text-[#72584e]">
+        <p className="text-sm font-[Roboto_Mono] font-medium text-(--setting-row-description)">
           Choose an option below to reach out.(default mail will open)
         </p>
 
@@ -94,13 +94,13 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
 
               rounded-lg
 
-              bg-[#f7e7d6]
-              text-[#49372a]
+              bg-(--button-background)
+              text-(--text)
 
               border
-              border-[#c5afa6]
+              border-(--border)
 
-              hover:bg-[#f0e0cd]
+              hover:bg-(--button-hover)
 
               transition-colors
               duration-200
@@ -126,13 +126,13 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
 
               rounded-lg
 
-              bg-[#f7e7d6]
-              text-[#49372a]
+              bg-(--button-background)
+              text-(--text)
 
               border
-              border-[#c5afa6]
+              border-(--border)
 
-              hover:bg-[#f0e0cd]
+              hover:bg-(--button-hover)
 
               transition-colors
               duration-200
@@ -165,13 +165,13 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
 
               rounded-lg
 
-              bg-[#f7e7d6]
-              text-[#49372a]
+              bg-(--button-background)
+              text-(--text)
 
               border
-              border-[#c5afa6]
+              border-(--border)
 
-              hover:bg-[#f0e0cd]
+              hover:bg-(--button-hover)
 
               transition-colors
               duration-200
@@ -196,9 +196,9 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
             top-4
             right-4
 
-            text-[#72584e]
+            text-(--muted-text)
 
-            hover:text-[#49372a]
+            hover:text-(--text)
 
             transition-colors
             duration-200
