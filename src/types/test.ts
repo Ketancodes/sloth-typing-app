@@ -9,6 +9,7 @@ export type TestResult = {
   // type for result data [dashboard]
   wpm: number;
   rawWpm: number;
+  wpmChars: number;
   accuracy: number;
   correct: number;
   incorrect: number;

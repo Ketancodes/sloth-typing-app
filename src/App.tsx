@@ -391,7 +391,9 @@ function App() {
   return (
     <>
       <div className="min-h-screen w-screen bg-(--background) flex flex-col">
-        <Navbar onSettings={() => setCurrentPage("settings")} />
+        <div className={teststate === "running" ? "invisible" : "visible"}>
+          <Navbar onSettings={() => setCurrentPage("settings")} />
+        </div>
         {teststate === "finished" && result ? (
           <Dashboard
             result={result}
@@ -401,30 +403,34 @@ function App() {
           />
         ) : (
           <>
-            <Optionbar
-              words={words}
-              setWords={setWords}
-              testLengthMode={testLengthMode}
-              setTestLengthMode={setTestLengthMode}
-              generateNewTest={generateNewTest}
-              generateTimeTest={generateTimeTest}
-              testMode={testMode}
-              setTestMode={updateTestMode}
-              time={time}
-              // setTime={setTime}
-              setTestKey={setTestKey}
-              activeOption={activeOption}
-              setActiveOption={setActiveOption}
-              isCustomOpen={isCustomOpen}
-              setIsCustomOpen={setIsCustomOpen}
-            />
-            {isCustomOpen && (
-              <CustomModal
-                setIsCustomOpen={setIsCustomOpen}
-                onSave={saveCustomTest}
-                onPractice={practiceCustomTest}
-                customTest={customTest}
-              />
+            {teststate !== "running" && (
+              <>
+                <Optionbar
+                  words={words}
+                  setWords={setWords}
+                  testLengthMode={testLengthMode}
+                  setTestLengthMode={setTestLengthMode}
+                  generateNewTest={generateNewTest}
+                  generateTimeTest={generateTimeTest}
+                  testMode={testMode}
+                  setTestMode={updateTestMode}
+                  time={time}
+                  // setTime={setTime}
+                  setTestKey={setTestKey}
+                  activeOption={activeOption}
+                  setActiveOption={setActiveOption}
+                  isCustomOpen={isCustomOpen}
+                  setIsCustomOpen={setIsCustomOpen}
+                />
+                {isCustomOpen && (
+                  <CustomModal
+                    setIsCustomOpen={setIsCustomOpen}
+                    onSave={saveCustomTest}
+                    onPractice={practiceCustomTest}
+                    customTest={customTest}
+                  />
+                )}
+              </>
             )}
 
             <TypingTest
@@ -443,7 +449,7 @@ function App() {
             />
           </>
         )}
-        <Footer />
+        {teststate !== "running" && <Footer />}
       </div>
     </>
   );

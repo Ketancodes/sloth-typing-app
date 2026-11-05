@@ -95,7 +95,7 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
               rounded-lg
 
               bg-(--button-background)
-              text-(--text)
+              text-(--signup-text)
 
               border
               border-(--border)
@@ -127,7 +127,7 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
               rounded-lg
 
               bg-(--button-background)
-              text-(--text)
+              text-(--signup-text)
 
               border
               border-(--border)
@@ -166,7 +166,7 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
               rounded-lg
 
               bg-(--button-background)
-              text-(--text)
+              text-(--signup-text)
 
               border
               border-(--border)
@@ -200,7 +200,7 @@ export default function ContactModal({ isOpen, onClose }: ContactProps) {
 
             hover:text-(--text)
 
-            transition-colors
+            transition-colors 
             duration-200
 
             cursor-pointer

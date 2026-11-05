@@ -31,7 +31,7 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
           >
             <div className="flex justify-between">
               <span>correct</span>
-              <span>{result.correct}</span>
+              <span>{result.wpmChars}</span>
             </div>
 
             <div className="flex justify-between">
@@ -53,7 +53,7 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
             typed words
           </p>
           <h1 className="text-[34px] text-(--dashboard-stat) font-semibold leading-tight font-mono">
-            {result.correct}/{result.incorrect}/{result.missed}/{result.extra}
+            {result.wpmChars}/{result.incorrect}/{result.missed}/{result.extra}
           </h1>
         </div>
 

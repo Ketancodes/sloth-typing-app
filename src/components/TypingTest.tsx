@@ -59,6 +59,7 @@ export default function TypingTest({
   const [lockedWordStart, setLockedWordStart] = useState<number | null>(null);
   const [extraChars, setExtraChars] = useState<ExtraCharacter[]>([]); // state for extra char behaviour
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
+  const [correctWordChars, setCorrectWordChars] = useState(0); // wpm count
   const [chartData, setChartData] = useState({
     wpm: [] as number[],
     raw: [] as number[],
@@ -77,12 +78,15 @@ export default function TypingTest({
   const incorrectRef = useRef(0);
   const previousKeystrokesRef = useRef(0);
   const previousSampleTimeRef = useRef<number | null>(null);
+  const correctWordCharsRef = useRef(0); // word count ref
 
   // this whole part is for live showing live stats
 
   const elapsedMinutes = liveElapsedSeconds / 60;
 
-  const liveWpm = elapsedMinutes > 0 ? correct / 5 / elapsedMinutes : 0;
+  // const liveWpm = elapsedMinutes > 0 ? correct / 5 / elapsedMinutes : 0;
+  const liveWpm =
+    elapsedMinutes > 0 ? correctWordChars / 5 / elapsedMinutes : 0;
 
   const liveAccuracy =
     correct + incorrect > 0 ? (correct / (correct + incorrect)) * 100 : 100;
@@ -103,8 +107,7 @@ export default function TypingTest({
 
       const minutes = elapsedSeconds / 60;
 
-      const currentWpm = correctRef.current / 5 / minutes;
-
+      const currentWpm = correctWordCharsRef.current / 5 / minutes;
       const now = Date.now();
 
       const elapsedSinceLastSample =
@@ -136,6 +139,13 @@ export default function TypingTest({
     return () => clearInterval(interval);
   }, [teststate]);
 
+  //   return {
+  //     correctWordChars,
+  //     correctSpaces,
+  //     totalWpmChars: correctWordChars + correctSpaces,
+  //   };
+  // };
+
   // fun for calculating  result of wpm n accuracy
   const calculateResult = (
     finalCorrect: number,
@@ -160,7 +170,8 @@ export default function TypingTest({
       } else {
         timeinSeconds = elapsedTime / 1000;
       }
-      wpm = finalCorrect / 5 / (timeinSeconds / 60);
+
+      wpm = correctWordCharsRef.current / 5 / (timeinSeconds / 60);
       rawWpm = finaltotalKeystrokes / 5 / (timeinSeconds / 60);
     }
 
@@ -168,6 +179,7 @@ export default function TypingTest({
       accuracy,
       wpm,
       rawWpm,
+      wpmChars: correctWordCharsRef.current,
       correct: finalCorrect,
       incorrect: finalIncorrect,
       missed,
@@ -425,8 +437,17 @@ export default function TypingTest({
                   wordWasFullyCorrect &&
                   !hasExtrasAtThisSpace
                 ) {
-                  setLockedWordStart(currentIndex + 1);
+                  const wordLength = currentIndex - currentWordStart;
+
+                  if (wordLength > 0) {
+                    correctWordCharsRef.current += wordLength + 1;
+
+                    setCorrectWordChars((prev) => prev + wordLength + 1);
+
+                    setLockedWordStart(currentIndex + 1);
+                  }
                 }
+
                 const nextSpaceIndex = text.indexOf(" ", currentIndex);
 
                 if (nextSpaceIndex !== -1) {
