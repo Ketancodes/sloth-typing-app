@@ -403,7 +403,7 @@ function App() {
           />
         ) : (
           <>
-            {teststate !== "running" && (
+            {/* {teststate !== "running" && (
               <>
                 <Optionbar
                   words={words}
@@ -431,7 +431,39 @@ function App() {
                   />
                 )}
               </>
-            )}
+            )}  */}
+
+            <div
+              className={
+                teststate === "running" ? "invisible pointer-events-none" : ""
+              }
+            >
+              <Optionbar
+                words={words}
+                setWords={setWords}
+                testLengthMode={testLengthMode}
+                setTestLengthMode={setTestLengthMode}
+                generateNewTest={generateNewTest}
+                generateTimeTest={generateTimeTest}
+                testMode={testMode}
+                setTestMode={updateTestMode}
+                time={time}
+                setTestKey={setTestKey}
+                activeOption={activeOption}
+                setActiveOption={setActiveOption}
+                isCustomOpen={isCustomOpen}
+                setIsCustomOpen={setIsCustomOpen}
+              />
+
+              {isCustomOpen && (
+                <CustomModal
+                  setIsCustomOpen={setIsCustomOpen}
+                  onSave={saveCustomTest}
+                  onPractice={practiceCustomTest}
+                  customTest={customTest}
+                />
+              )}
+            </div>
 
             <TypingTest
               key={testKey}
