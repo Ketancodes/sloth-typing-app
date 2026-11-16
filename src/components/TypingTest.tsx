@@ -1,4 +1,6 @@
 import { RotateCcw } from "lucide-react";
+import { FaLocationArrow } from "react-icons/fa";
+
 import type {
   TestLengthMode,
   WordsOption,
@@ -70,6 +72,12 @@ export default function TypingTest({
   ); // state for tracking char status
   const [liveElapsedSeconds, setLiveElapsedSeconds] = useState(0); // state for showing live stats
 
+  const [focusLost, setFocusLost] = useState(false);
+
+const typingAreaRef = useRef<HTMLDivElement>(null);
+const inputRef = useRef<HTMLInputElement>(null);
+const ignoreNextBlurRef = useRef(false);
+
   const startTime = useRef<number | null>(null); // ref for tracking start time
 
   // refs for data
@@ -79,6 +87,94 @@ export default function TypingTest({
   const previousKeystrokesRef = useRef(0);
   const previousSampleTimeRef = useRef<number | null>(null);
   const correctWordCharsRef = useRef(0); // word count ref
+
+
+// focus fun for typing area focus
+  const focusTypingInput = () => {
+  inputRef.current?.focus();
+  setFocusLost(false)
+};
+
+// fun for focus feature 
+useEffect(() => {
+  const isControl = (target: EventTarget | null) => {
+    if (!(target instanceof Element)) return false;
+
+    return Boolean(
+      target.closest(
+        [
+          "button",
+          "a",
+          "input",
+          "textarea",
+          "select",
+          "[contenteditable='true']",
+          "[role='button']",
+          "[role='combobox']",
+          "[role='menuitem']",
+          "[role='option']",
+        ].join(","),
+      ),
+    );
+  };
+
+
+
+  const handlePointerDown = (event: PointerEvent) => {
+    const target = event.target;
+
+    const clickedTypingArea =
+      target instanceof Node && typingAreaRef.current?.contains(target);
+
+    if (clickedTypingArea) {
+      ignoreNextBlurRef.current = false;
+      // focusTypingInput();
+      return;
+    }
+
+    if (isControl(target)) {
+      ignoreNextBlurRef.current = true;
+      return;
+    }
+
+    ignoreNextBlurRef.current = false;
+    setFocusLost(true);
+    inputRef.current?.blur();
+  };
+
+  document.addEventListener("pointerdown", handlePointerDown, true);
+
+  return () => {
+    document.removeEventListener("pointerdown", handlePointerDown, true);
+  };
+}, []);
+
+  useEffect(() => {
+  if (!focusLost) return;
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (
+      event.key === "Shift" ||
+      event.key === "Control" ||
+      event.key === "Alt" ||
+      event.key === "Meta"
+    ) {
+      return;
+    }
+
+    // Don't interfere with browser shortcuts.
+    if (event.ctrlKey || event.altKey || event.metaKey) return;
+
+    event.preventDefault();
+    focusTypingInput();
+  };
+
+  window.addEventListener("keydown", handleKeyDown, true);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown, true);
+  };
+}, [focusLost]);
 
   // this whole part is for live showing live stats
 
@@ -245,7 +341,7 @@ export default function TypingTest({
           )}
           {/* live stats section ends here */}
 
-          <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden">
+          {/* <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden" ref={typingAreaRef}>
             <TypingText
               text={text}
               currentIndex={currentIndex}
@@ -253,7 +349,42 @@ export default function TypingTest({
               charStatus={charStatus}
               extraChars={extraChars}
             />
-          </div>
+          </div> */}
+          <div
+  ref={typingAreaRef}
+  onClick={focusTypingInput}
+  className="relative h-38 w-[95%] px-4 py-2 text-[2rem] text-(--text) leading-12 overflow-hidden"
+>
+  <div
+    className={`transition-all duration-200 ${
+      focusLost ? "opacity-30 blur-xs" : ""
+    }`}
+  >
+    <TypingText
+      text={text}
+      currentIndex={currentIndex}
+      typedText={typedText}
+      charStatus={charStatus}
+      extraChars={extraChars}
+    />
+  </div>
+
+  {focusLost && (
+    <button
+      type="button"
+      onMouseDown={(e)=>e.preventDefault()}
+      onClick={focusTypingInput}
+      className="absolute inset-0 z-10 flex flex-col text-[18px] items-center justify-center bg-transparent text-(--text) text-base font-[Courier_Prime] hover:cursor-pointer"
+    >
+      <FaLocationArrow className="text-(--text) " size={16}/>
+      <span>Click here to start typing  </span>
+      <span className="mt-1.5 text-[14px] opacity-80">
+        or press any key to continue
+      </span>
+    </button>
+
+  )}
+</div>
           <button onClick={resetTest}>
             <RotateCcw
               size={26}
@@ -265,6 +396,18 @@ export default function TypingTest({
             type="text"
             autoFocus
             className="absolute opacity-0"
+            ref={inputRef}
+            onBlur={() => {
+              if (ignoreNextBlurRef.current) {
+                ignoreNextBlurRef.current = false;
+                return;
+              }
+
+             setFocusLost(true);
+            }}
+            onFocus={() => {
+              setFocusLost(false);
+            }}
             onKeyDown={(event) => {
               // quick restart logic
               if (
