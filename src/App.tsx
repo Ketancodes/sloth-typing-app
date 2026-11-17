@@ -145,19 +145,6 @@ function App() {
     sessionStorage.setItem("sloth-session-config", JSON.stringify(config));
   }; // saving the session config fun
 
-  // for saving selected time option
-  // const updateTime = (newTime: TimeOption) => {
-  //   setTime(newTime);
-
-  //   saveSessionConfig({
-  //     testLengthMode,
-  //     testMode,
-  //     timeOption: newTime,
-  //     wordOption: words,
-  //     difficulty,
-  //   });
-  // };
-
   // fun for updating test mode in option bar
   const updateTestMode = (newTestMode: TestTypeMode) => {
     setTestMode(newTestMode);
@@ -392,7 +379,13 @@ function App() {
   return (
     <>
       <div className="min-h-screen w-screen bg-(--background) flex flex-col">
-        <div className={distractionFreeMode && teststate === "running" ? "invisible" : "visible"}>
+        <div
+          className={
+            distractionFreeMode && teststate === "running"
+              ? "invisible"
+              : "visible"
+          }
+        >
           <Navbar onSettings={() => setCurrentPage("settings")} />
         </div>
         {teststate === "finished" && result ? (
@@ -404,39 +397,11 @@ function App() {
           />
         ) : (
           <>
-            {/* {teststate !== "running" && (
-              <>
-                <Optionbar
-                  words={words}
-                  setWords={setWords}
-                  testLengthMode={testLengthMode}
-                  setTestLengthMode={setTestLengthMode}
-                  generateNewTest={generateNewTest}
-                  generateTimeTest={generateTimeTest}
-                  testMode={testMode}
-                  setTestMode={updateTestMode}
-                  time={time}
-                  // setTime={setTime}
-                  setTestKey={setTestKey}
-                  activeOption={activeOption}
-                  setActiveOption={setActiveOption}
-                  isCustomOpen={isCustomOpen}
-                  setIsCustomOpen={setIsCustomOpen}
-                />
-                {isCustomOpen && (
-                  <CustomModal
-                    setIsCustomOpen={setIsCustomOpen}
-                    onSave={saveCustomTest}
-                    onPractice={practiceCustomTest}
-                    customTest={customTest}
-                  />
-                )}
-              </>
-            )}  */}
-
             <div
               className={
-              distractionFreeMode &&  teststate === "running" ? "invisible pointer-events-none" : ""
+                distractionFreeMode && teststate === "running"
+                  ? "invisible pointer-events-none"
+                  : ""
               }
             >
               <Optionbar
@@ -481,8 +446,8 @@ function App() {
               customTextLength={activeCustomTest?.text.length ?? 0}
             />
           </>
-        )}    
-            {(!distractionFreeMode || teststate !== "running") && <Footer />}
+        )}
+        {(!distractionFreeMode || teststate !== "running") && <Footer />}
       </div>
     </>
   );

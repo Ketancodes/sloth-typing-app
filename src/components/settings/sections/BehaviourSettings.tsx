@@ -5,7 +5,7 @@ import {
   RotateCcw,
   EyeOff,
   ChartNoAxesCombined,
-  MonitorX
+  MonitorX,
 } from "lucide-react";
 import { useSettings } from "../../../hooks/useSettings";
 
@@ -21,6 +21,8 @@ export default function BehaviorSettings() {
     setLiveStats,
     distractionFreeMode,
     setDistractionFreeMode,
+    showIncorrectChar,
+    setShowIncorrectChar,
   } = useSettings();
 
   return (
@@ -83,7 +85,7 @@ export default function BehaviorSettings() {
           title="Live Stats"
           description="Show your WPM and accuracy while you are typing."
           icon={<ChartNoAxesCombined size={22} />}
-         >
+        >
           <SettingOptions
             options={["Off", "WPM", "Accuracy", "Both"]}
             value={
@@ -109,20 +111,32 @@ export default function BehaviorSettings() {
             layoutId="live-stats"
           />
         </SettingRow>
-     <SettingRow
-     title="Distraction free mode"
-     description="
+
+        <SettingRow
+          title="Show Incorrect Characters"
+          description="Display incorrectly typed character below the original character."
+          icon={<EyeOff size={22} />}
+        >
+          <SettingOptions
+            options={["Off", "Turn On"]}
+            value={showIncorrectChar ? "Turn On" : "Off"}
+            onChange={(value) => setShowIncorrectChar(value === "Turn On")}
+            layoutId="show-incorrect-characters"
+          />
+        </SettingRow>
+        <SettingRow
+          title="Distraction free mode"
+          description="
      enabling hides the navbar,option bar and footer "
-     icon={<MonitorX size={20}/>}
-     >
-      <SettingOptions
+          icon={<MonitorX size={20} />}
+        >
+          <SettingOptions
             options={["Off", "Turn On"]}
             value={distractionFreeMode ? "Turn On" : "Off"}
             onChange={(value) => setDistractionFreeMode(value === "Turn On")}
             layoutId="distraction-free-mode"
           />
-
-     </SettingRow>
+        </SettingRow>
       </div>
     </section>
   );

@@ -54,8 +54,12 @@ export type SettingsContextType = {
   setTypingSound: (value: TypingSoundOption) => void;
 
   // clean ui , distraction free mode
-  distractionFreeMode:boolean;
-  setDistractionFreeMode:(enabled:boolean)=>void;
+  distractionFreeMode: boolean;
+  setDistractionFreeMode: (enabled: boolean) => void;
+
+  // show incorrect char feature
+  showIncorrectChar: boolean;
+  setShowIncorrectChar: (enabled: boolean) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | null>(null);

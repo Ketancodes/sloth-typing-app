@@ -38,7 +38,10 @@ const DEFAULT_SETTINGS = {
   typingSound: "off" as TypingSoundOption,
 
   // distraction free mode
-  distractionFreeMode:true,
+  distractionFreeMode: true,
+
+  //show incorrect char
+  showIncorrectChar: false,
 };
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -57,7 +60,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     | "setTheme"
     | "setCaretStyle"
     | "setTypingSound"
-    |"setDistractionFreeMode"
+    | "setDistractionFreeMode"
+    | "setShowIncorrectChar"
   >;
 
   const saveSettings = (settings: SavedSettings) => {
@@ -128,8 +132,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     savedSettings.typingSound,
   ); // sound
 
-    const [distractionFreeMode, setDistractionFreeModeState] =
-    useState<boolean>(savedSettings.distractionFreeMode); // state for distraction free mode
+  const [distractionFreeMode, setDistractionFreeModeState] = useState<boolean>(
+    savedSettings.distractionFreeMode,
+  ); // state for distraction free mode
+
+  const [showIncorrectChar, setShowIncorrectCharactersState] =
+    useState<boolean>(savedSettings.showIncorrectChar); // state for showing incorrect char
 
   const getCurrentSettings = (): SavedSettings => ({
     defaultMode,
@@ -145,6 +153,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     caretStyle,
     typingSound,
     distractionFreeMode,
+    showIncorrectChar,
   });
 
   const setDefaultMode = (mode: TestLengthMode) => {
@@ -259,13 +268,23 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // for distraction free mode 
-    const setDistractionFreeMode = (enabled: boolean) => {
+  // for distraction free mode
+  const setDistractionFreeMode = (enabled: boolean) => {
     setDistractionFreeModeState(enabled);
 
     saveSettings({
       ...getCurrentSettings(),
       distractionFreeMode: enabled,
+    });
+  };
+
+  // for showing incorrect char
+  const setShowIncorrectChar = (enabled: boolean) => {
+    setShowIncorrectCharactersState(enabled);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      showIncorrectChar: enabled,
     });
   };
 
@@ -285,7 +304,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     saveSettings(DEFAULT_SETTINGS);
     setTheme(DEFAULT_SETTINGS.theme);
     setCaretStyleState(DEFAULT_SETTINGS.caretStyle);
-        setDistractionFreeModeState(DEFAULT_SETTINGS.distractionFreeMode);
+    setDistractionFreeModeState(DEFAULT_SETTINGS.distractionFreeMode);
+    setShowIncorrectCharactersState(DEFAULT_SETTINGS.showIncorrectChar);
   };
 
   return (
@@ -327,8 +347,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         setTypingSound,
 
         // distraction free
-                distractionFreeMode,
+        distractionFreeMode,
         setDistractionFreeMode,
+
+        //showing incorrect char
+        showIncorrectChar,
+        setShowIncorrectChar,
       }}
     >
       {children}

@@ -53,21 +53,31 @@ export default function Navbar({ onSettings }: NavbarProp) {
         </div>
 
         {/* sloth-typing-text-animation */}
-        <div>
+        <div className="max-sm:hidden max-md:hidden">
           <SlothTypingtext />
         </div>
         {/* Right side elements */}
-        <div className="flex items-center gap-18  mr-4 ml-auto ">
-          <IoMdSettings size={22} className={IconEffect} onClick={onSettings} />
+        <div className="flex items-center gap-18 max-sm:gap-6  mr-4 max-sm:mr-3  ml-auto ">
+          <IoMdSettings
+            size={22}
+            className={`${IconEffect} max-sm:w-5 max-sm:h-5 `}
+            onClick={onSettings}
+          />
 
           <ComingSoonIcon>
-            <FaInfo size={20} className={IconEffect} />
+            <FaInfo
+              size={20}
+              className={`${IconEffect} max-sm:w-4.5  max-sm:h-4.5 `}
+            />
           </ComingSoonIcon>
 
           <ComingSoonIcon>
-            <FaTrophy size={20} className={IconEffect} />
+            <FaTrophy
+              size={20}
+              className={`${IconEffect} max-sm:w-4.5  max-sm:h-4.5 `}
+            />
           </ComingSoonIcon>
-          <button className="bg-(--button-background) text-(--signup-text) px-2.5 py-1.5 font-[Courier_Prime] font-semibold rounded-2xl text-sm shadow-[0_4px_0_var(--button-shadow)] hover:translate-y-0.5 transition-all hover:bg-(--button-hover) cursor-pointer">
+          <button className="bg-(--button-background) text-(--signup-text) px-2.5 max-sm:px-2 py-1.5 max-sm:py-1 font-[Courier_Prime] font-semibold rounded-2xl text-sm max-sm:text-[12px] shadow-[0_4px_0_var(--button-shadow)] hover:translate-y-0.5 transition-all hover:bg-(--button-hover) cursor-pointer">
             Sign up
           </button>
         </div>

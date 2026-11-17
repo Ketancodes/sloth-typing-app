@@ -73,10 +73,13 @@ export default function TypingTest({
   const [liveElapsedSeconds, setLiveElapsedSeconds] = useState(0); // state for showing live stats
 
   const [focusLost, setFocusLost] = useState(false);
+  const [incorrectChars, setIncorrectChars] = useState<(string | null)[]>(() =>
+    Array(text.length).fill(null),
+  ); // statte for tracking incorrect char
 
-const typingAreaRef = useRef<HTMLDivElement>(null);
-const inputRef = useRef<HTMLInputElement>(null);
-const ignoreNextBlurRef = useRef(false);
+  const typingAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const ignoreNextBlurRef = useRef(false);
 
   const startTime = useRef<number | null>(null); // ref for tracking start time
 
@@ -88,93 +91,90 @@ const ignoreNextBlurRef = useRef(false);
   const previousSampleTimeRef = useRef<number | null>(null);
   const correctWordCharsRef = useRef(0); // word count ref
 
-
-// focus fun for typing area focus
+  // focus fun for typing area focus
   const focusTypingInput = () => {
-  inputRef.current?.focus();
-  setFocusLost(false)
-};
-
-// fun for focus feature 
-useEffect(() => {
-  const isControl = (target: EventTarget | null) => {
-    if (!(target instanceof Element)) return false;
-
-    return Boolean(
-      target.closest(
-        [
-          "button",
-          "a",
-          "input",
-          "textarea",
-          "select",
-          "[contenteditable='true']",
-          "[role='button']",
-          "[role='combobox']",
-          "[role='menuitem']",
-          "[role='option']",
-        ].join(","),
-      ),
-    );
+    inputRef.current?.focus();
+    setFocusLost(false);
   };
 
+  // fun for focus feature
+  useEffect(() => {
+    const isControl = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return false;
 
+      return Boolean(
+        target.closest(
+          [
+            "button",
+            "a",
+            "input",
+            "textarea",
+            "select",
+            "[contenteditable='true']",
+            "[role='button']",
+            "[role='combobox']",
+            "[role='menuitem']",
+            "[role='option']",
+          ].join(","),
+        ),
+      );
+    };
 
-  const handlePointerDown = (event: PointerEvent) => {
-    const target = event.target;
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
 
-    const clickedTypingArea =
-      target instanceof Node && typingAreaRef.current?.contains(target);
+      const clickedTypingArea =
+        target instanceof Node && typingAreaRef.current?.contains(target);
 
-    if (clickedTypingArea) {
+      if (clickedTypingArea) {
+        ignoreNextBlurRef.current = false;
+        // focusTypingInput();
+        return;
+      }
+
+      if (isControl(target)) {
+        ignoreNextBlurRef.current = true;
+        return;
+      }
+
       ignoreNextBlurRef.current = false;
-      // focusTypingInput();
-      return;
-    }
+      setFocusLost(true);
+      inputRef.current?.blur();
+    };
 
-    if (isControl(target)) {
-      ignoreNextBlurRef.current = true;
-      return;
-    }
+    document.addEventListener("pointerdown", handlePointerDown, true);
 
-    ignoreNextBlurRef.current = false;
-    setFocusLost(true);
-    inputRef.current?.blur();
-  };
-
-  document.addEventListener("pointerdown", handlePointerDown, true);
-
-  return () => {
-    document.removeEventListener("pointerdown", handlePointerDown, true);
-  };
-}, []);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown, true);
+    };
+  }, []);
 
   useEffect(() => {
-  if (!focusLost) return;
+    if (!focusLost) return;
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (
-      event.key === "Shift" ||
-      event.key === "Control" ||
-      event.key === "Alt" ||
-      event.key === "Meta"
-    ) {
-      return;
-    }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key === "Shift" ||
+        event.key === "Control" ||
+        event.key === "Alt" ||
+        event.key === "Meta"
+      ) {
+        return;
+      }
 
-    // Don't interfere with browser shortcuts.
-    if (event.ctrlKey || event.altKey || event.metaKey) return;
+      // Don't interfere with browser shortcuts.
+      if (event.ctrlKey || event.altKey || event.metaKey) return;
 
-    event.preventDefault();
-    focusTypingInput();
-  };
+      event.preventDefault();
+      focusTypingInput();
+    };
 
-  window.addEventListener("keydown", handleKeyDown, true);
+    window.addEventListener("keydown", handleKeyDown, true);
 
-  return () => {
-    window.removeEventListener("keydown", handleKeyDown, true);
-  };
-}, [focusLost]);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [focusLost]);
 
   // this whole part is for live showing live stats
 
@@ -234,13 +234,6 @@ useEffect(() => {
 
     return () => clearInterval(interval);
   }, [teststate]);
-
-  //   return {
-  //     correctWordChars,
-  //     correctSpaces,
-  //     totalWpmChars: correctWordChars + correctSpaces,
-  //   };
-  // };
 
   // fun for calculating  result of wpm n accuracy
   const calculateResult = (
@@ -341,50 +334,41 @@ useEffect(() => {
           )}
           {/* live stats section ends here */}
 
-          {/* <div className="h-38 w-[95%] px-4 py-2 text-[2rem] text-[#856d63] leading-12 overflow-hidden" ref={typingAreaRef}>
-            <TypingText
-              text={text}
-              currentIndex={currentIndex}
-              typedText={typedText}
-              charStatus={charStatus}
-              extraChars={extraChars}
-            />
-          </div> */}
           <div
-  ref={typingAreaRef}
-  onClick={focusTypingInput}
-  className="relative h-38 w-[95%] px-4 py-2 text-[2rem] text-(--text) leading-12 overflow-hidden"
->
-  <div
-    className={`transition-all duration-200 ${
-      focusLost ? "opacity-30 blur-xs" : ""
-    }`}
-  >
-    <TypingText
-      text={text}
-      currentIndex={currentIndex}
-      typedText={typedText}
-      charStatus={charStatus}
-      extraChars={extraChars}
-    />
-  </div>
+            ref={typingAreaRef}
+            onClick={focusTypingInput}
+            className="relative h-38 w-[95%] px-4 py-2 text-[2rem] text-(--text) leading-12 overflow-hidden"
+          >
+            <div
+              className={`transition-all duration-200 ${
+                focusLost ? "opacity-30 blur-xs" : ""
+              }`}
+            >
+              <TypingText
+                text={text}
+                currentIndex={currentIndex}
+                typedText={typedText}
+                charStatus={charStatus}
+                extraChars={extraChars}
+                incorrectChars={incorrectChars}
+              />
+            </div>
 
-  {focusLost && (
-    <button
-      type="button"
-      onMouseDown={(e)=>e.preventDefault()}
-      onClick={focusTypingInput}
-      className="absolute inset-0 z-10 flex flex-col text-[18px] items-center justify-center bg-transparent text-(--text) text-base font-[Courier_Prime] hover:cursor-pointer"
-    >
-      <FaLocationArrow className="text-(--text) " size={16}/>
-      <span>Click here to start typing  </span>
-      <span className="mt-1.5 text-[14px] opacity-80">
-        or press any key to continue
-      </span>
-    </button>
-
-  )}
-</div>
+            {focusLost && (
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={focusTypingInput}
+                className="absolute inset-0 z-10 flex flex-col text-[18px] items-center justify-center bg-transparent text-(--text) text-base font-[Courier_Prime] hover:cursor-pointer"
+              >
+                <FaLocationArrow className="text-(--text) " size={16} />
+                <span>Click here to start typing </span>
+                <span className="mt-1.5 text-[14px] opacity-80">
+                  or press any key to continue
+                </span>
+              </button>
+            )}
+          </div>
           <button onClick={resetTest}>
             <RotateCcw
               size={26}
@@ -403,7 +387,7 @@ useEffect(() => {
                 return;
               }
 
-             setFocusLost(true);
+              setFocusLost(true);
             }}
             onFocus={() => {
               setFocusLost(false);
@@ -549,10 +533,6 @@ useEffect(() => {
                 const currentWordStart =
                   text.lastIndexOf(" ", currentIndex - 1) + 1;
 
-                // const wordWasFullyCorrect = charStatus
-                //   .slice(currentWordStart, currentIndex)
-                //   .every((status) => status === "correct");
-
                 const wordWasFullyCorrect = charStatus
                   .slice(
                     currentWordStart,
@@ -651,6 +631,12 @@ useEffect(() => {
                     updated[currentIndex] = "incorrect";
                     return updated;
                   });
+                  //showing incorrect char below
+                  setIncorrectChars((prev) => {
+                    const updated = [...prev];
+                    updated[currentIndex] = event.key; // latest wrong attempt for this position
+                    return updated;
+                  });
 
                   return;
                 }
@@ -692,6 +678,11 @@ useEffect(() => {
                     const updated = [...prev];
                     updated[currentIndex] = "incorrect";
 
+                    return updated;
+                  });
+                  setIncorrectChars((prev) => {
+                    const updated = [...prev];
+                    updated[currentIndex] = event.key; // latest wrong attempt for this position
                     return updated;
                   });
                 }

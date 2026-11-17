@@ -52,15 +52,15 @@ export default function SlothTypingtext() {
 
   return (
     <>
-      <div className="text-cente mt-6">
-        <h2 className="text-2xl font-semibold font-[Courier_Prime] tracking-tight  text-(--muted-text) inline-block">
+      <div className="mt-6 max-sm:hidden max-md:hidden ">
+        <h2 className="max-lg:text-xl text-2xl font-semibold font-[Courier_Prime] tracking-tight  text-(--muted-text) inline-block">
           {staticText}
           <span className="text-(--caret)">{displayText}</span>
           {/* ✅ blinking cursor stays same */}
           <span className="animate-pulse">|</span>
         </h2>
         <p
-          className="text-[12px] text-(--muted-text) mb-1 font-[Courier_Prime]"
+          className="text-[12px] text-(--muted-text) mb-1 font-[Courier_Prime] max-[829px]:hidden"
           style={{ marginLeft: `${staticText.length + dynamicText.length}ch` }}
         >
           one keystroke closer to mastery..!

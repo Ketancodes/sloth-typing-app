@@ -8,6 +8,7 @@ interface TypingTextProp {
   typedText?: string;
   charStatus: CharStatus[];
   extraChars: ExtraCharacter[];
+  incorrectChars: (string | null)[];
 }
 function TypingText({
   text,
@@ -15,8 +16,9 @@ function TypingText({
 
   charStatus,
   extraChars,
+  incorrectChars,
 }: TypingTextProp) {
-  const { blindMode, caretStyle } = useSettings();
+  const { blindMode, caretStyle, showIncorrectChar } = useSettings();
 
   const RENDER_WINDOW_SIZE = 300;
   // Line changing whole logic
@@ -167,27 +169,20 @@ function TypingText({
                 )}
 
                 {char}
+                {!blindMode &&
+                  showIncorrectChar &&
+                  status === "incorrect" &&
+                  incorrectChars[absoluteIndex] && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute left-1/2 top-[1.4em] -translate-x-1/2 text-[0.8em] font-medium leading-none text-(--muted-text)"
+                    >
+                      {incorrectChars[absoluteIndex]}
+                    </span>
+                  )}
               </span>
             );
           })}
-        {/* <span
-          ref={caretRef}
-          aria-hidden="true"
-          className="
-                    pointer-events-none
-                    absolute
-                    top-0
-                    left-0
-                    w-0.75
-                    h-[2.2rem]
-                    bg-(--caret)
-                    transition-[left,top]
-                    duration-100
-                    ease-out
-                    animate-blink
-      
-                  "
-        /> */}
 
         {caretStyle !== "off" && (
           <span
@@ -216,5 +211,3 @@ function TypingText({
   );
 }
 export default memo(TypingText);
-
-/// cf2323
