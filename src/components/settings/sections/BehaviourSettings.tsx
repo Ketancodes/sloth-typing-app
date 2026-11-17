@@ -5,6 +5,7 @@ import {
   RotateCcw,
   EyeOff,
   ChartNoAxesCombined,
+  MonitorX
 } from "lucide-react";
 import { useSettings } from "../../../hooks/useSettings";
 
@@ -18,6 +19,8 @@ export default function BehaviorSettings() {
     setBlindMode,
     liveStats,
     setLiveStats,
+    distractionFreeMode,
+    setDistractionFreeMode,
   } = useSettings();
 
   return (
@@ -80,7 +83,7 @@ export default function BehaviorSettings() {
           title="Live Stats"
           description="Show your WPM and accuracy while you are typing."
           icon={<ChartNoAxesCombined size={22} />}
-        >
+         >
           <SettingOptions
             options={["Off", "WPM", "Accuracy", "Both"]}
             value={
@@ -106,6 +109,20 @@ export default function BehaviorSettings() {
             layoutId="live-stats"
           />
         </SettingRow>
+     <SettingRow
+     title="Distraction free mode"
+     description="
+     enabling hides the navbar,option bar and footer "
+     icon={<MonitorX size={20}/>}
+     >
+      <SettingOptions
+            options={["Off", "Turn On"]}
+            value={distractionFreeMode ? "Turn On" : "Off"}
+            onChange={(value) => setDistractionFreeMode(value === "Turn On")}
+            layoutId="distraction-free-mode"
+          />
+
+     </SettingRow>
       </div>
     </section>
   );

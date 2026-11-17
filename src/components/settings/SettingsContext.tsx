@@ -36,6 +36,9 @@ const DEFAULT_SETTINGS = {
 
   // sound
   typingSound: "off" as TypingSoundOption,
+
+  // distraction free mode
+  distractionFreeMode:true,
 };
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -54,6 +57,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     | "setTheme"
     | "setCaretStyle"
     | "setTypingSound"
+    |"setDistractionFreeMode"
   >;
 
   const saveSettings = (settings: SavedSettings) => {
@@ -124,6 +128,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     savedSettings.typingSound,
   ); // sound
 
+    const [distractionFreeMode, setDistractionFreeModeState] =
+    useState<boolean>(savedSettings.distractionFreeMode); // state for distraction free mode
+
   const getCurrentSettings = (): SavedSettings => ({
     defaultMode,
     defaultTime,
@@ -137,6 +144,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     theme,
     caretStyle,
     typingSound,
+    distractionFreeMode,
   });
 
   const setDefaultMode = (mode: TestLengthMode) => {
@@ -251,6 +259,16 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // for distraction free mode 
+    const setDistractionFreeMode = (enabled: boolean) => {
+    setDistractionFreeModeState(enabled);
+
+    saveSettings({
+      ...getCurrentSettings(),
+      distractionFreeMode: enabled,
+    });
+  };
+
   const resetToDefaults = () => {
     setDefaultModeState(DEFAULT_SETTINGS.defaultMode);
     setDefaultTimeState(DEFAULT_SETTINGS.defaultTime);
@@ -267,6 +285,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     saveSettings(DEFAULT_SETTINGS);
     setTheme(DEFAULT_SETTINGS.theme);
     setCaretStyleState(DEFAULT_SETTINGS.caretStyle);
+        setDistractionFreeModeState(DEFAULT_SETTINGS.distractionFreeMode);
   };
 
   return (
@@ -306,6 +325,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         // sound
         typingSound,
         setTypingSound,
+
+        // distraction free
+                distractionFreeMode,
+        setDistractionFreeMode,
       }}
     >
       {children}

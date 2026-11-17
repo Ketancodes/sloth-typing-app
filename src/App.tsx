@@ -31,6 +31,7 @@ function App() {
     defaultTestType,
     defaultDifficulty,
     theme,
+    distractionFreeMode,
   } = useSettings();
 
   const getInitialTestConfig = (): TestConfig => {
@@ -391,7 +392,7 @@ function App() {
   return (
     <>
       <div className="min-h-screen w-screen bg-(--background) flex flex-col">
-        <div className={teststate === "running" ? "invisible" : "visible"}>
+        <div className={distractionFreeMode && teststate === "running" ? "invisible" : "visible"}>
           <Navbar onSettings={() => setCurrentPage("settings")} />
         </div>
         {teststate === "finished" && result ? (
@@ -435,7 +436,7 @@ function App() {
 
             <div
               className={
-                teststate === "running" ? "invisible pointer-events-none" : ""
+              distractionFreeMode &&  teststate === "running" ? "invisible pointer-events-none" : ""
               }
             >
               <Optionbar
@@ -480,8 +481,8 @@ function App() {
               customTextLength={activeCustomTest?.text.length ?? 0}
             />
           </>
-        )}
-        {teststate !== "running" && <Footer />}
+        )}    
+            {(!distractionFreeMode || teststate !== "running") && <Footer />}
       </div>
     </>
   );

@@ -52,6 +52,10 @@ export type SettingsContextType = {
   // sound related
   typingSound: TypingSoundOption;
   setTypingSound: (value: TypingSoundOption) => void;
+
+  // clean ui , distraction free mode
+  distractionFreeMode:boolean;
+  setDistractionFreeMode:(enabled:boolean)=>void;
 };
 
 export const SettingsContext = createContext<SettingsContextType | null>(null);
