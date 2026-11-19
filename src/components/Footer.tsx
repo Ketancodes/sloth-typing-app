@@ -6,9 +6,9 @@ export default function Footer() {
   const [isContModalOpen, setIsContModalOpen] = useState(false);
   return (
     <>
-      <footer className="max-w-[98%] px-6 py-4 mt-auto flex items-center justify-between text-(--footer-text) font-[Courier_Prime]">
+      <footer className="max-w-[98%] max-md:flex-col max-md:justify-center max-md:gap-4  px-6 py-4 mt-auto  flex items-center justify-between text-(--footer-text) font-[Courier_Prime]">
         {" "}
-        <div className="flex items-center text-[15px] gap-12 ">
+        <div className="max-md:flex-wrap max-md:justify-center max-md:gap-x-5 max-md:gap-y-2  flex items-center text-[15px] gap-12 ">
           <a
             href="https://github.com/Ketancodes"
             target="_blank"
@@ -28,7 +28,7 @@ export default function Footer() {
             <UserPen size={16} /> contact
           </p>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="max-md:flex-wrap max-md:justify-center max-md:gap-x-4 max-md:gap-y-2 flex items-center gap-8">
           <p className="flex items-center gap-1">
             <AtSign size={16} />
             2026 Sloth typing

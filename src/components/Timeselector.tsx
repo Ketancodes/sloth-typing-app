@@ -61,7 +61,7 @@ export default function Timeselector({
             setTestKey((prev) => prev + 1);
           }}
           // className={` ${testLengthMode === "time" ? "text-[#33241e] flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer" : "flex items-center gap-1.5 hover:scale-95 hover:cursor-pointer"}`}
-          className={`relative z-10 flex items-center gap-1.5  rounded-2xl px-6 py-1 transition-colors ${
+          className={`relative z-10 flex items-center gap-1.5  rounded-2xl md:px-4 lg:px-6 py-1 transition-colors ${
             testLengthMode === "time"
               ? "text-(--option-active-text) hover:cursor-pointer "
               : "hover:scale-95 hover:cursor-pointer"

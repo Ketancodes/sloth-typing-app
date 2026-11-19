@@ -40,7 +40,7 @@ export default function TestSelector({
         )}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative z-10 flex items-center gap-1.5 rounded-2xl px-6 py-1 ${
+          className={`relative z-10 flex items-center gap-1.5 rounded-2xl md:px-4 lg:px-6 py-1 ${
             isActive
               ? "text-(--option-active-text) hover:cursor-pointer"
               : "hover:scale-95 hover:cursor-pointer"

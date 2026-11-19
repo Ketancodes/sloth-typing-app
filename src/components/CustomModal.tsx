@@ -70,7 +70,7 @@ export default function CustomModal({
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-190 rounded-2xl border border-[#a98b80]/40 bg-(--surface) p-6 shadow-lg">
+      <div className="relative z-10 max-sm:w-[95%] max-w-190 max-h-[90dvh] overflow-y-auto rounded-2xl border border-[#a98b80]/40 bg-(--surface) p-6 shadow-lg">
         {/* Header */}
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -90,9 +90,9 @@ export default function CustomModal({
         </div>
 
         {/* Main content */}
-        <div className="flex gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,68fr)_minmax(0,32fr)] md:gap-6">
           {/* Left side */}
-          <div className="flex w-[68%] flex-col">
+          <div className="flex flex-col">
             <label className="mb-2 font-[Roboto_Mono] text-sm font-medium text-[#72584e]">
               Enter your text
             </label>
@@ -121,7 +121,7 @@ export default function CustomModal({
           </div>
 
           {/* Right side */}
-          <div className="flex w-[32%] flex-col gap-4">
+          <div className="grid grid-cols-2 gap-3  sm:flex sm:flex-col sm:gap-4">
             {/* Time */}
             <div className="relative">
               <button
@@ -201,7 +201,7 @@ export default function CustomModal({
                   setTime(customTest.time);
                   setIsSaved(true);
                 }}
-                className="rounded-xl bg-[#a98b80] px-5 py-2 font-[Roboto_Mono] text-sm text-[#33241e] transition-all hover:scale-[0.98] hover:cursor-pointer"
+                className="rounded-xl bg-[#a98b80] max-[389px]:px-3 max-[389px]:py-1 px-5 py-2 font-[Roboto_Mono] text-sm text-[#33241e] transition-all hover:scale-[0.98] hover:cursor-pointer"
               >
                 Saved Text
               </button>
