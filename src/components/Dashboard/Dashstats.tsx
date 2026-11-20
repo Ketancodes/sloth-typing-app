@@ -15,7 +15,7 @@ export default function Dashstats({ result, testConfig }: DashStasProp) {
       : `${displayMode} ${testConfig.wordOption} words`;
   return (
     <>
-      <div className="grid grid-cols-4 gap-10 mt-6">
+      <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 text-center md:grid-cols-2 lg:grid-cols-4 lg:justify-items-start lg:gap-10 lg:text-left">
         {/* typed words data */}
         <div className="group flex flex-col relative w-fit">
           {/* typed words hover  */}

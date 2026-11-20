@@ -378,7 +378,7 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen w-screen bg-(--background) flex flex-col">
+      <div className="min-h-screen w-full bg-(--background) flex flex-col">
         <div
           className={
             distractionFreeMode && teststate === "running"

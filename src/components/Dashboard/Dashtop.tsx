@@ -41,8 +41,8 @@ export default function Dashtop({ result }: ResultProp) {
   }, [result]);
   return (
     <>
-      <div className="grid grid-cols-2 gap-8">
-        <div className="flex flex-col items-start">
+      <div className="mx-auto grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-16 lg:mx-0 lg:grid-cols-[max-content_max-content] lg:gap-x-24">
+        <div className="flex flex-col items-center text-center lg:items-start sm:text-left">
           <p className="text-3xl font-normal text-(--dashboard-label) tracking-normal font-mono">
             wpm
           </p>
@@ -54,7 +54,8 @@ export default function Dashtop({ result }: ResultProp) {
             {displayWpm}
           </h1>
         </div>
-        <div>
+        <div className="flex flex-col items-center text-center lg:items-start sm:text-left">
+          {" "}
           <p className="text-3xl font-normal text-(--dashboard-label) tracking-normal font-mono">
             accuracy
           </p>

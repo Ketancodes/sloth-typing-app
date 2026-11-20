@@ -21,10 +21,13 @@ export default function Dashboard({
 
   return (
     <>
-      <div className="mt-2 ml-6 font-[Courier_Prime] font-medium">
-        <div className="flex justify-between">
-          <Dashtop result={result} />
-          <div className="w-[70%] h-62.5 ">
+      <div className="mt-2 mx-3 sm:ml-6 sm:mr-0 font-[Courier_Prime] font-medium">
+        <div className="flex flex-col gap-6 lg:flex-row lg:gap-0">
+          <div className="w-full lg:w-[30%]">
+            <Dashtop result={result} />
+          </div>
+
+          <div className="h-62.5 w-full md:mx-auto md:w-[75%] lg:w-[70%]">
             <Dashgraph result={result} testConfig={testConfig} />
           </div>
         </div>

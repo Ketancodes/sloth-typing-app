@@ -25,7 +25,7 @@ export default function Dashaction({
   return (
     <>
       <div className="mt-14 w-full flex items-center justify-center">
-        <div className="flex w-[25%] items-center justify-between text-(--muted-text) ">
+        <div className="flex w-[80%] sm:w-[25%] items-center justify-between text-(--muted-text) ">
           {/* Retry */}
           <div className={groupHoverClass} onClick={onRepeat}>
             <Recycle size={24} />
