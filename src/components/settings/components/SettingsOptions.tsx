@@ -14,7 +14,7 @@ export default function SettingOptions({
   layoutId,
 }: SettingOptionsProps) {
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2 ">
+    <div className="flex flex-wrap items-center justify-start md:justify-end gap-2 ">
       {options.map((option) => {
         const isActive = value === option;
 

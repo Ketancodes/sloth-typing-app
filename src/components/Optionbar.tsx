@@ -54,7 +54,7 @@ export default function Optionbar({
 
   return (
     <>
-      <section className="flex items-center max-md:justify-center justify-between  mt-4 ">
+      <section className="flex items-center max-md:justify-center justify-between max-lg:mt-12  mt-4 ">
         <div className="max-md:hidden h-8  w-fit  mt-2 max-lg:px-0 md:max-w-[calc(100vw-2rem)] text-(--option-bar-text) text-[14px] font-[Roboto_Mono] font-medium bg-(--option-bar-background) flex items-center justify-center sm:gap-2 gap-5 mx-auto rounded-2xl">
           {/* Time selector */}
           <Timeselector
@@ -124,7 +124,7 @@ export default function Optionbar({
         </div>
 
         {/* Mobile Test Settings */}
-        <div className="md:hidden flex justify-center">
+        <div className="md:hidden mt-12 flex justify-center">
           <button
             onClick={() => setIsSettingsOpen((prev) => !prev)}
             className="flex items-center justify-center gap-2 rounded-2xl px-5 py-2 text-sm font-[Roboto_Mono] font-medium text-(--option-bar-text) bg-(--option-bar-background)"

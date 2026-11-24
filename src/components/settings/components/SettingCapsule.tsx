@@ -32,6 +32,10 @@ export default function SettingCapsule({
               py-2.5
               font-[Roboto_Mono]
               text-[14px]
+              max-[400px]:min-w-0
+max-[400px]:px-2
+max-[400px]:py-2
+max-[400px]:text-xs
               font-medium
               text-[#614f43]
               transition-colors

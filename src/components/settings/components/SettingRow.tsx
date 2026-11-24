@@ -12,8 +12,8 @@ export default function SettingRow({
   icon,
 }: SettingRowProps) {
   return (
-    <div className="flex items-start justify-between py-5">
-      <div className="flex items-start gap-3">
+    <div className="flex flex-col items-start md:flex-row md:justify-between py-5">
+      <div className="flex w-[90%] items-start md:w-auto md:flex-1 gap-3">
         {icon && (
           <div className="mt-1 shrink-0 text-(--muted-text)">{icon}</div>
         )}
@@ -28,7 +28,9 @@ export default function SettingRow({
           </p>
         </div>
       </div>
-      <div className="shrink-0">{children}</div>
+      <div className="mt-4 w-fit max-w-full md:w-auto md:shrink-0">
+        {children}
+      </div>
     </div>
   );
 }

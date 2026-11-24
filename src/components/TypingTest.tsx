@@ -300,7 +300,7 @@ export default function TypingTest({
 
   return (
     <>
-      <main className="relative mt-20 w-full font-[Roboto_Mono] flex flex-col gap-10 items-center justify-center">
+      <main className="relative max-lg:mt-48 mt-20 w-full font-[Roboto_Mono] flex flex-col gap-10 items-center justify-center">
         <>
           {testLengthMode === "time" && (
             <Timer

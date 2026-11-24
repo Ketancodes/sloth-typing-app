@@ -6,7 +6,7 @@ export default function Footer() {
   const [isContModalOpen, setIsContModalOpen] = useState(false);
   return (
     <>
-      <footer className="max-w-[98%] max-[1000px]:flex-col max-[1000px]:justify-center max-[1000px]:gap-4  px-6 py-4 max-sm:mt-12 mt-auto  flex items-center justify-between text-(--footer-text) font-[Courier_Prime]">
+      <footer className="max-w-[98%] max-[1000px]:flex-col max-[1000px]:justify-center max-[1000px]:gap-4  px-6 py-4 max-sm:mt-auto mt-auto  flex items-center justify-between text-(--footer-text) font-[Courier_Prime]">
         {" "}
         <div className="max-[1000px]:flex-wrap max-[1000px]:justify-center max-[1000px]:gap-x-5 max-[1000px]:gap-y-2  flex items-center text-[15px] gap-12 ">
           <a
