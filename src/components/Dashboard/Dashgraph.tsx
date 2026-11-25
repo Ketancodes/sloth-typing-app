@@ -146,6 +146,22 @@ export default function DashGraph({ result, testConfig }: DashGraphProps) {
               );
             }}
           />
+          {/* <Line
+            type="monotone"
+            dataKey="wpm"
+            stroke="var(--graph-line)"
+            strokeWidth={2}
+            dot={{
+              r: 2.5,
+              fill: "var(--graph-dot)",
+              stroke: "var(--graph-line)",
+              strokeWidth: 1.5,
+            }}
+            activeDot={{
+              r: 5,
+              fill: "var(--graph-line)",
+            }}
+          /> */}
           <Line
             type="monotone"
             dataKey="wpm"
@@ -161,6 +177,9 @@ export default function DashGraph({ result, testConfig }: DashGraphProps) {
               r: 5,
               fill: "var(--graph-line)",
             }}
+            isAnimationActive={true}
+            animationDuration={1200}
+            animationEasing="ease-out"
           />
 
           <Line

@@ -22,6 +22,7 @@ import CustomModal from "./components/CustomModal";
 import Settings from "./components/settings/Settings";
 import { useSettings } from "./hooks/useSettings";
 import { themes } from "./components/settings/themes/themeConfig";
+import { AnimatePresence, motion } from "framer-motion";
 
 function App() {
   const {
@@ -371,7 +372,25 @@ function App() {
     return (
       <>
         <Navbar onSettings={() => setCurrentPage("typing")} />
-        <Settings />
+        <motion.div
+          className="min-h-screen w-full bg-(--background)"
+          initial={{
+            opacity: 0,
+            y: 12,
+            scale: 0.985,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+          }}
+          transition={{
+            duration: 0.45,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <Settings />
+        </motion.div>
       </>
     );
   }
@@ -388,65 +407,100 @@ function App() {
         >
           <Navbar onSettings={() => setCurrentPage("settings")} />
         </div>
-        {teststate === "finished" && result ? (
-          <Dashboard
-            result={result}
-            onReset={resetTest}
-            onRepeat={repeatTest}
-            testConfig={testConfig}
-          />
-        ) : (
-          <>
-            <div
-              className={
-                distractionFreeMode && teststate === "running"
-                  ? "invisible pointer-events-none"
-                  : ""
-              }
+
+        <AnimatePresence mode="wait" initial={false}>
+          {teststate === "finished" && result ? (
+            <motion.div
+              key="dashboard"
+              initial={{
+                opacity: 0,
+                y: 25,
+                scale: 0.92,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              exit={{
+                opacity: 0,
+                y: -15,
+                scale: 0.96,
+              }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+              }}
             >
-              <Optionbar
-                words={words}
-                setWords={setWords}
-                testLengthMode={testLengthMode}
-                setTestLengthMode={setTestLengthMode}
-                generateNewTest={generateNewTest}
-                generateTimeTest={generateTimeTest}
-                testMode={testMode}
-                setTestMode={updateTestMode}
-                time={time}
-                setTestKey={setTestKey}
-                activeOption={activeOption}
-                setActiveOption={setActiveOption}
-                isCustomOpen={isCustomOpen}
-                setIsCustomOpen={setIsCustomOpen}
+              <Dashboard
+                result={result}
+                onReset={resetTest}
+                onRepeat={repeatTest}
+                testConfig={testConfig}
               />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="typing"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <>
+                <div
+                  className={
+                    distractionFreeMode && teststate === "running"
+                      ? "invisible pointer-events-none"
+                      : ""
+                  }
+                >
+                  <Optionbar
+                    words={words}
+                    setWords={setWords}
+                    testLengthMode={testLengthMode}
+                    setTestLengthMode={setTestLengthMode}
+                    generateNewTest={generateNewTest}
+                    generateTimeTest={generateTimeTest}
+                    testMode={testMode}
+                    setTestMode={updateTestMode}
+                    time={time}
+                    setTestKey={setTestKey}
+                    activeOption={activeOption}
+                    setActiveOption={setActiveOption}
+                    isCustomOpen={isCustomOpen}
+                    setIsCustomOpen={setIsCustomOpen}
+                  />
 
-              {isCustomOpen && (
-                <CustomModal
-                  setIsCustomOpen={setIsCustomOpen}
-                  onSave={saveCustomTest}
-                  onPractice={practiceCustomTest}
-                  customTest={customTest}
+                  {isCustomOpen && (
+                    <CustomModal
+                      setIsCustomOpen={setIsCustomOpen}
+                      onSave={saveCustomTest}
+                      onPractice={practiceCustomTest}
+                      customTest={customTest}
+                    />
+                  )}
+                </div>
+
+                <TypingTest
+                  key={testKey}
+                  testLengthMode={testLengthMode}
+                  words={words}
+                  text={text}
+                  duration={time}
+                  resetTest={resetTest}
+                  teststate={teststate}
+                  setTeststate={setTeststate}
+                  onFinish={handleTestFinish}
+                  isCustomTest={activeCustomTest !== null}
+                  onExtendCustomTest={extendCustomText}
+                  customTextLength={activeCustomTest?.text.length ?? 0}
                 />
-              )}
-            </div>
+              </>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            <TypingTest
-              key={testKey}
-              testLengthMode={testLengthMode}
-              words={words}
-              text={text}
-              duration={time}
-              resetTest={resetTest}
-              teststate={teststate}
-              setTeststate={setTeststate}
-              onFinish={handleTestFinish}
-              isCustomTest={activeCustomTest !== null}
-              onExtendCustomTest={extendCustomText}
-              customTextLength={activeCustomTest?.text.length ?? 0}
-            />
-          </>
-        )}
         {(!distractionFreeMode || teststate !== "running") && <Footer />}
       </div>
     </>

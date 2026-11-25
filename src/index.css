@@ -61,3 +61,14 @@
   --caret: #6d564d;
   --border: #bda69a;
 }
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: var(--background);
+}
+
+body {
+  margin: 0;
+}
