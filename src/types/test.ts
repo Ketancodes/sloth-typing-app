@@ -47,4 +47,4 @@ export type CustomTestConfig = {
   time: TimeOption;
 };
 
-export type AppPage = "typing" | "settings";
+export type AppPage = "typing" | "settings" | "about";

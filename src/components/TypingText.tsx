@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CharStatus, ExtraCharacter } from "../types/test";
 import { useSettings } from "../hooks/useSettings";
 
@@ -55,7 +55,7 @@ function TypingText({
   }, [currentIndex, text.length]);
 
   // new ref for caret
-  useEffect(() => {
+  useLayoutEffect(() => {
     const caret = caretRef.current;
     const activeChar = activeCharRef.current;
 
@@ -192,9 +192,9 @@ function TypingText({
   pointer-events-none
   absolute
   left-0
-  transition-[left,top,width,height]
-  duration-100
-  ease-out
+ transition-[top,left,width,height]
+ duration-100
+ ease-out
   animate-blink
   ${
     caretStyle === "line"

@@ -20,6 +20,7 @@ import generateText from "./utils/generateText";
 import Dashboard from "./components/Dashboard/Dashboard";
 import CustomModal from "./components/CustomModal";
 import Settings from "./components/settings/Settings";
+import About from "./components/settings/components/About";
 import { useSettings } from "./hooks/useSettings";
 import { themes } from "./components/settings/themes/themeConfig";
 import { AnimatePresence, motion } from "framer-motion";
@@ -229,6 +230,25 @@ function App() {
     setResult(null);
   };
 
+  const handleHome = () => {
+    // Navigate to the typing home page
+    setCurrentPage("typing");
+
+    // Generate fresh text using the current test configuration
+    if (testLengthMode === "words") {
+      generateNewTest(words ?? defaultWords);
+    } else {
+      generateTimeTest(time);
+    }
+
+    // Clear previous test results and state
+    setTeststate("idle");
+    setResult(null);
+
+    // Close custom modal if it is open
+    setIsCustomOpen(false);
+  };
+
   const testConfig: TestConfig = {
     testLengthMode,
     testMode,
@@ -367,11 +387,28 @@ function App() {
     root.style.setProperty("--history-missed", selectedTheme.historyMissed);
   }, [theme]);
 
+  // fun for handlling the contact forms
+  const handleContact = (type: "feedback" | "bug" | "feature") => {
+    const subjects = {
+      feedback: "Sloth Typing - Feedback",
+      bug: "Sloth Typing - Bug Report",
+      feature: "Sloth Typing - Feature Request",
+    };
+
+    const email = "kudtalkarketan@gmail.com";
+
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subjects[type])}`;
+  };
+
   // opening setting page with navbar
   if (currentPage === "settings") {
     return (
       <>
-        <Navbar onSettings={() => setCurrentPage("typing")} />
+        <Navbar
+          onSettings={() => setCurrentPage("settings")}
+          onAbout={() => setCurrentPage("about")}
+          onHome={handleHome}
+        />
         <motion.div
           className="min-h-screen w-full bg-(--background)"
           initial={{
@@ -395,6 +432,30 @@ function App() {
     );
   }
 
+  // Opening About page with navbar
+  if (currentPage === "about") {
+    return (
+      <>
+        <Navbar
+          onSettings={() => setCurrentPage("settings")}
+          onAbout={() => setCurrentPage("about")}
+          onHome={handleHome}
+        />
+        <motion.div
+          className="min-h-screen w-full bg-(--background)"
+          initial={{ opacity: 0, y: 12, scale: 0.985 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.45,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <About onContact={handleContact} />
+        </motion.div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="min-h-screen w-full bg-(--background) flex flex-col">
@@ -405,7 +466,11 @@ function App() {
               : "visible"
           }
         >
-          <Navbar onSettings={() => setCurrentPage("settings")} />
+          <Navbar
+            onSettings={() => setCurrentPage("settings")}
+            onAbout={() => setCurrentPage("about")}
+            onHome={handleHome}
+          />
         </div>
 
         <AnimatePresence mode="wait" initial={false}>

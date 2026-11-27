@@ -38,19 +38,26 @@ const ComingSoonIcon = ({ children }: { children: React.ReactNode }) => {
 
 interface NavbarProp {
   onSettings: () => void;
+  onAbout: () => void;
+  onHome: () => void;
 }
-export default function Navbar({ onSettings }: NavbarProp) {
+export default function Navbar({ onSettings, onAbout, onHome }: NavbarProp) {
   return (
     <>
       <nav className="h-16 w-full bg-(--background) flex items-center px-2 py-2">
         {/* logo image */}
-        <div>
+        <button
+          type="button"
+          onClick={onHome}
+          aria-label="Go to home"
+          className="cursor-pointer"
+        >
           <img
-            src="public\Your_paragraph_text__1_-removebg-preview.png"
-            alt="logo"
-            className="h-20 my-auto w-auto object-contain brightness-125 cursor-pointer max-sm:-ml-4"
+            src="/Your_paragraph_text__1_-removebg-preview.png"
+            alt="Sloth Typing"
+            className="h-20 my-auto w-auto object-contain brightness-125 max-sm:-ml-4"
           />
-        </div>
+        </button>
 
         {/* sloth-typing-text-animation */}
         <div className="max-sm:hidden max-md:hidden">
@@ -64,12 +71,11 @@ export default function Navbar({ onSettings }: NavbarProp) {
             onClick={onSettings}
           />
 
-          <ComingSoonIcon>
-            <FaInfo
-              size={20}
-              className={`${IconEffect} max-sm:w-4.5  max-sm:h-4.5 `}
-            />
-          </ComingSoonIcon>
+          <FaInfo
+            size={20}
+            className={`${IconEffect} max-sm:w-4.5 max-sm:h-4.5`}
+            onClick={onAbout}
+          />
 
           <ComingSoonIcon>
             <FaTrophy
